@@ -9,7 +9,7 @@ const AppState = {
   cart: [],
   activeGalleryCategory: 'all',
   selectedArt: null,
-  currentTheme: 'light',
+  currentTheme: 'dark',
   userReviewRating: 5
 };
 
@@ -25,6 +25,8 @@ document.addEventListener('DOMContentLoaded', () => {
   initNavigation();
   initModals();
   initReviewSubmission();
+  initHorizontalWheelScroll();
+  initScrollRevealAnimations();
 
   // Listen for Live Admin Updates
   window.addEventListener('mehndi_data_updated', (e) => {
@@ -38,7 +40,7 @@ document.addEventListener('DOMContentLoaded', () => {
    THEME SWITCHER (LIGHT & DARK MODES)
    ========================================================================== */
 function initTheme() {
-  const saved = localStorage.getItem('mehndi_theme') || 'light';
+  const saved = localStorage.getItem('mehndi_theme') || 'dark';
   setTheme(saved);
 
   document.querySelectorAll('.theme-toggle-btn').forEach(btn => {
@@ -90,6 +92,8 @@ function renderProfileData() {
   // Announcement Bar
   const announceEl = document.getElementById('announcement-text');
   if (announceEl) announceEl.textContent = p.announcement || '';
+  const announceDup = document.querySelector('.announcement-text-content-dup');
+  if (announceDup) announceDup.textContent = p.announcement || '';
 
   // Dynamic Brand Text
   document.querySelectorAll('.brand-dynamic-name').forEach(el => el.textContent = p.brandName);
@@ -130,13 +134,13 @@ function updateWhatsAppLinks() {
 
   const heroWa = document.getElementById('hero-whatsapp-btn');
   if (heroWa) {
-    const text = encodeURIComponent(`Hello ${p.brandName}! I am planning an upcoming wedding/celebration and would like to enquire about your bridal mehndi availability and pricing.`);
+    const text = encodeURIComponent(`Hello ${p.brandName}! I want to book bridal mehndi for my upcoming wedding/function in Hazaribagh. Please check date availability and package details.`);
     heroWa.href = `https://wa.me/${whatsappNum}?text=${text}`;
   }
 
   const floatWa = document.getElementById('floating-whatsapp-btn');
   if (floatWa) {
-    const text = encodeURIComponent(`Hello! I visited your website and would like to enquire about your Mehndi art services and pricing.`);
+    const text = encodeURIComponent(`Hello ${p.brandName}! I visited your website and would like to book a Mehndi appointment in Hazaribagh.`);
     floatWa.href = `https://wa.me/${whatsappNum}?text=${text}`;
   }
 }
@@ -266,7 +270,7 @@ function renderGallery() {
 
   // Render curated preview on index.html
   if (previewContainer) {
-    const previewItems = items.slice(0, 4);
+    const previewItems = items.slice(0, 6);
     previewContainer.innerHTML = previewItems.map(item => `
       <article class="art-card glass-card" data-category="${item.category}">
         <div class="art-thumb-wrap" onclick="openLightbox('${item.id}')" role="button" tabindex="0" title="Click photo to preview" onkeydown="if(event.key==='Enter'||event.key===' '){openLightbox('${item.id}');event.preventDefault();}">
@@ -284,7 +288,7 @@ function renderGallery() {
           </div>
           <div class="art-actions">
             <button class="btn btn-primary btn-sm" style="flex: 1;" onclick="bookArtViaWhatsApp('${item.title}', '${item.id}')">
-              <span>💬 Enquire Style</span>
+              <span>💬 Book on WhatsApp</span>
             </button>
             <button class="btn btn-outline btn-sm" onclick="openLightbox('${item.id}')" title="Zoom Preview">
               <span>Preview</span>
@@ -338,7 +342,7 @@ function renderGallery() {
           </div>
           <div class="art-actions">
             <button class="btn btn-primary btn-sm" style="flex: 1;" onclick="bookArtViaWhatsApp('${item.title}', '${item.id}')">
-              <span>💬 Enquire Style</span>
+              <span>💬 Book on WhatsApp</span>
             </button>
             <button class="btn btn-outline btn-sm" onclick="openLightbox('${item.id}')" title="Zoom Preview">
               <span>Preview</span>
@@ -372,7 +376,7 @@ function filterGallery(category, btnElement) {
 function bookArtViaWhatsApp(artTitle, artId) {
   const p = AppState.data.profile;
   const num = (p.whatsapp || '').replace(/[^0-9]/g, '');
-  const msg = encodeURIComponent(`Hello ${p.brandName}! I saw this design in your gallery: "${artTitle}" (Ref: ${artId}). Can you share availability and pricing details for an upcoming function?`);
+  const msg = encodeURIComponent(`Hello ${p.brandName}! I want to book this design from your gallery: "${artTitle}" (Ref: ${artId}) for my upcoming function in Hazaribagh. Please confirm availability and booking details.`);
   window.open(`https://wa.me/${num}?text=${msg}`, '_blank');
 }
 
@@ -427,7 +431,7 @@ function renderServices() {
       </ul>
       <div style="margin-top: auto; display: flex; flex-direction: column; gap: 0.6rem; width: 100%;">
         <button class="btn btn-primary enquiry-btn" onclick="enquireServiceWhatsApp('${srv.title}')" style="width: 100%;">
-          <span>💬 Enquire for Pricing</span>
+          <span>💬 Book on WhatsApp</span>
         </button>
         <button class="btn btn-outline btn-sm" onclick="openConsultationModal('${srv.title}')" style="width: 100%;">
           <span>📝 Fill Booking Form</span>
@@ -440,7 +444,7 @@ function renderServices() {
 function enquireServiceWhatsApp(serviceName) {
   const p = AppState.data.profile;
   const num = (p.whatsapp || '').replace(/[^0-9]/g, '');
-  const msg = encodeURIComponent(`Hello ${p.brandName}! I am interested in your "${serviceName}" package. Could you please share the pricing, customized inclusions, and availability for my event?`);
+  const msg = encodeURIComponent(`Hello ${p.brandName}! I want to book your "${serviceName}" package for my upcoming function in Hazaribagh. Please share package details and confirm date availability.`);
   window.open(`https://wa.me/${num}?text=${msg}`, '_blank');
 }
 
@@ -471,7 +475,7 @@ function renderProducts() {
         </div>
         <div style="margin-top: auto; padding-top: 1rem;">
           <button class="btn btn-primary btn-sm" style="width: 100%;" onclick="enquireProductWhatsApp('${prod.id}')">
-            <span>💬 Enquire for Price &amp; Order</span>
+            <span>🛍️ Order on WhatsApp</span>
           </button>
         </div>
       </div>
@@ -484,7 +488,7 @@ function enquireProductWhatsApp(productId) {
   if (!product) return;
   const p = AppState.data.profile;
   const num = (p.whatsapp || '').replace(/[^0-9]/g, '');
-  const msg = encodeURIComponent(`Hello ${p.brandName}! I would like to enquire about ordering "${product.name}". Please share the price, delivery charges, and dispatch timeframe.`);
+  const msg = encodeURIComponent(`Hello ${p.brandName}! I want to order "${product.name}" in Hazaribagh. Please share delivery details and confirm my order.`);
   window.open(`https://wa.me/${num}?text=${msg}`, '_blank');
 }
 
@@ -521,10 +525,10 @@ function renderCourses() {
 
         <div class="course-footer">
           <div>
-            <span class="enquiry-label" style="font-size:0.85rem; color: var(--theme-gold); font-weight: 700;">Custom Batches Available</span>
+            <span class="enquiry-label" style="font-size:0.85rem; color: var(--theme-gold); font-weight: 700;">Hazaribagh Batches Open</span>
           </div>
           <button class="btn btn-gold btn-sm" onclick="enrollInCourse('${course.title}')">
-            <span>Enquire for Batch &amp; Fees 🎓</span>
+            <span>Book Seat on WhatsApp 🎓</span>
           </button>
         </div>
       </div>
@@ -535,7 +539,7 @@ function renderCourses() {
 function enrollInCourse(courseTitle) {
   const p = AppState.data.profile;
   const num = (p.whatsapp || '').replace(/[^0-9]/g, '');
-  const msg = encodeURIComponent(`Hello! I am interested in joining the "${courseTitle}" masterclass. Please share the fee details, next batch schedule, and syllabus outline.`);
+  const msg = encodeURIComponent(`Hello ${p.brandName}! I want to book a seat in the "${courseTitle}" masterclass in Hazaribagh. Please share next batch schedule and booking details.`);
   window.open(`https://wa.me/${num}?text=${msg}`, '_blank');
 }
 
@@ -640,18 +644,18 @@ function handleBridalInquirySubmit(event) {
   const num = (p.whatsapp || '').replace(/[^0-9]/g, '');
 
   const msg = encodeURIComponent(
-    `*👰 NEW BRIDAL & MEHNDI PRICING ENQUIRY - ${p.brandName}*\n\n` +
+    `*👰 NEW BRIDAL MEHNDI BOOKING - HAZARIBAGH - ${p.brandName}*\n\n` +
     `• *Client Name:* ${name}\n` +
     `• *Phone:* ${phone}\n` +
     `• *Occasion / Event:* ${eventType}\n` +
     `• *Preferred Date:* ${date}\n` +
     `• *City / Venue:* ${city}\n` +
     `• *Special Requests / Motifs:* ${notes || 'None'}\n\n` +
-    `Please share your availability and pricing quotation!`
+    `Please confirm date availability and booking details for Hazaribagh!`
   );
 
   window.open(`https://wa.me/${num}?text=${msg}`, '_blank');
-  showToast("Enquiry generated! Sending directly to WhatsApp... ✨");
+  showToast("Booking request ready! Opening WhatsApp directly... 💬 ✨");
 }
 
 function openConsultationModal(serviceName) {

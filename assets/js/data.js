@@ -16,11 +16,11 @@ const DEFAULT_MEHNDI_DATA = {
     city: "Hazaribagh",
     address: "Baba Path, Hurhuru, Hazaribagh, Jharkhand 825301",
     workingHours: "Mon - Sun: 9:00 AM - 8:30 PM (By Prior Appointment)",
-    instagram: "https://instagram.com/auramehndi.art",
+    instagram: "https://instagram.com/sakshimehndi.art",
     instagramHandle: "@sakshimehndi.art",
     googleMapsUrl: "https://maps.google.com/?q=Bridal+Mehndi+Artist",
     announcement: "Wedding & Festive Season Bookings Open! Reserve your bridal date early.",
-    aboutBio: "Welcome to Sakshi Mehndi Atelier. With over 5+ years of dedicated artistry and 100+ cherished brides adorned, we blend authentic Rajasthani heritage with contemporary floral and Gulf elegance. Every stroke is crafted using 100% natural, triple-sifted Sojat henna powder infused with pure eucalyptus and lavender oils, ensuring a rich, deep mahogany stain for your most magical celebrations.",
+    aboutBio: "Welcome to Sakshi Mehndi Atelier, Hazaribagh. We are proud to be your local city's premier bridal mehndi artist. With 5+ years of dedicated artistry and 100+ happy brides adorned in Hazaribagh and nearby districts, we specialize in intricate bridal jaal, royal portrait motifs, and modern Gulf Arabic flows. Every cone is freshly hand-made in our studio using 100% pure Sojat henna for a rich, guaranteed deep-dark stain. Available for studio appointments and doorstep home visits in Hurhuru, Matwari, Korrah, Babugaon, and all Hazaribagh.",
     yearsExperience: "5+",
     bridesDressed: "100+",
     rating: "4.9★"
@@ -28,15 +28,15 @@ const DEFAULT_MEHNDI_DATA = {
 
   // HERO & HOMEPAGE TEXTS
   hero: {
-    tag1: "Haute Couture Bridal Henna",
-    tag2: "100% Pure Organic Sojat Harvest",
-    headlineMain: "Sacred Artistry For Your",
-    headlineHighlight: "Most Cherished",
-    headlineEnd: "Celebrations",
-    lead: "Bespoke bridal storytelling motifs, customized love-story elements, and pure organic dark-stain henna crafted to make you look and feel unforgettable.",
+    tag1: "Best Bridal Mehndi Artist in Hazaribagh",
+    tag2: "100% Pure Organic Sojat Cones • Deep Dark Stain",
+    headlineMain: "Best Bridal Mehndi Artist in Your City,",
+    headlineHighlight: "Hazaribagh",
+    headlineEnd: "• Har Dulhan Ka Sapna",
+    lead: "Khushiyon Ka Gehra Rang, Hazaribagh Ki Har Dulhan Ke Sang! Bespoke bridal storytelling motifs, customized love-story elements, and pure organic dark-stain henna crafted to make you look and feel unforgettable. Available for home visits and studio bookings across Hurhuru, Matwari, Korrah, Babugaon, and all Hazaribagh.",
     image: "assets/images/bridal_hero.jpg",
-    badgeTitle: "Pure Organic Henna Guaranteed",
-    badgeText: "Natural Sojat harvest • Therapeutic botanical oils • Zero chemicals"
+    badgeTitle: "Hazaribagh's #1 Bridal Henna Artist",
+    badgeText: "100+ Brides Adorned in Hazaribagh • 100% Organic Sojat Harvest • Zero Chemicals"
   },
 
   // TRUST PILLARS
@@ -71,23 +71,23 @@ const DEFAULT_MEHNDI_DATA = {
   sectionHeaders: {
     gallery: {
       tag: "Art Gallery & Portfolio",
-      title: "Curated Mehndi Artworks",
-      subtitle: "Explore our signature design categories. Tap any artwork to zoom or tap 'Enquire' to discuss this style for your event."
+      title: "Curated Mehndi Artworks in Hazaribagh",
+      subtitle: "Explore signature bridal and festive designs handcrafted for local brides in Hazaribagh. Swipe horizontally to browse or view the full gallery."
     },
     services: {
       tag: "Bespoke Celebrations",
       title: "Bridal & Occasion Artistry",
-      subtitle: "Every appointment is customized to complement your bridal lehenga, jewelry, and love story. Enquire for personalized pricing."
+      subtitle: "Affordable & luxury bridal packages for your Mehndi, Sangeet, and Reception anywhere in Hazaribagh. Book directly on WhatsApp."
     },
     shop: {
       tag: "Pure Botanical Supplies",
-      title: "The Mehndi Atelier Shop",
-      subtitle: "Freshly blended organic bridal cones, triple-filtered Rajasthani powder, essential booster oils, and acrylic practice tools."
+      title: "The Mehndi Atelier Shop (Hazaribagh)",
+      subtitle: "Fresh organic cones and practice kits prepared in our Hazaribagh studio with same-day local pickup and delivery across Jharkhand."
     },
     academy: {
       tag: "Learn & Grow",
       title: "Masterclass Programs & Workshops",
-      subtitle: "Master the craft of henna with comprehensive hands-on guidance and dedicated personalized mentorship."
+      subtitle: "Master the craft of henna right here in Hazaribagh with hands-on practice, personalized feedback, and full starter kits."
     },
     aftercare: {
       tag: "Artist Secrets",
@@ -101,8 +101,8 @@ const DEFAULT_MEHNDI_DATA = {
     },
     contact: {
       tag: "Reserve Your Date",
-      title: "Pricing & Booking Enquiry",
-      subtitle: "Share your wedding or celebration details below to receive availability and quotation on WhatsApp."
+      title: "Book Your Bridal Date on WhatsApp",
+      subtitle: "Share your wedding or celebration date in Hazaribagh below to immediately reserve your slot on WhatsApp."
     }
   },
 
@@ -486,20 +486,33 @@ const DEFAULT_MEHNDI_DATA = {
       a: "Keep the paste on your skin for at least 6-8 hours (or overnight). Apply a light lemon-sugar glaze once dry. When removing, scrape it off gently without using water for the first 12-24 hours. Rub mustard oil or coconut balm and avoid soap exposure."
     },
     {
-      q: "How can I enquire about pricing for bridal or guest mehndi?",
-      a: "Simply tap any 'Enquire for Pricing' button on our website or message us directly on WhatsApp with your event date and venue. We will promptly share our brochure and customized quotation."
+      q: "How can I book bridal or guest mehndi in Hazaribagh?",
+      a: "Simply tap any 'Book on WhatsApp' button on our website or message us directly on WhatsApp with your event date and venue in Hazaribagh. We will promptly confirm our availability and share our bridal packages!"
     }
   ]
 };
 
 // Data service helper with LocalStorage sync
 const DataService = {
-  STORAGE_KEY: "mehndi_atelier_data_v2",
+  STORAGE_KEY: "mehndi_atelier_data_v3",
 
   load() {
     try {
+      // Clean up legacy keys that may have old sample data
+      ['mehndi_atelier_data', 'mehndi_atelier_data_v2'].forEach(key => {
+        const val = localStorage.getItem(key);
+        if (val && (val.includes("Aura") || val.includes("aura") || val.includes("Sacred Artistry"))) {
+          localStorage.removeItem(key);
+        }
+      });
+
       const stored = localStorage.getItem(this.STORAGE_KEY);
       if (stored) {
+        // Discard cache if it contains any legacy sample text
+        if (stored.toLowerCase().includes("aura")) {
+          localStorage.removeItem(this.STORAGE_KEY);
+          return DEFAULT_MEHNDI_DATA;
+        }
         const parsed = JSON.parse(stored);
         return {
           ...DEFAULT_MEHNDI_DATA,
@@ -530,6 +543,7 @@ const DataService = {
   reset() {
     try {
       localStorage.removeItem(this.STORAGE_KEY);
+      localStorage.removeItem("mehndi_atelier_data_v2");
       localStorage.removeItem("mehndi_atelier_data");
       window.dispatchEvent(new CustomEvent("mehndi_data_updated", { detail: DEFAULT_MEHNDI_DATA }));
       return true;

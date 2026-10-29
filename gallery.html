@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" data-theme="light">
+<html lang="en" data-theme="dark">
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0" />
@@ -8,7 +8,7 @@
   <meta name="title" content="Art Gallery | Sakshi Mehndi Atelier & Academy" />
   <meta name="description" content="Explore our full collection of bespoke bridal mehndi, Gulf Arabic, lotus mandalas, bridal feet payal, and festive henna artworks." />
   <meta name="robots" content="index, follow" />
-  <link rel="canonical" href="https://auramehndi.com/gallery.html" />
+  <link rel="canonical" href="https://sakshimehndi.com/gallery.html" />
 
   <!-- Google Web Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -16,7 +16,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700;800&family=Cormorant+Garamond:ital,wght@0,500;0,600;0,700;1,500;1,600;1,700&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
 
   <!-- Stylesheet -->
-  <link rel="stylesheet" href="assets/css/style.css?v=2.2" />
+  <link rel="stylesheet" href="assets/css/style.css?v=2.4" />
 </head>
 <body class="gallery-page-body">
 
@@ -28,12 +28,21 @@
     <div class="glass-glow-orb glow-amber-4"></div>
   </div>
 
-  <!-- Top Announcement Bar -->
-  <aside class="announcement-bar" role="complementary">
+  <!-- Top Announcement Bar (Smooth Running Ticker on Mobile) -->
+  <aside class="announcement-bar" role="complementary" aria-label="Announcement">
     <div class="announcement-inner">
-      <span class="sparkle-icon">✨</span>
-      <span>Wedding Season Bookings Open • 🎓 Hands-on Masterclasses Available!</span>
-      <a href="index.html#contact" class="announcement-link">Reserve Date &rarr;</a>
+      <div class="announcement-ticker-track">
+        <span class="announcement-ticker-item">
+          <span class="sparkle-icon">✨</span>
+          <span class="announcement-text-content" id="announcement-text">Wedding &amp; Festive Season Bookings Open! Reserve your bridal date early.</span>
+          <a href="index.html#academy" class="announcement-link">Explore Masterclasses &rarr;</a>
+        </span>
+        <span class="announcement-ticker-item announcement-dup" aria-hidden="true">
+          <span class="sparkle-icon">✨</span>
+          <span class="announcement-text-content-dup">Wedding &amp; Festive Season Bookings Open! Reserve your bridal date early.</span>
+          <a href="index.html#academy" class="announcement-link">Explore Masterclasses &rarr;</a>
+        </span>
+      </div>
     </div>
   </aside>
 
@@ -73,7 +82,7 @@
 
         <!-- Header Enquiry Button -->
         <a href="index.html#contact" class="btn btn-gold btn-sm header-enquire-btn">
-          <span>💬 Enquire</span>
+          <span>💬 Book on WhatsApp</span>
         </a>
 
         <!-- Mobile Menu Hamburger -->
@@ -107,7 +116,7 @@
 
       <div class="mobile-drawer-footer">
         <a href="index.html#contact" class="btn btn-gold" style="width:100%; text-align:center;" onclick="document.getElementById('mobile-drawer').classList.remove('open');">
-          💬 Enquire for Pricing
+          💬 Book on WhatsApp
         </a>
       </div>
     </div>
@@ -161,7 +170,7 @@
             <span>&larr; Return to Home Page</span>
           </a>
           <a href="index.html#contact" class="btn btn-gold" style="margin-left: 0.75rem;">
-            <span>💬 Enquire for Your Function</span>
+            <span>💬 Book on WhatsApp</span>
           </a>
         </div>
       </div>
@@ -198,7 +207,7 @@
           <li><a href="index.html#academy">🎓 Learn Mehndi Workshops</a></li>
           <li><a href="index.html#contact">Studio Appointments</a></li>
           <li><a href="https://wa.me/919876543210" target="_blank" rel="noopener">WhatsApp Concierge</a></li>
-          <li><a href="https://instagram.com/auramehndi.art" target="_blank" rel="noopener" class="dynamic-instagram-link">Instagram Portfolio</a></li>
+          <li><a href="https://instagram.com/sakshimehndi.art" target="_blank" rel="noopener" class="dynamic-instagram-link">Instagram Portfolio</a></li>
         </ul>
       </div>
 
@@ -240,605 +249,6 @@
           <span>💬 Book This Design</span>
         </button>
       </div>
-    </div>
-  </div>
-
-  <!-- Hidden Owner Atelier Portal Modal (accessible via secret triggers) -->
-  <!-- ==========================================================================
-       VIBRANT AMBIENT GLASS GLOW ORBS (Provides refractive colors for glassmorphism)
-       ========================================================================== -->
-  <div class="ambient-glass-glow" aria-hidden="true">
-    <div class="glass-glow-orb glow-rose-1"></div>
-    <div class="glass-glow-orb glow-gold-1"></div>
-    <div class="glass-glow-orb glow-blush-2"></div>
-    <div class="glass-glow-orb glow-amber-4"></div>
-  </div>
-
-  <!-- ==========================================================================
-       TOP ANNOUNCEMENT BAR (2026 Frosted Glass Pill)
-       ========================================================================== -->
-  <aside class="announcement-bar" role="complementary">
-    <div class="announcement-inner">
-      <span class="sparkle-icon">✨</span>
-      <span id="announcement-text">✨ Wedding Season 2026 Bookings Open • 🎓 Hands-on Mehndi Masterclasses Available!</span>
-      <a href="#academy" class="announcement-link">Explore Masterclasses &rarr;</a>
-    </div>
-  </aside>
-
-  <!-- ==========================================================================
-       2026 FLOATING CAPSULE HEADER WITH BLURRED GLASS & THEME TOGGLE
-       ========================================================================== -->
-  <header class="site-header" id="site-header">
-    <div class="container header-inner">
-      <!-- Atelier Brand -->
-      <a href="#home" class="brand" aria-label="Aura Mehndi Homepage">
-        <div class="brand-icon">⚜</div>
-        <div class="brand-info">
-          <span class="brand-title brand-dynamic-name">Aura Mehndi</span>
-          <span class="brand-subtitle">Atelier &amp; Academy</span>
-        </div>
-      </a>
-
-      <!-- Desktop Navigation Menu -->
-      <nav class="main-nav" aria-label="Main Navigation">
-        <a href="gallery.html" class="nav-link">Art Gallery</a>
-        <a href="#services" class="nav-link">Services</a>
-        <a href="#academy" class="nav-link nav-link-learn">🎓 Learn Mehndi</a>
-        <a href="#shop" class="nav-link">Cones &amp; Kits</a>
-        <a href="#aftercare" class="nav-link">Stain Guide</a>
-        <a href="#reviews" class="nav-link">Reviews</a>
-        <a href="#contact" class="nav-link">Contact</a>
-      </nav>
-
-      <!-- Action Buttons -->
-      <div class="header-actions">
-        <!-- Learn Option at Top (Desktop) -->
-        <a href="#academy" class="btn btn-outline btn-sm header-learn-btn" title="Learn Mehndi - Workshops & Classes">
-          <span>🎓 Learn Mehndi</span>
-        </a>
-
-        <!-- Dark / Light Mode Switcher -->
-        <button class="theme-toggle-btn" aria-label="Toggle Dark/Light Theme" title="Switch Theme">
-          🌙
-        </button>
-
-        <!-- Header Enquiry Button -->
-        <a href="#contact" class="btn btn-gold btn-sm header-enquire-btn">
-          <span>💬 Enquire</span>
-        </a>
-
-        <!-- Mobile Menu Hamburger -->
-        <button class="mobile-menu-btn" id="mobile-menu-open" aria-label="Open Mobile Menu">
-          <span>☰</span>
-        </button>
-      </div>
-    </div>
-  </header>
-
-  <!-- ==========================================================================
-       MOBILE NAVIGATION DRAWER
-       ========================================================================== -->
-  <div class="mobile-drawer" id="mobile-drawer" role="dialog" aria-modal="true">
-    <div class="mobile-drawer-content">
-      <div class="mobile-drawer-header">
-        <span class="brand-title brand-dynamic-name">Sakshi Mehndi</span>
-        <div style="display:flex; gap:0.5rem; align-items:center;">
-          <button class="theme-toggle-btn" aria-label="Toggle Theme">🌙</button>
-          <button id="mobile-menu-close" style="font-size: 1.6rem; color: var(--theme-primary); background:none; border:none; cursor:pointer;">✕</button>
-        </div>
-      </div>
-
-      <nav class="mobile-nav-links">
-        <a href="#academy" class="mobile-learn-highlight" onclick="document.getElementById('mobile-drawer').classList.remove('open');">🎓 Learn Mehndi (Masterclasses)</a>
-        <a href="#gallery" onclick="document.getElementById('mobile-drawer').classList.remove('open');">🎨 Art Gallery</a>
-        <a href="#services" onclick="document.getElementById('mobile-drawer').classList.remove('open');">💍 Services</a>
-        <a href="#shop" onclick="document.getElementById('mobile-drawer').classList.remove('open');">🛍️ Cones &amp; Kits</a>
-        <a href="#aftercare" onclick="document.getElementById('mobile-drawer').classList.remove('open');">🌿 Stain Guide</a>
-        <a href="#reviews" onclick="document.getElementById('mobile-drawer').classList.remove('open');">⭐ Client Reviews</a>
-        <a href="#contact" onclick="document.getElementById('mobile-drawer').classList.remove('open');">📍 Contact Studio</a>
-      </nav>
-
-      <div class="mobile-drawer-footer">
-        <a href="#contact" class="btn btn-gold" style="width:100%; text-align:center;" onclick="document.getElementById('mobile-drawer').classList.remove('open');">
-          💬 Enquire for Pricing
-        </a>
-      </div>
-    </div>
-  </div>
-
-  <main>
-    <!-- ==========================================================================
-         HERO SECTION (2026 Liquid Glass & High-Fashion Minimalist Layout)
-         ========================================================================== -->
-    <section class="hero-section" id="home">
-      <div class="hero-ambient-orb orb-1"></div>
-      <div class="hero-ambient-orb orb-2"></div>
-      <div class="container hero-grid">
-        <!-- Content -->
-        <div class="hero-content">
-          <div class="hero-pill-badge glass-panel">
-            <span class="pill-sparkle">✦</span>
-            <span id="hero-tag-1">Haute Couture Bridal Henna</span>
-            <span class="pill-dot">•</span>
-            <span id="hero-tag-2">100% Organic Sojat Harvest</span>
-          </div>
-
-          <h1 class="hero-headline" id="hero-headline-title">
-            Sacred Artistry For Your <span class="text-gold">Most Cherished</span> Celebrations
-          </h1>
-
-          <p class="hero-lead" id="hero-lead-text">
-            Welcome to <strong class="brand-dynamic-name">Sakshi Mehndi Atelier</strong>. We craft bespoke bridal storytelling motifs, customized love-story elements, and pure organic dark-stain henna crafted to make you look and feel unforgettable.
-          </p>
-
-          <div class="hero-ctas">
-            <a href="https://wa.me/919876543210" class="btn btn-gold btn-hero-primary" id="hero-whatsapp-btn" target="_blank" rel="noopener">
-              <span>💬 Enquire on WhatsApp</span>
-            </a>
-            <a href="#gallery" class="btn btn-glass btn-hero-secondary">
-              <span>✨ Explore Art Gallery</span>
-            </a>
-          </div>
-
-          <!-- Trust Numbers in sleek unified glass capsule dock -->
-          <div class="hero-stats-dock glass-panel">
-            <div class="stat-item">
-              <span class="stat-num" id="stat-brides">100+</span>
-              <span class="stat-label">Brides Adorned</span>
-            </div>
-            <div class="stat-sep"></div>
-            <div class="stat-item">
-              <span class="stat-num" id="stat-years">5+</span>
-              <span class="stat-label">Years of Mastery</span>
-            </div>
-          </div>
-        </div>
-
-        <!-- Media Visual Showcase with 2026 curved glass styling -->
-        <div class="hero-media-wrapper">
-          <div class="hero-backdrop-glow"></div>
-          <div class="hero-main-card glass-panel">
-            <img src="assets/images/bridal_hero.jpg" alt="Bridal Mehndi Art on Bride Hands with Gold Jewelry" id="hero-showcase-img" />
-            <div class="hero-floating-badge glass-panel">
-              <div class="badge-icon">🌿</div>
-              <div class="badge-info">
-                <h4 id="hero-badge-title">Pure Organic Henna Guaranteed</h4>
-                <p id="hero-badge-text">Natural Sojat harvest • Therapeutic essential oils • Zero chemicals</p>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- ==========================================================================
-         2026 GLASS EXPERIENCE DOCK (QUICK CATEGORY NAVIGATOR)
-         ========================================================================== -->
-    <section class="experience-dock-wrap" aria-label="Explore Atelier Highlights">
-      <div class="container">
-        <nav class="experience-dock glass-panel">
-          <a href="gallery.html" class="dock-pill"><span>🎨</span> Full Gallery</a>
-          <a href="#services" class="dock-pill"><span>💍</span> Services</a>
-          <a href="#shop" class="dock-pill"><span>🛍️</span> Cones &amp; Kits</a>
-          <a href="#academy" class="dock-pill"><span>🎓</span> Masterclasses</a>
-          <a href="#aftercare" class="dock-pill"><span>🌿</span> Stain Secrets</a>
-          <a href="#reviews" class="dock-pill"><span>⭐</span> Bride Stories</a>
-          <a href="#contact" class="dock-pill"><span>📍</span> Enquire / Contact</a>
-        </nav>
-      </div>
-    </section>
-
-    <!-- ==========================================================================
-         TRUST PILLARS BANNER (Unified 2026 Glass Ribbon)
-         ========================================================================== -->
-    <section class="trust-strip">
-      <div class="container">
-        <div class="trust-grid glass-panel" id="trust-grid">
-          <!-- Rendered dynamically by app.js -->
-        </div>
-      </div>
-    </section>
-
-    <!-- ==========================================================================
-         MEHNDI ART GALLERY PREVIEW (SIGNATURE SPOTLIGHT)
-         ========================================================================== -->
-    <section class="gallery-section" id="gallery">
-      <div class="container">
-        <header class="section-header">
-          <span class="section-tag" id="gallery-tag">Curated Spotlight</span>
-          <h2 class="section-title" id="gallery-title">Signature Mehndi Artworks</h2>
-          <p class="section-subtitle" id="gallery-subtitle">A preview of our bespoke bridal motifs, Arabic flow, and delicate mandalas. Explore our complete portfolio in the dedicated Art Gallery.</p>
-        </header>
-
-        <!-- Preview Gallery Grid (4 Curated Spotlight Artworks) -->
-        <div class="gallery-grid" id="gallery-preview-grid">
-          <!-- Populated dynamically with preview items -->
-        </div>
-
-        <!-- Explore Full Art Gallery CTA Box -->
-        <div class="gallery-full-cta-box glass-panel" style="text-align: center; margin-top: 2.5rem; padding: 2.25rem 1.5rem; display: flex; flex-direction: column; align-items: center; gap: 1rem; border-radius: var(--radius-md);">
-          <span style="font-size: 2.2rem;">🎨</span>
-          <h3 style="font-family: var(--font-serif); font-size: 1.65rem; color: var(--theme-primary); margin: 0;">Explore The Complete Art Gallery</h3>
-          <p style="color: var(--theme-text-muted); max-width: 620px; font-size: 0.94rem; margin: 0;">
-            Browse our entire collection across Bridal Couture, Arabic &amp; Gulf Flow, Lotus Mandalas, Bridal Feet Payal, and Finger Jewelry.
-          </p>
-          <a href="gallery.html" class="btn btn-gold btn-lg" style="margin-top: 0.5rem;">
-            <span>🎨 Open Dedicated Art Gallery &rarr;</span>
-          </a>
-        </div>
-      </div>
-    </section>
-
-    <!-- ==========================================================================
-         SERVICES SECTION (BRIDAL & OCCASION BOOKINGS)
-         ========================================================================== -->
-    <section class="services-section" id="services">
-      <div class="container">
-        <header class="section-header">
-          <span class="section-tag" id="services-tag">Bespoke Experience</span>
-          <h2 class="section-title" id="services-title">Artistry Services &amp; Packages</h2>
-          <p class="section-subtitle" id="services-subtitle">Each appointment is personalized to complement your wedding trousseau, theme, and love story.</p>
-        </header>
-
-        <div class="services-grid" id="services-grid">
-          <!-- Dynamically populated from data.js -->
-        </div>
-      </div>
-    </section>
-
-    <!-- ==========================================================================
-         SELL MEHNDI ITEMS - SHOP SECTION
-         ========================================================================== -->
-    <section class="shop-section" id="shop">
-      <div class="container">
-        <header class="section-header">
-          <span class="section-tag" id="shop-tag">Pure Botanical Supplies</span>
-          <h2 class="section-title" id="shop-title">The Mehndi Atelier Shop</h2>
-          <p class="section-subtitle" id="shop-subtitle">Freshly blended organic bridal cones, triple-filtered Rajasthani powder, essential booster oils, and acrylic practice tools.</p>
-        </header>
-
-        <div class="shop-grid" id="shop-grid">
-          <!-- Dynamically populated from data.js -->
-        </div>
-      </div>
-    </section>
-
-    <!-- ==========================================================================
-         DEDICATED TEACH & ACADEMY SECTION (LEARN MEHNDI)
-         ========================================================================== -->
-    <section class="academy-section" id="academy">
-      <div class="container">
-        <!-- Prominent Academy Glass Banner -->
-        <div class="academy-banner">
-          <div class="academy-banner-content">
-            <span class="badge badge-gold" id="academy-promo-badge" style="margin-bottom: 0.75rem;">Aura Mehndi Academy</span>
-            <h3 id="academy-promo-title">Master The Art of Mehndi &amp; <span>Build Your Creative Passion</span></h3>
-            <p id="academy-promo-lead">
-              Whether you are picking up a cone for the very first time or an artist looking to master intricate bridal motifs and symmetry, our hands-on masterclasses provide step-by-step guidance, personalized feedback, and full practice kits.
-            </p>
-            <div class="academy-perks" id="academy-promo-perks">
-              <!-- Rendered dynamically -->
-            </div>
-          </div>
-          <div class="academy-banner-img">
-            <img src="assets/images/teach_mehndi.jpg" alt="Student practicing mehndi on acrylic practice board" id="academy-promo-img" />
-          </div>
-        </div>
-
-        <header class="section-header">
-          <span class="section-tag" id="academy-tag">Learn &amp; Grow</span>
-          <h2 class="section-title" id="academy-title">Upcoming Masterclass Programs</h2>
-          <p class="section-subtitle" id="academy-subtitle">Choose the program that matches your creative ambition. Limited seats per batch for individualized attention.</p>
-        </header>
-
-        <div class="courses-grid" id="courses-grid">
-          <!-- Dynamically populated from data.js -->
-        </div>
-      </div>
-    </section>
-
-    <!-- ==========================================================================
-         STAIN SCIENCE & 48-HOUR AFTERCARE GUIDE
-         ========================================================================== -->
-    <section class="aftercare-section" id="aftercare">
-      <div class="container">
-        <header class="section-header">
-          <span class="section-tag" id="aftercare-tag">Artist Secrets</span>
-          <h2 class="section-title" id="aftercare-title">How To Get The Darkest Mahogany Stain</h2>
-          <p class="section-subtitle" id="aftercare-subtitle">Follow these proven bridal steps to transform fresh orange paste into deep, breathtaking maroon.</p>
-        </header>
-
-        <div class="aftercare-grid" id="aftercare-grid">
-          <!-- Rendered dynamically -->
-        </div>
-      </div>
-    </section>
-
-    <!-- ==========================================================================
-         CLIENT REVIEWS & CUSTOMER REVIEW SUBMISSION FEATURE
-         ========================================================================== -->
-    <section class="reviews-section" id="reviews">
-      <div class="container">
-        <header class="section-header">
-          <span class="section-tag" id="reviews-tag">Bride &amp; Student Stories</span>
-          <h2 class="section-title" id="reviews-title">Loved By Discerning Clients</h2>
-          <p class="section-subtitle" id="reviews-subtitle">Read real verified experiences from recent weddings, sangeet parties, and academy graduates.</p>
-        </header>
-
-        <!-- Customer Review Action Trigger -->
-        <div class="reviews-header-actions">
-          <button class="btn btn-gold btn-sm" id="open-review-modal-btn">
-            <span>⭐ Share Your Review &amp; Experience</span>
-          </button>
-        </div>
-
-        <div class="reviews-grid" id="reviews-grid">
-          <!-- Dynamically populated from data.js -->
-        </div>
-      </div>
-    </section>
-
-    <!-- ==========================================================================
-         STUDIO LOCATION & BRIDAL INQUIRY FORM
-         ========================================================================== -->
-    <section class="contact-section" id="contact">
-      <div class="container">
-        <header class="section-header">
-          <span class="section-tag" id="contact-tag">Reserve Your Date</span>
-          <h2 class="section-title" id="contact-title">Atelier Consultation &amp; Visits</h2>
-          <p class="section-subtitle" id="contact-subtitle">Plan ahead to secure your wedding or festive appointment slot.</p>
-        </header>
-
-        <div class="contact-grid">
-          <!-- Contact Details Card -->
-          <div class="contact-info-card glass-card">
-            <h3 style="font-family: var(--font-serif); font-size: 1.6rem; color: var(--theme-primary);">Atelier Information</h3>
-            <p style="font-size: 0.92rem; color: var(--theme-text-muted); line-height: 1.65;" id="about-bio-text">
-              <!-- Dynamically populated -->
-            </p>
-
-            <div class="contact-item">
-              <div class="contact-icon">📍</div>
-              <div class="contact-details">
-                <h4>Studio Address</h4>
-                <p class="brand-dynamic-address">Atelier 402, Lotus Grandeur, Bandra West, Mumbai, India</p>
-              </div>
-            </div>
-
-            <div class="contact-item">
-              <div class="contact-icon">📞</div>
-              <div class="contact-details">
-                <h4>Call &amp; Direct Phone</h4>
-                <a href="tel:+919876543210" class="brand-dynamic-phone">+91 98765 43210</a>
-              </div>
-            </div>
-
-            <div class="contact-item">
-              <div class="contact-icon">⏰</div>
-              <div class="contact-details">
-                <h4>Atelier Working Hours</h4>
-                <p class="brand-dynamic-hours">Mon - Sun: 9:00 AM - 8:30 PM (By Appointment)</p>
-              </div>
-            </div>
-
-            <div class="contact-item">
-              <div class="contact-icon">📸</div>
-              <div class="contact-details">
-                <h4>Follow Our Work on Instagram</h4>
-                <a href="https://instagram.com/auramehndi.art" target="_blank" rel="noopener" class="dynamic-instagram-link" style="color: var(--theme-gold); font-weight: 700;">
-                  <span class="ig-handle-text">@auramehndi.art</span> &rarr;
-                </a>
-              </div>
-            </div>
-
-            <a href="https://maps.google.com/?q=Bridal+Mehndi+Artist" target="_blank" rel="noopener" class="btn btn-outline dynamic-map-link" style="margin-top: 0.5rem;">
-              <span>🗺️ Open in Google Maps</span>
-            </a>
-          </div>
-
-          <!-- Bridal Inquiry / Booking Form -->
-          <div class="inquiry-form-card glass-card">
-            <h3 style="font-family: var(--font-serif); font-size: 1.6rem; color: var(--theme-primary); margin-bottom: 0.5rem;">
-              Pricing &amp; Booking Enquiry
-            </h3>
-            <p style="font-size: 0.88rem; color: var(--theme-text-muted); margin-bottom: 1.5rem;">
-              Fill in your celebration details below and we'll respond with availability and pricing on WhatsApp.
-            </p>
-
-            <form onsubmit="handleBridalInquirySubmit(event)">
-              <div class="form-group">
-                <label class="form-label" for="inquiry-name">Your Full Name *</label>
-                <input type="text" id="inquiry-name" class="form-input" placeholder="e.g. Priyal Singhania" required />
-              </div>
-
-              <div class="form-group">
-                <label class="form-label" for="inquiry-phone">WhatsApp Number *</label>
-                <input type="tel" id="inquiry-phone" class="form-input" placeholder="e.g. +91 98765 43210" required />
-              </div>
-
-              <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
-                <div class="form-group">
-                  <label class="form-label" for="inquiry-date">Function Date *</label>
-                  <input type="date" id="inquiry-date" class="form-input" required />
-                </div>
-                <div class="form-group">
-                  <label class="form-label" for="inquiry-event">Occasion / Service</label>
-                  <select id="inquiry-event" class="form-select">
-                    <option value="Haute Couture Bridal">Haute Couture Bridal</option>
-                    <option value="Engagement & Sangeet">Engagement &amp; Sangeet</option>
-                    <option value="Guest & Bridesmaids Party">Guest &amp; Bridesmaids</option>
-                    <option value="Festive Special (Karwa Chauth/Eid)">Festive Special</option>
-                    <option value="Academy / Learn Mehndi Course">Academy Course Inquiry</option>
-                  </select>
-                </div>
-              </div>
-
-              <div class="form-group">
-                <label class="form-label" for="inquiry-city">City &amp; Venue Address *</label>
-                <input type="text" id="inquiry-city" class="form-input" placeholder="e.g. Mumbai, Home visit in Juhu" required />
-              </div>
-
-              <div class="form-group">
-                <label class="form-label" for="inquiry-notes">Custom Requirements / Love Story Details</label>
-                <textarea id="inquiry-notes" class="form-textarea" rows="3" placeholder="Tell us about your wedding motifs, portrait requests, number of guests, or questions..."></textarea>
-              </div>
-
-              <button type="submit" class="btn btn-whatsapp" style="width: 100%; margin-top: 0.5rem;">
-                <span>💬 Send Booking Inquiry on WhatsApp</span>
-              </button>
-            </form>
-          </div>
-        </div>
-      </div>
-    </section>
-  </main>
-
-  <!-- ==========================================================================
-       FOOTER
-       ========================================================================== -->
-  <footer class="site-footer">
-    <div class="container footer-grid">
-      <div class="footer-col">
-        <h4 class="brand-dynamic-name">Aura Mehndi</h4>
-        <p style="font-size: 0.9rem; line-height: 1.65; color: rgba(247, 237, 225, 0.8);" class="brand-dynamic-tagline">
-          Haute Couture Bridal Henna • 100% Organic Sojat Cones • Professional Masterclasses
-        </p>
-        <div style="margin-top: 1.25rem;">
-          <a href="#contact" class="btn btn-gold btn-sm">💬 Get in Touch</a>
-        </div>
-      </div>
-
-      <div class="footer-col">
-        <h4>Explore</h4>
-        <ul class="footer-links">
-          <li><a href="#gallery">Bridal Design Gallery</a></li>
-          <li><a href="#services">Bridal Services &amp; Packages</a></li>
-          <li><a href="#shop">Shop Organic Cones &amp; Kits</a></li>
-          <li><a href="#academy">Academy Masterclasses</a></li>
-          <li><a href="#aftercare">Stain Care Guide</a></li>
-        </ul>
-      </div>
-
-      <div class="footer-col">
-        <h4>Direct Connect</h4>
-        <ul class="footer-links">
-          <li><a href="#academy">🎓 Learn Mehndi Workshops</a></li>
-          <li><a href="#contact">Studio Appointments</a></li>
-          <li><a href="https://wa.me/919876543210" target="_blank" rel="noopener">WhatsApp Concierge</a></li>
-          <li><a href="https://instagram.com/auramehndi.art" target="_blank" rel="noopener" class="dynamic-instagram-link">Instagram Portfolio</a></li>
-        </ul>
-      </div>
-
-      <div class="footer-col">
-        <h4>Atelier Studio</h4>
-        <p style="font-size: 0.88rem; color: rgba(247, 237, 225, 0.8); line-height: 1.6;" class="brand-dynamic-address">
-          Atelier 402, Lotus Grandeur, Bandra West, Mumbai, India
-        </p>
-        <p style="font-size: 0.88rem; color: var(--theme-gold-light); margin-top: 0.5rem;" class="brand-dynamic-hours">
-          Mon - Sun: 9:00 AM - 8:30 PM
-        </p>
-      </div>
-    </div>
-
-    <div class="container footer-bottom">
-      <span>&copy; <span id="current-year">2026</span> <strong class="brand-dynamic-name">Sakshi Mehndi Atelier</strong>. All rights reserved. <span class="secret-portal-trigger" title="Atelier Access" style="cursor: pointer; opacity: 0.25; font-size: 0.8rem; margin-left: 4px;">•</span></span>
-      <span>Crafted with ❤️ for Brides &amp; Artists</span>
-    </div>
-  </footer>
-
-  <!-- ==========================================================================
-       FLOATING ACTION BUTTONS (CLEAN PUBLIC VIEW - ONLY WHATSAPP)
-       ========================================================================== -->
-  <div class="floating-actions">
-    <a href="https://wa.me/919876543210" class="float-btn float-whatsapp" id="floating-whatsapp-btn" target="_blank" rel="noopener" aria-label="Chat on WhatsApp" title="Chat on WhatsApp">
-      💬
-    </a>
-  </div>
-
-  <!-- Cart drawer stubs (kept for JS compatibility) -->
-  <div id="cart-drawer-overlay" style="display:none;"></div>
-  <aside id="cart-drawer" style="display:none;">
-    <div id="cart-items-list"></div>
-    <span id="cart-subtotal"></span>
-    <button id="cart-checkout-btn"></button>
-    <span class="cart-count-badge" style="display:none;"></span>
-  </aside>
-
-  <!-- ==========================================================================
-       IMAGE LIGHTBOX MODAL
-       ========================================================================== -->
-  <div class="lightbox-modal" id="lightbox-modal" role="dialog" aria-modal="true">
-    <div class="lightbox-content">
-      <button onclick="closeLightbox()" style="position: absolute; top: 1rem; right: 1rem; z-index: 10; color: #fff; font-size: 1.8rem; background: rgba(0,0,0,0.5); width: 40px; height: 40px; border-radius: 50%;">✕</button>
-      <img src="" id="lightbox-img" alt="Mehndi Artwork Large Preview" />
-      <div class="lightbox-details">
-        <div>
-          <h3 id="lightbox-title" style="font-family: var(--font-serif); font-size: 1.35rem; color: var(--theme-gold-light);">Artwork</h3>
-          <p id="lightbox-desc" style="font-size: 0.88rem; color: rgba(255,255,255,0.85); margin-top: 0.25rem;">Artwork description</p>
-        </div>
-        <button class="btn btn-whatsapp btn-sm" onclick="bookCurrentLightboxArt()">
-          <span>💬 Book This Design</span>
-        </button>
-      </div>
-    </div>
-  </div>
-
-  <!-- ==========================================================================
-       CUSTOMER REVIEW SUBMISSION MODAL
-       ========================================================================== -->
-  <div class="review-modal-overlay" id="review-modal-overlay">
-    <div class="review-modal">
-      <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 1rem;">
-        <h3 style="font-family: var(--font-serif); font-size: 1.6rem; color: var(--theme-primary);">Write a Review</h3>
-        <button id="close-review-modal-btn" style="font-size: 1.4rem; color: var(--theme-text-main);">✕</button>
-      </div>
-      <p style="font-size: 0.85rem; color: var(--theme-text-muted); margin-bottom: 1rem;">
-        Share your experience with our bridal mehndi, organic cones, or academy masterclasses!
-      </p>
-
-      <form onsubmit="handleCustomerReviewSubmit(event)">
-        <div class="form-group">
-          <label class="form-label">Your Rating</label>
-          <div class="star-rating-picker" id="review-stars-select">
-            <span data-rating="1" class="active">★</span>
-            <span data-rating="2" class="active">★</span>
-            <span data-rating="3" class="active">★</span>
-            <span data-rating="4" class="active">★</span>
-            <span data-rating="5" class="active">★</span>
-          </div>
-        </div>
-
-        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
-          <div class="form-group">
-            <label class="form-label" for="review-user-name">Your Name *</label>
-            <input type="text" id="review-user-name" class="form-input" placeholder="e.g. Sanya Mehra" required />
-          </div>
-          <div class="form-group">
-            <label class="form-label" for="review-user-city">City</label>
-            <input type="text" id="review-user-city" class="form-input" placeholder="e.g. Delhi / Mumbai" />
-          </div>
-        </div>
-
-        <div class="form-group">
-          <label class="form-label" for="review-user-role">Service / Occasion</label>
-          <select id="review-user-role" class="form-select">
-            <option value="Bride">Bride</option>
-            <option value="Sangeet & Party Guest">Sangeet &amp; Party Guest</option>
-            <option value="Cones & Items Buyer">Cones &amp; Items Buyer</option>
-            <option value="Academy Student">Academy Student</option>
-            <option value="Festive Client">Festive Client</option>
-          </select>
-        </div>
-
-        <div class="form-group">
-          <label class="form-label" for="review-user-comment">Your Review *</label>
-          <textarea id="review-user-comment" class="form-textarea" rows="4" placeholder="Tell us about the stain darkness, design precision, scent, or teacher experience..." required></textarea>
-        </div>
-
-        <button type="submit" class="btn btn-gold" style="width: 100%; margin-top: 0.5rem;">
-          <span>Submit Review ⭐</span>
-        </button>
-      </form>
     </div>
   </div>
 
@@ -1594,9 +1004,9 @@
   </div>
 
   <!-- Scripts -->
-  <script src="assets/js/data.js"></script>
-  <script src="assets/js/app.js?v=2.2"></script>
-  <script src="assets/js/admin.js"></script>
+  <script src="assets/js/data.js?v=2.4"></script>
+  <script src="assets/js/app.js?v=2.4"></script>
+  <script src="assets/js/admin.js?v=2.4"></script>
 </body>
 </html>
 

@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://auramehndi.com/sitemap.xml
+Sitemap: https://sakshimehndi.com/sitemap.xml

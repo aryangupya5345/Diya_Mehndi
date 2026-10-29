@@ -1,4 +1,4 @@
-# Aura Mehndi Atelier & Academy - Ultra-Luxury Glass Web Platform
+# Sakshi Mehndi Atelier & Academy - Ultra-Luxury Glass Web Platform
 
 An ultra-luxurious, glassmorphic web application built for a professional Mehndi (Henna) Artist business. Engineered for Google Search visibility, direct client bookings, e-commerce sales of mehndi items, dedicated learning masterclasses, customer reviews, and complete real-time customization for the website owner.
 

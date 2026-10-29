@@ -1,5 +1,5 @@
 /* ==========================================================================
-   AURA MEHNDI ATELIER & ACADEMY - ULTRA-LUXURY GLASS DESIGN SYSTEM
+   SAKSHI MEHNDI ATELIER & ACADEMY - ULTRA-LUXURY GLASS DESIGN SYSTEM
    Featuring Frosted Glassmorphism, Dual Theme (Light & Dark), and Easy-to-Read Fonts
    ========================================================================== */
 
@@ -107,6 +107,7 @@
 
 html {
   scroll-behavior: smooth;
+  scroll-padding-top: 5.5rem;
   font-size: 16px;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
@@ -269,7 +270,7 @@ button {
 }
 
 /* --------------------------------------------------------------------------
-   2026 TOP ANNOUNCEMENT CAPSULE
+   TOP ANNOUNCEMENT CAPSULE (WITH SMOOTH MOBILE RUNNING TICKER)
    -------------------------------------------------------------------------- */
 .announcement-bar {
   padding: 0.65rem 1rem 0 1rem;
@@ -277,40 +278,116 @@ button {
   justify-content: center;
   position: relative;
   z-index: 60;
+  width: 100%;
 }
 
 .announcement-inner {
   display: inline-flex;
   align-items: center;
-  gap: 0.65rem;
-  padding: 0.38rem 1.15rem;
+  justify-content: center;
+  padding: 0.38rem 1.25rem;
   background: var(--theme-bg-glass);
   backdrop-filter: blur(16px);
   -webkit-backdrop-filter: blur(16px);
   border: 1px solid var(--theme-border-glass);
   border-radius: var(--radius-full);
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.04), var(--theme-glass-inner-glow);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15), var(--theme-glass-inner-glow);
   font-size: 0.82rem;
   font-weight: 500;
   color: var(--theme-text-main);
   max-width: 95%;
+  overflow: hidden;
+}
+
+.announcement-ticker-track {
+  display: inline-flex;
+  align-items: center;
+  white-space: nowrap;
+}
+
+.announcement-ticker-item {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.65rem;
+  white-space: nowrap;
+}
+
+.announcement-dup {
+  display: none;
 }
 
 .sparkle-icon {
   color: var(--theme-gold);
   font-size: 0.85rem;
+  flex-shrink: 0;
 }
 
 .announcement-link {
   color: var(--theme-gold);
   font-weight: 700;
   margin-left: 0.25rem;
+  white-space: nowrap;
   transition: transform var(--trans-fast);
 }
 
 .announcement-link:hover {
   transform: translateX(3px);
   text-decoration: underline;
+}
+
+/* Mobile: Smooth Running Ticker When Screen Is Narrow */
+@media (max-width: 768px) {
+  .announcement-bar {
+    padding: 0.4rem 0.6rem 0 0.6rem;
+    display: block;
+    width: 100%;
+  }
+
+  .announcement-inner {
+    width: 100%;
+    max-width: 100%;
+    border-radius: 9999px;
+    padding: 0.38rem 0.6rem;
+    overflow: hidden;
+    white-space: nowrap;
+    display: flex;
+    justify-content: flex-start;
+    mask-image: linear-gradient(90deg, transparent 0%, #000 6%, #000 94%, transparent 100%);
+    -webkit-mask-image: linear-gradient(90deg, transparent 0%, #000 6%, #000 94%, transparent 100%);
+  }
+
+  .announcement-ticker-track {
+    display: flex;
+    width: max-content;
+    will-change: transform;
+    animation: announcement-marquee 18s linear infinite;
+  }
+
+  .announcement-ticker-track:hover,
+  .announcement-ticker-track:active {
+    animation-play-state: paused;
+  }
+
+  .announcement-ticker-item {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.65rem;
+    padding-right: 3rem;
+    flex-shrink: 0;
+  }
+
+  .announcement-dup {
+    display: inline-flex;
+  }
+}
+
+@keyframes announcement-marquee {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-50%);
+  }
 }
 
 /* --------------------------------------------------------------------------
@@ -2909,4 +2986,91 @@ body, .glass-card, .site-header, .mobile-drawer-content, .btn, .filter-btn {
 
 .admin-table img:hover {
   transform: scale(1.1);
+}
+
+/* ==========================================================================
+   SMOOTH SCROLL REVEAL ANIMATIONS (ELEGANT ATELIER FEEL)
+   ========================================================================== */
+.reveal-on-scroll {
+  opacity: 0;
+  transform: translateY(22px);
+  transition: opacity 0.65s cubic-bezier(0.16, 1, 0.3, 1), transform 0.65s cubic-bezier(0.16, 1, 0.3, 1);
+  will-change: opacity, transform;
+}
+
+.reveal-on-scroll.revealed {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* ==========================================================================
+   HORIZONTAL SNAP SCROLL SHOWROOM TRACKS
+   (MEHNDI ART, SERVICES, SHOP, COURSES, REVIEWS)
+   ========================================================================== */
+#gallery-preview-grid,
+.services-grid,
+.shop-grid,
+.courses-grid,
+.reviews-grid {
+  display: flex !important;
+  overflow-x: auto !important;
+  overflow-y: hidden !important;
+  gap: 1.5rem !important;
+  padding: 0.75rem 0.5rem 1.85rem 0.5rem !important;
+  scroll-snap-type: x mandatory;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: thin;
+  scrollbar-color: var(--theme-gold) rgba(255, 255, 255, 0.08);
+}
+
+#gallery-preview-grid::-webkit-scrollbar,
+.services-grid::-webkit-scrollbar,
+.shop-grid::-webkit-scrollbar,
+.courses-grid::-webkit-scrollbar,
+.reviews-grid::-webkit-scrollbar {
+  height: 6px;
+}
+
+#gallery-preview-grid::-webkit-scrollbar-track,
+.services-grid::-webkit-scrollbar-track,
+.shop-grid::-webkit-scrollbar-track,
+.courses-grid::-webkit-scrollbar-track,
+.reviews-grid::-webkit-scrollbar-track {
+  background: rgba(255, 255, 255, 0.04);
+  border-radius: 4px;
+}
+
+#gallery-preview-grid::-webkit-scrollbar-thumb,
+.services-grid::-webkit-scrollbar-thumb,
+.shop-grid::-webkit-scrollbar-thumb,
+.courses-grid::-webkit-scrollbar-thumb,
+.reviews-grid::-webkit-scrollbar-thumb {
+  background: var(--theme-gold);
+  border-radius: 4px;
+}
+
+/* Responsive Card Dimensions in Horizontal Showroom Tracks */
+#gallery-preview-grid > .art-card,
+.services-grid > .service-card,
+.shop-grid > .product-card,
+.courses-grid > .course-card,
+.reviews-grid > .review-card {
+  flex: 0 0 clamp(285px, 80vw, 340px) !important;
+  scroll-snap-align: start;
+  min-width: 0;
+  display: flex !important;
+  flex-direction: column !important;
+}
+
+/* Ensure dedicated gallery page on gallery.html retains multi-column grid */
+.gallery-page-body .gallery-grid {
+  display: grid !important;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)) !important;
+  gap: 2.2rem !important;
+  overflow-x: visible !important;
+  padding: 0 !important;
+}
+
+.gallery-page-body .gallery-grid > .art-card {
+  flex: none !important;
 }
