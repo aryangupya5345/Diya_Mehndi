@@ -115,7 +115,7 @@ const AdminPortal = {
     showToast("Owner Passcode updated successfully! 🔐");
   },
 
-  
+
   /**
    * Optimized Data Sync Engine:
    * Saves to LocalStorage, updates active AppState in memory, and immediately re-renders
@@ -1045,7 +1045,7 @@ const AdminPortal = {
     try {
       document.execCommand('copy');
       showToast("Full Site Data copied to clipboard as JSON! 📋");
-    } catch(err) {
+    } catch (err) {
       prompt("Copy your Site JSON manually:", text);
     }
     document.body.removeChild(textarea);
