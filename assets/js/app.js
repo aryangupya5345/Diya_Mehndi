@@ -122,6 +122,13 @@ function renderProfileData() {
     el.textContent = p.phone;
     if (el.tagName === 'A') el.href = `tel:${p.phone.replace(/[^0-9+]/g, '')}`;
   });
+  document.querySelectorAll('.brand-dynamic-phone-link').forEach(el => {
+    el.href = `tel:${(p.phone || '+917564969450').replace(/[^0-9+]/g, '')}`;
+  });
+  document.querySelectorAll('.brand-dynamic-whatsapp-link').forEach(el => {
+    const num = (p.whatsapp || '917564969450').replace(/[^0-9]/g, '');
+    el.href = `https://wa.me/${num}?text=Hi%2C%20I'd%20like%20to%20inquire%20about%20bridal%20mehndi%20dates%20and%20rates%20in%20Hazaribagh.`;
+  });
 
   const bioEl = document.getElementById('about-bio-text');
   if (bioEl) bioEl.textContent = p.aboutBio;
@@ -146,7 +153,7 @@ function renderProfileData() {
 
 function updateWhatsAppLinks() {
   const p = AppState.data.profile;
-  const whatsappNum = (p.whatsapp || '919876543210').replace(/[^0-9]/g, '');
+  const whatsappNum = (p.whatsapp || '917564969450').replace(/[^0-9]/g, '');
 
   const heroWa = document.getElementById('hero-whatsapp-btn');
   if (heroWa) {
@@ -158,6 +165,17 @@ function updateWhatsAppLinks() {
   if (floatWa) {
     const text = encodeURIComponent(`Hello ${p.brandName}! I visited your website and would like to book a Mehndi appointment in Hazaribagh.`);
     floatWa.href = `https://wa.me/${whatsappNum}?text=${text}`;
+  }
+
+  const mobCall = document.getElementById('mobile-call-btn');
+  if (mobCall) {
+    mobCall.href = `tel:${(p.phone || '+917564969450').replace(/[^0-9+]/g, '')}`;
+  }
+
+  const mobWa = document.getElementById('mobile-wa-btn');
+  if (mobWa) {
+    const text = encodeURIComponent(`Hi ${p.brandName}! I'd like to check date availability and package rates in Hazaribagh.`);
+    mobWa.href = `https://wa.me/${whatsappNum}?text=${text}`;
   }
 }
 
@@ -219,7 +237,13 @@ function renderSectionHeaders() {
     const titleEl = document.getElementById(`${prefix}-title`);
     const subEl = document.getElementById(`${prefix}-subtitle`);
     if (tagEl) tagEl.textContent = data.tag;
-    if (titleEl) titleEl.textContent = data.title;
+    if (titleEl) {
+      if (prefix === 'academy') {
+        titleEl.innerHTML = `<a href="#contact" onclick="scrollToContactForm('Academy / Learn Mehndi Course'); return false;" class="masterclass-title-link" style="color: inherit; text-decoration: none; cursor: pointer;">${data.title}</a>`;
+      } else {
+        titleEl.textContent = data.title;
+      }
+    }
     if (subEl) subEl.textContent = data.subtitle;
   };
 
@@ -230,6 +254,11 @@ function renderSectionHeaders() {
   setHeader('aftercare', sh.aftercare);
   setHeader('reviews', sh.reviews);
   setHeader('contact', sh.contact);
+
+  const formTitle = document.getElementById('contact-form-title');
+  if (formTitle && sh.contact?.title) {
+    formTitle.textContent = sh.contact.title;
+  }
 }
 
 /* --------------------------------------------------------------------------
@@ -290,7 +319,7 @@ function renderGallery() {
     previewContainer.innerHTML = previewItems.map(item => `
       <article class="art-card glass-card" data-category="${item.category}">
         <div class="art-thumb-wrap" onclick="openLightbox('${item.id}')" role="button" tabindex="0" title="Click photo to preview" onkeydown="if(event.key==='Enter'||event.key===' '){openLightbox('${item.id}');event.preventDefault();}">
-          <img src="${item.image}" alt="${item.title}" loading="lazy" />
+          <img src="${item.image}" alt="${item.title}" loading="lazy" decoding="async" />
           <span class="art-badge">${item.categoryLabel || item.category}</span>
           <button class="art-zoom-btn" onclick="event.stopPropagation(); openLightbox('${item.id}')" aria-label="Zoom Art" title="Zoom Photo">
             🔍
@@ -341,7 +370,7 @@ function renderGallery() {
     fullContainer.innerHTML = filtered.map(item => `
       <article class="art-card glass-card" data-category="${item.category}">
         <div class="art-thumb-wrap" onclick="openLightbox('${item.id}')" role="button" tabindex="0" title="Click photo to preview" onkeydown="if(event.key==='Enter'||event.key===' '){openLightbox('${item.id}');event.preventDefault();}">
-          <img src="${item.image}" alt="${item.title}" loading="lazy" />
+          <img src="${item.image}" alt="${item.title}" loading="lazy" decoding="async" />
           <span class="art-badge">${item.categoryLabel || item.category}</span>
           <button class="art-zoom-btn" onclick="event.stopPropagation(); openLightbox('${item.id}')" aria-label="Zoom Art" title="Zoom Photo">
             🔍
@@ -431,27 +460,35 @@ function renderServices() {
   const services = AppState.data.services || [];
   container.innerHTML = services.map(srv => `
     <div class="service-card glass-card">
-      <div class="service-icon-box">✨</div>
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.15rem;">
+        <div class="service-icon-box" style="margin-bottom: 0;">⚜</div>
+        <span class="quote-badge">Custom Bespoke Quote</span>
+      </div>
       <h3 class="service-title">${srv.title}</h3>
       <p class="service-subtitle-text">${srv.subtitle || ''}</p>
       <p class="service-desc">${srv.description}</p>
       <ul class="service-features">
         ${(srv.features || []).map(f => `<li><span>✓</span> ${f}</li>`).join('')}
       </ul>
-      <div style="margin-top: auto; padding-top: 0.85rem; width: 100%;">
-        <button class="btn btn-primary enquiry-btn" onclick="enquireServiceWhatsApp('${srv.title}')" style="width: 100%;">
-          <span>💬 Book on WhatsApp</span>
+      <div style="margin-top: auto; padding-top: 1rem; width: 100%;">
+        <button class="btn btn-primary" onclick="requestRateCardWhatsApp('${srv.title}')" style="width: 100%;">
+          <span>Request Rate Card on WhatsApp</span>
         </button>
       </div>
     </div>
   `).join('');
 }
 
-function enquireServiceWhatsApp(serviceName) {
+function requestRateCardWhatsApp(serviceName) {
   const p = AppState.data.profile;
-  const num = (p.whatsapp || '').replace(/[^0-9]/g, '');
-  const msg = encodeURIComponent(`Hello ${p.brandName}! I want to book your "${serviceName}" package for my upcoming function in Hazaribagh. Please share package details and confirm date availability.`);
-  window.open(`https://wa.me/${num}?text=${msg}`, '_blank');
+  const num = (p.whatsapp || '917564969450').replace(/[^0-9]/g, '');
+  const encodedName = encodeURIComponent(serviceName);
+  const url = `https://wa.me/${num}?text=Hi%2C%20I'd%20like%20to%20request%20the%20rate%20card%20and%20availability%20for%20the%20${encodedName}%20package.`;
+  window.open(url, '_blank');
+}
+
+function enquireServiceWhatsApp(serviceName) {
+  requestRateCardWhatsApp(serviceName);
 }
 
 /* --------------------------------------------------------------------------
@@ -465,7 +502,7 @@ function renderProducts() {
   container.innerHTML = products.map(prod => `
     <article class="product-card glass-card">
       <div class="product-thumb">
-        <img src="${prod.image}" alt="${prod.name}" loading="lazy" />
+        <img src="${prod.image}" alt="${prod.name}" loading="lazy" decoding="async" />
         ${prod.badge ? `<span class="product-badge">${prod.badge}</span>` : ''}
       </div>
       <div class="product-info">
@@ -496,8 +533,25 @@ function enquireProductWhatsApp(productId) {
 }
 
 /* --------------------------------------------------------------------------
-   TEACH & ACADEMY MASTERCLASSES (NO FEES - ALL ON ENQUIRY)
+   TEACH & ACADEMY MASTERCLASSES (ONLINE & OFFLINE)
    -------------------------------------------------------------------------- */
+function scrollToContactForm(occasion) {
+  if (occasion) {
+    const eventSelect = document.getElementById('inquiry-event');
+    if (eventSelect) {
+      eventSelect.value = occasion;
+    }
+  }
+  const contactEl = document.getElementById('contact');
+  if (contactEl) {
+    contactEl.scrollIntoView({ behavior: 'smooth' });
+    const nameInput = document.getElementById('inquiry-name');
+    if (nameInput) setTimeout(() => nameInput.focus(), 600);
+  } else {
+    window.location.hash = '#contact';
+  }
+}
+
 function renderCourses() {
   const container = document.getElementById('courses-grid');
   if (!container) return;
@@ -505,48 +559,71 @@ function renderCourses() {
   const courses = AppState.data.courses || [];
   if (courses.length === 0) return;
 
-  const course = courses[0];
-  container.innerHTML = `
-    <article class="course-card glass-card masterclass-unified">
+  container.innerHTML = courses.map(course => {
+    const isOnline = course.id === 'course-online' || (course.title && course.title.toLowerCase().includes('online'));
+    const btnClass = isOnline ? 'online-class-enquiry-btn' : 'offline-class-enquiry-btn';
+    const btnAction = isOnline ? `enquireOnlineCourse('${course.title.replace(/'/g, "\\'")}')` : `enquireOfflineCourse('${course.title.replace(/'/g, "\\'")}')`;
+    const btnLabel = isOnline ? 'Enquire Online Classes on WhatsApp 🎓' : 'Enquire Offline Classes on WhatsApp 📍';
+    const formOccasion = isOnline ? 'Online Mehndi Classes' : 'Offline Mehndi Classes (Hurhuru Studio)';
+
+    return `
+    <article class="course-card glass-card masterclass-card-item" onclick="${btnAction}" style="cursor: pointer;" title="Click to enquire on WhatsApp">
       <div class="course-thumb">
-        <img src="${course.image || 'assets/images/teach_mehndi.jpg'}" alt="${course.title}" loading="lazy" />
-        <span class="course-badge">${course.badge || 'Hands-on Masterclass'}</span>
+        <img src="${course.image || 'assets/images/teach_mehndi.jpg'}" alt="${course.title}" loading="lazy" decoding="async" />
+        <span class="course-badge">${course.badge || (isOnline ? 'Online Classes' : 'Studio Classes')}</span>
       </div>
       <div class="course-body">
         <div class="course-meta">
-          <span>📍 ${course.mode || 'Hazaribagh Studio Workshop'}</span>
+          <span>${isOnline ? '🌐 ' + (course.mode || 'Online Instruction') : '📍 ' + (course.mode || 'Hurhuru Studio, Hazaribagh')}</span>
           <span>🎓 All Skill Levels Welcome</span>
         </div>
         <h3 class="course-title">${course.title}</h3>
         <p class="course-desc">${course.description}</p>
         
-        <h5 style="font-size: 0.82rem; font-weight: 700; color: var(--theme-gold); text-transform: uppercase; margin-bottom: 0.5rem; letter-spacing: 0.05em;">Curriculum Overview:</h5>
+        <h5 style="font-size: 0.82rem; font-weight: 700; color: var(--theme-gold); text-transform: uppercase; margin-bottom: 0.5rem; letter-spacing: 0.05em;">Curriculum Highlights:</h5>
         <ul class="curriculum-list">
           ${(course.curriculum || []).map(c => `<li><span>✦</span> ${c}</li>`).join('')}
         </ul>
 
         <div style="background: var(--theme-bg-subtle); padding: 0.85rem 1rem; border-radius: var(--radius-sm); margin-bottom: 1.25rem; font-size: 0.82rem; color: var(--theme-text-muted); border: 1px solid var(--theme-border-subtle);">
-          <strong>🎁 Free Starter Kit:</strong> ${course.kitText || 'Acrylic practice board, organic cones, worksheets & Certificate.'}
+          <strong>${isOnline ? '💻 Learning Materials:' : '🎁 Studio Practice Kit:'}</strong> ${course.kitText || 'Digital curriculum guides & practice templates.'}
         </div>
 
-        <div class="course-footer" style="margin-top: auto;">
-          <div>
-            <span style="font-size: 0.85rem; color: var(--theme-gold); font-weight: 700;">Hazaribagh Batches Open</span>
+        <div class="course-footer" style="margin-top: auto; display: flex; flex-direction: column; gap: 0.75rem;">
+          <div style="display: flex; justify-content: space-between; align-items: center;">
+            <span style="font-size: 0.82rem; color: var(--theme-gold); font-weight: 700;">${isOnline ? 'Flexible Schedule' : 'Hurhuru Studio Batches'}</span>
+            <a href="#contact" onclick="event.stopPropagation(); scrollToContactForm('${formOccasion}'); return false;" style="font-size: 0.78rem; color: var(--theme-text-muted); text-decoration: underline;">Or fill inquiry form</a>
           </div>
-          <button class="btn btn-gold btn-sm" onclick="enrollInCourse('${course.title}')">
-            <span>Book Seat on WhatsApp 🎓</span>
+          <button class="btn btn-gold btn-sm ${btnClass}" style="width: 100%;" onclick="event.stopPropagation(); ${btnAction}">
+            <span>${btnLabel}</span>
           </button>
         </div>
       </div>
     </article>
-  `;
+    `;
+  }).join('');
+}
+
+function enquireOnlineCourse(courseTitle) {
+  const p = AppState.data.profile || {};
+  const num = (p.whatsapp || '917564969450').replace(/[^0-9]/g, '');
+  const msg = encodeURIComponent("Hello Sakshi Mehndi Academy, I am interested in joining your Online Mehndi Classes. Please share the course details.");
+  window.open(`https://wa.me/${num}?text=${msg}`, '_blank');
+}
+
+function enquireOfflineCourse(courseTitle) {
+  const p = AppState.data.profile || {};
+  const num = (p.whatsapp || '917564969450').replace(/[^0-9]/g, '');
+  const msg = encodeURIComponent("Hello Sakshi Mehndi Academy, I am interested in joining your Offline Mehndi Classes. Please share the course details and location.");
+  window.open(`https://wa.me/${num}?text=${msg}`, '_blank');
 }
 
 function enrollInCourse(courseTitle) {
-  const p = AppState.data.profile;
-  const num = (p.whatsapp || '').replace(/[^0-9]/g, '');
-  const msg = encodeURIComponent(`Hello ${p.brandName}! I want to book a seat in the "${courseTitle}" masterclass in Hazaribagh. Please share next batch schedule and booking details.`);
-  window.open(`https://wa.me/${num}?text=${msg}`, '_blank');
+  if (courseTitle && courseTitle.toLowerCase().includes('online')) {
+    enquireOnlineCourse(courseTitle);
+  } else {
+    enquireOfflineCourse(courseTitle);
+  }
 }
 
 /* --------------------------------------------------------------------------
@@ -676,18 +753,18 @@ function openConsultationModal(serviceName) {
    -------------------------------------------------------------------------- */
 function initNavigation() {
   const header = document.querySelector('.site-header');
-  const dockPills = document.querySelectorAll('.dock-pill');
-  const sections = document.querySelectorAll('section[id], footer[id]');
+  const navLinks = document.querySelectorAll('.main-nav .nav-link');
+  const sections = document.querySelectorAll('section[id]');
 
   window.addEventListener('scroll', () => {
     if (header) {
-      if (window.scrollY > 40) header.classList.add('scrolled');
+      if (window.scrollY > 20) header.classList.add('scrolled');
       else header.classList.remove('scrolled');
     }
 
-    // Scroll spy for Experience Dock
+    // Scroll spy for main-nav links
     let currentId = '';
-    const scrollPos = window.scrollY + 200;
+    const scrollPos = window.scrollY + 180;
     sections.forEach(sec => {
       const top = sec.offsetTop;
       const height = sec.offsetHeight;
@@ -696,24 +773,16 @@ function initNavigation() {
       }
     });
 
-    if (currentId && dockPills.length > 0) {
-      dockPills.forEach(pill => {
-        const href = pill.getAttribute('href');
+    if (currentId && navLinks.length > 0) {
+      navLinks.forEach(link => {
+        const href = link.getAttribute('href');
         if (href === `#${currentId}`) {
-          pill.classList.add('active');
-        } else {
-          pill.classList.remove('active');
+          link.classList.add('active');
+        } else if (href && href.startsWith('#')) {
+          link.classList.remove('active');
         }
       });
     }
-  });
-
-  // Dock pill click smooth interaction
-  dockPills.forEach(pill => {
-    pill.addEventListener('click', () => {
-      dockPills.forEach(p => p.classList.remove('active'));
-      pill.classList.add('active');
-    });
   });
 
   const openBtn = document.getElementById('mobile-menu-open');

@@ -7,19 +7,20 @@
 const DEFAULT_MEHNDI_DATA = {
   // ATELIER PROFILE & CONTACT DETAILS
   profile: {
-    brandName: "Sakshi Mehndi",
+    brandName: "Sakshi Mehndi Atelier & Academy",
     artistName: "Diya Sakshi",
-    tagline: "Bespoke Bridal Henna • 100% Organic Sojat Cones • Artistry Masterclasses",
-    phone: "+91 98765 43210",
-    whatsapp: "919876543210",
+    tagline: "Bespoke Bridal Henna • 100% Organic Sojat Cones • Online & Offline Classes",
+    phone: "+91 75649 69450",
+    whatsapp: "917564969450",
     email: "Diya@gmail.com",
     city: "Hazaribagh",
     address: "Baba Path, Hurhuru, Hazaribagh, Jharkhand 825301",
-    instagram: "https://instagram.com/sakshimehndi.art",
-    instagramHandle: "@sakshimehndi.art",
-    googleMapsUrl: "https://maps.google.com/?q=Bridal+Mehndi+Artist",
+    instagram: "https://www.instagram.com/mehndiart_sakshi/",
+    website: "https://mehndi-by-sakshi.netlify.app/",
+    instagramHandle: "@mehndiart_sakshi",
+    googleMapsUrl: "https://maps.google.com/?q=Bridal+Mehndi+Artist+Hurhuru+Hazaribagh",
     announcement: "Wedding & Festive Season Bookings Open! Reserve your bridal date early.",
-    aboutBio: "Welcome to Sakshi Mehndi Atelier, Hazaribagh. We are proud to be your local city's premier bridal mehndi artist. With 5+ years of dedicated artistry and 100+ happy brides adorned in Hazaribagh and nearby districts, we specialize in intricate bridal jaal, royal portrait motifs, and modern Gulf Arabic flows. Every cone is freshly hand-made in our studio using 100% pure Sojat henna for a rich, guaranteed deep-dark stain. Available for studio appointments and doorstep home visits in Hurhuru, Matwari, Korrah, Babugaon, and all Hazaribagh.",
+    aboutBio: "Welcome to Sakshi Mehndi Atelier & Academy at Baba Path, Hurhuru, Hazaribagh. We are proud to be your premier bridal mehndi artist and academy, specializing in intricate traditional jaal, royal mandalas, modern floral patterns (hands and feet up to ankle), and professional online & offline mehndi classes. Every cone is freshly hand-made in our Hurhuru studio using 100% pure Rajasthani Sojat henna for a rich, guaranteed deep-dark stain. Available for studio appointments at our Hurhuru studio and online/offline classes.",
     yearsExperience: "5+",
     bridesDressed: "100+",
     rating: "4.9★"
@@ -28,14 +29,14 @@ const DEFAULT_MEHNDI_DATA = {
   // HERO & HOMEPAGE TEXTS
   hero: {
     tag1: "Best Bridal Mehndi Artist in Hazaribagh",
-    tag2: "100% Pure Organic Sojat Cones • Deep Dark Stain",
+    tag2: "Online & Offline Mehndi Classes • 100% Organic Sojat Cones",
     headlineMain: "Best Bridal Mehndi Artist in Your City,",
     headlineHighlight: "Hazaribagh",
-    headlineEnd: "• Har Dulhan Ka Sapna",
-    lead: "Khushiyon Ka Gehra Rang, Hazaribagh Ki Har Dulhan Ke Sang! Bespoke bridal storytelling motifs, customized love-story elements, and pure organic dark-stain henna crafted to make you look and feel unforgettable. Available for home visits and studio bookings across Hurhuru, Matwari, Korrah, Babugaon, and all Hazaribagh.",
+    headlineEnd: "",
+    lead: "Khushiyon Ka Gehra Rang, Hazaribagh Ki Har Dulhan Ke Sang! Bespoke bridal motifs, intricate traditional jaal, and pure organic dark-stain henna crafted to make you look and feel unforgettable. Available for studio bookings and appointments in Hurhuru, Hazaribagh.",
     image: "assets/images/bridal_hero.jpg",
-    badgeTitle: "Hazaribagh's #1 Bridal Henna Artist",
-    badgeText: "100+ Brides Adorned in Hazaribagh • 100% Organic Sojat Harvest • Zero Chemicals"
+    badgeTitle: "100% Chemical-Free Dark Mahogany Stain",
+    badgeText: "Natural Sojat harvest • Therapeutic botanical oils • Zero chemicals"
   },
 
   // TRUST PILLARS
@@ -56,13 +57,13 @@ const DEFAULT_MEHNDI_DATA = {
       id: "tp-3",
       icon: "🎓",
       title: "Hands-on Masterclasses",
-      desc: "Step-by-step guidance on bridal figures, jaali, and symmetric cone pressure."
+      desc: "Step-by-step guidance on traditional jaal, sacred mandalas, and symmetric cone pressure."
     },
     {
       id: "tp-4",
       icon: "🚚",
       title: "Pan-India Fresh Dispatch",
-      desc: "Freshly rolled organic cones and practice kits delivered right to your doorstep."
+      desc: "Freshly rolled organic cones and practice kits available for pickup at our Hurhuru studio or local dispatch."
     }
   ],
 
@@ -84,9 +85,9 @@ const DEFAULT_MEHNDI_DATA = {
       subtitle: "Fresh organic cones and practice kits prepared in our Hazaribagh studio with same-day local pickup and delivery across Jharkhand."
     },
     academy: {
-      tag: "Learn & Grow",
-      title: "Masterclass Programs & Workshops",
-      subtitle: "Master the craft of henna right here in Hazaribagh with hands-on practice, personalized feedback, and full starter kits."
+      tag: "Online & Offline Classes",
+      title: "Online & Offline Mehndi Classes by Sakshi Mehndi Academy",
+      subtitle: "Learn mehndi with Sakshi Mehndi Academy. Explore online and offline mehndi classes, develop your mehndi skills and enquire about courses through WhatsApp."
     },
     aftercare: {
       tag: "Artist Secrets",
@@ -100,7 +101,7 @@ const DEFAULT_MEHNDI_DATA = {
     },
     contact: {
       tag: "Reserve Your Date",
-      title: "Book Your Bridal Date on WhatsApp",
+      title: "Connect on whatsapp",
       subtitle: "Share your wedding or celebration date in Hazaribagh below to immediately reserve your slot on WhatsApp."
     }
   },
@@ -108,14 +109,14 @@ const DEFAULT_MEHNDI_DATA = {
   // ACADEMY BANNER PROMO
   academyBanner: {
     badge: "Sakshi Mehndi Academy",
-    title: "Master The Art of Mehndi & Build Your Creative Passion",
-    lead: "Whether you are holding a cone for the very first time or an artist looking to master complex bridal figurines and symmetry, our hands-on masterclasses provide step-by-step guidance, personal feedback, and complete starter kits.",
+    title: "Online & Offline Mehndi Classes by Sakshi Mehndi Academy",
+    lead: "Learn mehndi with Sakshi Mehndi Academy. Explore flexible online sessions and in-person studio classes in Hazaribagh designed for beginners and aspiring bridal artists.",
     image: "assets/images/teach_mehndi.jpg",
     perks: [
-      "Physical Practice Kit Delivered",
-      "1-on-1 Personalized Work Critique",
-      "Step-by-Step Motif & Figure Breakdown",
-      "Lifetime WhatsApp Mentorship Community"
+      "Online & Offline Interactive Learning Modes",
+      "Traditional Bridal Jaal & Mandala Techniques",
+      "Hands-on Practice & Dedicated Feedback",
+      "Direct Guidance & Course Enquiry on WhatsApp"
     ]
   },
 
@@ -123,23 +124,18 @@ const DEFAULT_MEHNDI_DATA = {
   aftercareSteps: [
     {
       num: "01",
-      title: "Keep Henna On 6-8 Hours",
-      desc: "Allow the natural lawsone dye to bond deeply with your skin keratin. Overnight is ideal for brides."
+      title: "Application & Setting",
+      desc: "Apply lemon-sugar glaze once dry to seal. Hover hands gently over warm roasted cloves. Keep henna on for 6-8 hours (or overnight) for deep dye absorption."
     },
     {
       num: "02",
-      title: "Lemon & Sugar Glaze",
-      desc: "Dab a warm mixture of lemon juice and sugar once dried to seal the henna paste firmly against cracking."
+      title: "Removal & 24hr Care",
+      desc: "Dry scrape only with a gentle edge. Strictly avoid water or soap for the first 24 hours. Coat with natural balm or mustard oil to shield the pores."
     },
     {
       num: "03",
-      title: "No Water for 12-24 Hours",
-      desc: "Gently scrape off the crust using coconut oil or balm. Strictly avoid direct water or soap on day one."
-    },
-    {
-      num: "04",
-      title: "Apply Gentle Clove Heat",
-      desc: "Hover hands gently over warm roasted cloves or apply natural balm. Stain peaks within 48 hours!"
+      title: "48hr Peak Stain",
+      desc: "Watch the fresh pumpkin orange naturally oxidize into a rich, deep mahogany stain over 48 hours. Retains peak brilliance for 10-14 days."
     }
   ],
 
@@ -148,13 +144,14 @@ const DEFAULT_MEHNDI_DATA = {
     {
       id: "srv-1",
       title: "Haute Couture Bridal Mehndi",
-      subtitle: "Custom Wedding Storytelling",
-      description: "Elaborate bridal jaal, portrait silhouettes, wedding dates, and vows for hands and feet.",
+      subtitle: "Traditional Bridal Elegance",
+      description: "Elaborate traditional jaal, royal mandalas, and modern floral patterns for hands and feet up to ankle.",
       features: [
-        "Hands up to elbows & feet up to calves",
-        "Custom portrait motifs & wedding date",
-        "100% organic dark-stain henna cones",
-        "Complimentary aftercare sealant"
+        "Hands up to mid-forearm & feet up to ankle",
+        "Intricate traditional jaal, royal mandalas, and modern floral patterns",
+        "100% organic dark-stain Sojat henna cones",
+
+
       ],
       category: "Bridal"
     },
@@ -190,7 +187,7 @@ const DEFAULT_MEHNDI_DATA = {
       features: [
         "Festive mandalas & fine jaali",
         "Guaranteed dark mahogany stain",
-        "Studio & doorstep visits in Hazaribagh"
+        "Studio appointments at Hurhuru, Hazaribagh"
       ],
       category: "Festive"
     }
@@ -343,19 +340,34 @@ const DEFAULT_MEHNDI_DATA = {
   // TEACH / ACADEMY COURSES (NO FEES - ALL ON ENQUIRY)
   courses: [
     {
-      id: "masterclass-pro",
-      title: "Professional Mehndi Artistry Masterclass",
-      badge: "Hands-on Masterclass",
-      mode: "Hazaribagh Studio Workshop",
+      id: "course-online",
+      title: "Online Mehndi Classes",
+      badge: "Online Classes",
+      mode: "Online Instruction",
       image: "assets/images/teach_mehndi.jpg",
-      description: "Comprehensive hands-on training taking you from cone holding and pressure control to intricate bridal jaal, Gulf Arabic flow, and figure compositions. Open to beginners and passionate learners.",
+      description: "Learn mehndi through online instruction from the comfort of your home. Master cone grip, steady pressure control, foundational lines, traditional jaal motifs, florals, and bridal patterns with step-by-step guidance.",
       curriculum: [
-        "Cone grip ergonomics, pressure control & line precision",
-        "Traditional bridal jaali, peacocks & sacred florals",
-        "Modern Gulf Arabic shading & negative space flow",
-        "100% natural organic henna paste preparation & cone rolling"
+        "Cone grip ergonomics & smooth pressure control",
+        "Foundational strokes: fine lines, humps, leaves & teardrops",
+        "Traditional bridal jaali, floral mandalas & symmetry",
+        "Live interactive demonstrations & WhatsApp practice critique"
       ],
-      kitText: "Complete Practice Kit Included: Acrylic practice board, fresh organic cones, worksheets & Certificate."
+      kitText: "Digital curriculum guides & printable precision practice templates."
+    },
+    {
+      id: "course-offline",
+      title: "Offline Mehndi Classes",
+      badge: "Studio Classes",
+      mode: "Hurhuru Studio, Hazaribagh",
+      image: "assets/images/teach_mehndi.jpg",
+      description: "Attend in-person mehndi learning sessions at our Hurhuru studio in Hazaribagh. Get hands-on live training on cone handling, authentic Rajasthani organic paste, intricate bridal jaal, and direct face-to-face feedback.",
+      curriculum: [
+        "In-person live demonstrations & technique corrections",
+        "Traditional bridal jaal, peacocks & sacred floral mandalas",
+        "Hands-on cone rolling & 100% natural organic paste mixing",
+        "One-on-one personalized instruction at our Hazaribagh studio"
+      ],
+      kitText: "Studio practice supplies & direct in-person mentorship."
     }
   ],
 
@@ -365,28 +377,28 @@ const DEFAULT_MEHNDI_DATA = {
       id: "rev-1",
       name: "Pooja Verma",
       role: "Bride",
-      city: "Matwari, Hazaribagh",
+      city: "Hurhuru Studio Client, Hazaribagh",
       rating: 5,
       date: "Wedding Client",
-      comment: "Sakshi did my bridal mehndi for my wedding at Canary Inn. The dulha-dulhan portrait and fine jaal were so neat, sabhi rishtedaar tareef kar rahe the. The dark brown color came out so rich and lasted over two weeks with zero chemical smell!"
+      comment: "Sakshi did my bridal mehndi for my wedding at Canary Inn. The intricate traditional jaal and royal mandalas were so neat, sabhi rishtedaar tareef kar rahe the. The dark brown color came out so rich and lasted over two weeks with zero chemical smell!"
     },
     {
       id: "rev-2",
       name: "Neha Gupta",
       role: "Bride",
-      city: "Babugaon, Hazaribagh",
+      city: "Hurhuru Studio Client, Hazaribagh",
       rating: 5,
       date: "Bridal Client",
-      comment: "Booked Diya Sakshi for my wedding at our home in Babugaon. She is so polite, calm, and patient. The peacock artwork was stunning, and her clove steam aftercare tip gave the darkest maroon stain. Best mehndi artist in Hazaribagh!"
+      comment: "Booked Diya Sakshi for my wedding mehndi at her Hurhuru studio. She is so polite, calm, and patient. The intricate traditional jaal and royal mandalas were stunning, and her clove steam aftercare tip gave the darkest maroon stain. Best mehndi artist in Hazaribagh!"
     },
     {
       id: "rev-3",
       name: "Priyanka Singh",
       role: "Sangeet Host",
-      city: "Korrah, Hazaribagh",
+      city: "Hazaribagh",
       rating: 5,
       date: "Family Event",
-      comment: "Diya and her assistant applied mehndi for all our cousins and family during my sister's Sangeet. Unka speed aur neatness dono kamaal ka tha. Hazaribagh me aisi professional artist milna sach me bahut badi baat hai."
+      comment: "Diya applied mehndi for all our cousins and family during my sister's Sangeet. Unka speed aur neatness dono kamaal ka tha. Hazaribagh me aisi professional artist milna sach me bahut badi baat hai."
     },
     {
       id: "rev-4",
@@ -395,7 +407,7 @@ const DEFAULT_MEHNDI_DATA = {
       city: "Hurhuru, Hazaribagh",
       rating: 5,
       date: "Wedding Client",
-      comment: "I visited her studio in Hurhuru for bridal consultation and she customized the design exactly as I wanted. Her cones are 100% natural, no itching or skin reaction at all, and the stain color was pure dark mahogany on my wedding day!"
+      comment: "I visited her in Hurhuru for bridal consultation and she customized the design exactly as I wanted. Her cones are 100% natural, no itching or skin reaction at all, and the stain color was pure dark mahogany on my wedding day!"
     }
   ],
 
@@ -422,12 +434,12 @@ const DEFAULT_MEHNDI_DATA = {
 
 // Data service helper with LocalStorage sync
 const DataService = {
-  STORAGE_KEY: "mehndi_atelier_data_v4",
+  STORAGE_KEY: "mehndi_atelier_data_v6",
 
   load() {
     try {
       // Clean up legacy keys that may have old sample data
-      ['mehndi_atelier_data', 'mehndi_atelier_data_v2', 'mehndi_atelier_data_v3'].forEach(key => {
+      ['mehndi_atelier_data', 'mehndi_atelier_data_v2', 'mehndi_atelier_data_v3', 'mehndi_atelier_data_v4', 'mehndi_atelier_data_v5'].forEach(key => {
         const val = localStorage.getItem(key);
         if (val && (val.includes("Aura") || val.includes("aura") || val.includes("Sacred Artistry"))) {
           localStorage.removeItem(key);
@@ -437,8 +449,11 @@ const DataService = {
       const stored = localStorage.getItem(this.STORAGE_KEY);
       if (stored) {
         // Discard cache if it contains any legacy sample text
-        if (stored.toLowerCase().includes("aura")) {
+        const low = stored.toLowerCase();
+        if (low.includes("aura") || low.includes("portrait") || low.includes("mid-calf") || stored.includes("Doorstep") || stored.includes("Matwari") || stored.includes("98765") || low.includes("sakshimehndi.art")) {
           localStorage.removeItem(this.STORAGE_KEY);
+          localStorage.removeItem("mehndi_atelier_data_v5");
+          localStorage.removeItem("mehndi_atelier_data_v4");
           return DEFAULT_MEHNDI_DATA;
         }
         const parsed = JSON.parse(stored);
@@ -471,6 +486,7 @@ const DataService = {
   reset() {
     try {
       localStorage.removeItem(this.STORAGE_KEY);
+      localStorage.removeItem("mehndi_atelier_data_v4");
       localStorage.removeItem("mehndi_atelier_data_v3");
       localStorage.removeItem("mehndi_atelier_data_v2");
       localStorage.removeItem("mehndi_atelier_data");

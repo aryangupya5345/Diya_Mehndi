@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://sakshimehndi.com/sitemap.xml
+Sitemap: https://mehndi-by-sakshi.netlify.app/sitemap.xml

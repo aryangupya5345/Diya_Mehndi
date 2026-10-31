@@ -20,15 +20,15 @@
   <meta name="title" content="Art Gallery | Sakshi Mehndi Atelier & Academy" />
   <meta name="description" content="Explore our full collection of bespoke bridal mehndi, Gulf Arabic, lotus mandalas, bridal feet payal, and festive henna artworks." />
   <meta name="robots" content="index, follow" />
-  <link rel="canonical" href="https://sakshimehndi.com/gallery.html" />
+  <link rel="canonical" href="https://mehndi-by-sakshi.netlify.app/gallery.html" />
 
   <!-- Google Web Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700;800&family=Cormorant+Garamond:ital,wght@0,500;0,600;0,700;1,500;1,600;1,700&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;0,700;1,500;1,600;1,700&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet" />
 
   <!-- Stylesheet -->
-  <link rel="stylesheet" href="assets/css/style.css?v=2.5" />
+  <link rel="stylesheet" href="assets/css/style.css?v=2.6" />
 </head>
 <body class="gallery-page-body">
 
@@ -218,8 +218,8 @@
         <ul class="footer-links">
           <li><a href="index.html#academy">🎓 Learn Mehndi Workshops</a></li>
           <li><a href="index.html#contact">Studio Appointments</a></li>
-          <li><a href="https://wa.me/919876543210" target="_blank" rel="noopener">WhatsApp Concierge</a></li>
-          <li><a href="https://instagram.com/sakshimehndi.art" target="_blank" rel="noopener" class="dynamic-instagram-link">Instagram Portfolio</a></li>
+          <li><a href="https://wa.me/917564969450" target="_blank" rel="noopener">WhatsApp Concierge</a></li>
+          <li><a href="https://www.instagram.com/mehndiart_sakshi/" target="_blank" rel="noopener" class="dynamic-instagram-link">Instagram Portfolio</a></li>
         </ul>
       </div>
 
@@ -239,7 +239,7 @@
 
   <!-- Floating WhatsApp Action -->
   <div class="floating-actions">
-    <a href="https://wa.me/919876543210" class="float-btn float-whatsapp" id="floating-whatsapp-btn" target="_blank" rel="noopener" aria-label="Chat on WhatsApp" title="Chat on WhatsApp">
+    <a href="https://wa.me/917564969450" class="float-btn float-whatsapp" id="floating-whatsapp-btn" target="_blank" rel="noopener" aria-label="Chat on WhatsApp" title="Chat on WhatsApp">
       💬
     </a>
   </div>
@@ -271,10 +271,10 @@
       <h3 style="font-family: var(--font-serif); font-size: 1.6rem; color: var(--theme-primary); margin-bottom: 0.25rem;">Owner Atelier Portal</h3>
       <p style="font-size: 0.88rem; color: var(--theme-text-muted); margin-bottom: 1.25rem;">
         Enter your passcode to customize contacts, artworks, products, texts, and courses.
-        <br /><strong style="color: var(--theme-gold);">Default PIN: 1234</strong>
+
       </p>
       <div style="display: flex; gap: 0.5rem; justify-content: center; margin-bottom: 1rem;">
-        <input type="password" id="admin-pin-input" class="form-input" style="width: 140px; text-align: center; font-size: 1.3rem; letter-spacing: 0.3em;" maxlength="6" placeholder="••••" onkeydown="if(event.key==='Enter') AdminPortal.verifyPin()" />
+        <input type="password" id="admin-pin-input" class="form-input" style="width: 150px; text-align: center; font-size: 1.3rem; letter-spacing: 0.3em;" maxlength="8" placeholder="••••••" onkeydown="if(event.key==='Enter') AdminPortal.verifyPin()" />
         <button class="btn btn-primary" onclick="AdminPortal.verifyPin()">Login</button>
       </div>
       <button class="btn btn-outline btn-sm" onclick="AdminPortal.close()">Cancel</button>
@@ -405,11 +405,11 @@
           <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
             <div class="form-group">
               <label class="form-label">WhatsApp Number (For Orders &amp; Bookings)</label>
-              <input type="text" id="admin-whatsapp" class="form-input" placeholder="e.g. 919876543210 (Country code, no +)" />
+              <input type="text" id="admin-whatsapp" class="form-input" placeholder="e.g. 917564969450 (Country code, no +)" />
             </div>
             <div class="form-group">
               <label class="form-label">Display Phone Number</label>
-              <input type="text" id="admin-phone" class="form-input" placeholder="+91 98765 43210" />
+              <input type="text" id="admin-phone" class="form-input" placeholder="+91 75649 69450" />
             </div>
           </div>
 
@@ -432,11 +432,11 @@
           <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
             <div class="form-group">
               <label class="form-label">Instagram Profile URL</label>
-              <input type="url" id="admin-instagram" class="form-input" />
+              <input type="url" id="admin-instagram" class="form-input" placeholder="https://www.instagram.com/mehndiart_sakshi/" />
             </div>
             <div class="form-group">
               <label class="form-label">Instagram Handle</label>
-              <input type="text" id="admin-ig-handle" class="form-input" />
+              <input type="text" id="admin-ig-handle" class="form-input" placeholder="@mehndiart_sakshi" />
             </div>
           </div>
 
@@ -472,7 +472,7 @@
 
           <div style="background: var(--theme-bg-surface); padding: 1.15rem; border-radius: var(--radius-sm); border: 1px dashed var(--theme-gold); margin-top: 1.5rem;">
             <h5 style="color: var(--theme-primary); font-size: 0.98rem; font-weight: 700; margin-bottom: 0.35rem;">🔐 Owner Security: Change Dashboard Passcode (PIN)</h5>
-            <p style="font-size: 0.8rem; color: var(--theme-text-muted); margin-bottom: 0.75rem;">Set a custom secret PIN to access this Owner Atelier Dashboard (Default is 1234).</p>
+            <p style="font-size: 0.8rem; color: var(--theme-text-muted); margin-bottom: 0.75rem;">Set a custom secret PIN to access this Owner Atelier Dashboard (Default is 230626).</p>
             <div style="display: flex; gap: 0.75rem; align-items: center;">
               <input type="password" id="admin-new-pin" class="form-input" style="max-width: 160px; text-align: center; font-size: 1.1rem; letter-spacing: 0.25em;" placeholder="New PIN" maxlength="8" />
               <button type="button" class="btn btn-gold btn-sm" onclick="AdminPortal.changePin()">Update Passcode</button>
@@ -815,7 +815,7 @@
 
               <div class="form-group">
                 <label class="form-label">Features Included (One per line)</label>
-                <textarea id="srv-features-input" class="form-textarea" rows="3" placeholder="Both hands up to elbows&#10;Complimentary Aftercare Kit&#10;Feet up to mid-calf"></textarea>
+                <textarea id="srv-features-input" class="form-textarea" rows="3" placeholder="Both hands up to mid-forearm&#10;Intricate traditional jaal &amp; mandalas&#10;Feet up to ankle"></textarea>
               </div>
 
               <div style="display: flex; gap: 0.75rem;">
@@ -983,6 +983,9 @@
               Website Backup &amp; Synchronization
             </h5>
             <div style="display: flex; flex-wrap: wrap; gap: 0.75rem;">
+              <button class="btn btn-primary btn-sm" onclick="AdminPortal.copyDataAsJson()">
+                <span>📋 Copy Full Site Data as JSON</span>
+              </button>
               <button class="btn btn-gold btn-sm" onclick="AdminPortal.exportData()">
                 <span>💾 Export All Data (JSON Backup)</span>
               </button>
@@ -1012,10 +1015,20 @@
     </div>
   </div>
 
+  <!-- Mobile Bottom Sticky Conversion Bar -->
+  <aside class="mobile-sticky-bar" aria-label="Mobile Quick Contact Actions">
+    <a href="tel:+917564969450" class="mobile-sticky-btn mobile-sticky-btn-call" id="mobile-call-btn" title="Call Sakshi Mehndi Studio">
+      <span>📞 Call Studio</span>
+    </a>
+    <a href="https://wa.me/917564969450" class="mobile-sticky-btn mobile-sticky-btn-wa" id="mobile-wa-btn" target="_blank" rel="noopener" title="Inquire on WhatsApp">
+      <span>💬 WhatsApp Inquiry</span>
+    </a>
+  </aside>
+
   <!-- Scripts -->
-  <script src="assets/js/data.js?v=2.5"></script>
-  <script src="assets/js/app.js?v=2.5"></script>
-  <script src="assets/js/admin.js?v=2.5"></script>
+  <script src="assets/js/data.js?v=2.6"></script>
+  <script src="assets/js/app.js?v=2.6"></script>
+  <script src="assets/js/admin.js?v=2.6"></script>
 </body>
 </html>
 

@@ -5,7 +5,7 @@
  */
 
 const AdminPortal = {
-  DEFAULT_PIN: "1234",
+  DEFAULT_PIN: "230626",
   isAuthenticated: false,
 
   init() {
@@ -21,8 +21,16 @@ const AdminPortal = {
       }
     });
 
-    // 2. Secret URL Query / Hash: #admin, #owner, ?admin, ?owner
-    if (window.location.hash === '#admin' || window.location.hash === '#owner' || window.location.search.includes('admin') || window.location.search.includes('owner')) {
+    // 2. Secret URL Query / Hash: #admin, #owner, ?admin=owner, ?admin, ?owner
+    const urlParams = new URLSearchParams(window.location.search);
+    if (
+      window.location.hash === '#admin' ||
+      window.location.hash === '#owner' ||
+      urlParams.get('admin') === 'owner' ||
+      window.location.search.includes('admin=owner') ||
+      window.location.search.includes('admin') ||
+      window.location.search.includes('owner')
+    ) {
       setTimeout(() => this.open(), 300);
     }
 
@@ -124,7 +132,7 @@ const AdminPortal = {
       this.showDashboard();
       showToast("Access Granted! Welcome to Owner Atelier Dashboard 👑");
     } else {
-      showToast("Incorrect PIN. Default is 1234");
+      showToast("Incorrect passcode. Please try again.");
       if (input) input.select();
     }
   },
@@ -1028,12 +1036,47 @@ const AdminPortal = {
     reader.readAsText(file);
   },
 
+  copyDataAsJson() {
+    const data = DataService.load();
+    const jsonStr = JSON.stringify(data, null, 2);
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(jsonStr).then(() => {
+        showToast("Full Site Data copied to clipboard as JSON! 📋");
+      }).catch(() => {
+        this.fallbackCopyText(jsonStr);
+      });
+    } else {
+      this.fallbackCopyText(jsonStr);
+    }
+  },
+
+  fallbackCopyText(text) {
+    const textarea = document.createElement('textarea');
+    textarea.value = text;
+    textarea.style.position = 'fixed';
+    textarea.style.left = '-9999px';
+    document.body.appendChild(textarea);
+    textarea.select();
+    try {
+      document.execCommand('copy');
+      showToast("Full Site Data copied to clipboard as JSON! 📋");
+    } catch(err) {
+      prompt("Copy your Site JSON manually:", text);
+    }
+    document.body.removeChild(textarea);
+  },
+
   resetDefaults() {
     if (!confirm("Reset website to default content? All custom edits will be restored to initial state.")) return;
     DataService.reset();
     this.showDashboard();
     showToast("Website reset to initial default state!");
-  }
+  },
+
+  // Aliases for template buttons
+  exportData() { this.exportBackup(); },
+  importData(e) { this.importBackup(e); },
+  resetAllDefaults() { this.resetDefaults(); }
 };
 
 // Initialize Admin Portal on DOM load
