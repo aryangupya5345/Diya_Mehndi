@@ -113,7 +113,13 @@ function renderProfileData() {
   if (announceDup) announceDup.textContent = p.announcement || '';
 
   // Dynamic Brand Text
-  document.querySelectorAll('.brand-dynamic-name').forEach(el => el.textContent = p.brandName);
+  document.querySelectorAll('.brand-dynamic-name').forEach(el => {
+    if (el.classList.contains('brand-title')) {
+      el.textContent = (p.brandName && p.brandName.includes('Atelier')) ? 'Sakshi Mehndi' : (p.brandName || 'Sakshi Mehndi');
+    } else {
+      el.textContent = p.brandName;
+    }
+  });
   document.querySelectorAll('.brand-dynamic-artist').forEach(el => el.textContent = p.artistName);
   document.querySelectorAll('.brand-dynamic-tagline').forEach(el => el.textContent = p.tagline);
   document.querySelectorAll('.brand-dynamic-city').forEach(el => el.textContent = p.city);

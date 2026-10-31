@@ -13,59 +13,13 @@ const AdminPortal = {
   },
 
   bindEvents() {
-    // 1. Secret Keyboard Shortcut: Ctrl + Shift + O or Ctrl + Shift + A
-    window.addEventListener('keydown', (e) => {
-      if ((e.ctrlKey || e.metaKey) && e.shiftKey && (e.key === 'O' || e.key === 'o' || e.key === 'A' || e.key === 'a')) {
-        e.preventDefault();
-        this.open();
-      }
-    });
-
-    // 2. Secret URL Query / Hash: #admin, #owner, ?admin=owner, ?admin, ?owner
+    // 1. Exclusive URL-only trigger: Strictly accessible via ?admin=owner
     const urlParams = new URLSearchParams(window.location.search);
-    if (
-      window.location.hash === '#admin' ||
-      window.location.hash === '#owner' ||
-      urlParams.get('admin') === 'owner' ||
-      window.location.search.includes('admin=owner') ||
-      window.location.search.includes('admin') ||
-      window.location.search.includes('owner')
-    ) {
-      setTimeout(() => this.open(), 300);
+    if (urlParams.get('admin') === 'owner' || window.location.search.includes('admin=owner')) {
+      setTimeout(() => this.open(), 250);
     }
 
-    // 3. Secret Triple-Click on Brand Icon ⚜ (Mobile & Desktop friendly)
-    let brandClicks = 0;
-    let brandTimer = null;
-    document.querySelectorAll('.brand-icon').forEach(icon => {
-      icon.addEventListener('click', () => {
-        brandClicks++;
-        clearTimeout(brandTimer);
-        brandTimer = setTimeout(() => { brandClicks = 0; }, 1200);
-        if (brandClicks >= 3) {
-          brandClicks = 0;
-          this.open();
-        }
-      });
-    });
-
-    // 4. Secret Discreet Dot in Footer
-    document.querySelectorAll('.secret-portal-trigger').forEach(el => {
-      el.addEventListener('click', (e) => {
-        e.preventDefault();
-        this.open();
-      });
-    });
-
-    // Legacy triggers if any
-    document.querySelectorAll('.trigger-owner-portal').forEach(btn => {
-      btn.addEventListener('click', (e) => {
-        e.preventDefault();
-        this.open();
-      });
-    });
-
-    // Close buttons
+    // 2. Modal Close handlers
     const closeBtn = document.getElementById('admin-modal-close');
     if (closeBtn) closeBtn.addEventListener('click', () => this.close());
 
@@ -76,7 +30,18 @@ const AdminPortal = {
       });
     }
 
-    // Tabs
+    // 3. Fast Enter-key submit on PIN input
+    const pinInput = document.getElementById('admin-pin-input');
+    if (pinInput) {
+      pinInput.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter') {
+          e.preventDefault();
+          this.verifyPin();
+        }
+      });
+    }
+
+    // 4. Tab Navigation
     document.querySelectorAll('.admin-tab-btn').forEach(btn => {
       btn.addEventListener('click', () => {
         const targetTab = btn.getAttribute('data-tab');
@@ -84,7 +49,7 @@ const AdminPortal = {
       });
     });
 
-    // Smart Image Upload Handlers with Automatic Compression
+    // 5. Smart Image Upload Handlers with Automatic Compression
     this.setupCompressedImagePicker('hero-image-file', 'admin-hero-image-url', 'admin-hero-img-preview');
     this.setupCompressedImagePicker('art-image-file', 'art-image-url', 'art-img-preview');
     this.setupCompressedImagePicker('prod-image-file', 'prod-image-url', 'prod-img-preview');
@@ -148,6 +113,27 @@ const AdminPortal = {
     localStorage.setItem('mehndi_admin_pin', newPin);
     if (pinInput) pinInput.value = '';
     showToast("Owner Passcode updated successfully! 🔐");
+  },
+
+  
+  /**
+   * Optimized Data Sync Engine:
+   * Saves to LocalStorage, updates active AppState in memory, and immediately re-renders
+   * all website components live without requiring a page reload.
+   */
+  saveAndSync(currentData, successMessage) {
+    if (DataService.save(currentData)) {
+      AppState.data = currentData;
+      if (typeof renderAllSections === 'function') {
+        renderAllSections();
+      }
+      if (successMessage) {
+        showToast(successMessage);
+      }
+      return true;
+    }
+    showToast("Error saving data. Storage might be full.");
+    return false;
   },
 
   showDashboard() {
@@ -328,9 +314,7 @@ const AdminPortal = {
       bridesDressed: getVal('admin-stat-brides') || current.profile.bridesDressed
     };
 
-    if (DataService.save(current)) {
-      showToast("Profile & Contact details saved live! 🎉");
-    }
+    this.saveAndSync(current, "Profile & Contact details saved live! 🎉");
   },
 
   /* ==========================================================================
@@ -520,7 +504,7 @@ const AdminPortal = {
       showToast("New Artwork added to Art Gallery! 🎨");
     }
 
-    DataService.save(current);
+    this.saveAndSync(current);
     this.renderAdminGalleryList();
     this.resetArtForm();
   },
@@ -687,7 +671,7 @@ const AdminPortal = {
       showToast("New Item added to Shop! 🛍️");
     }
 
-    DataService.save(current);
+    this.saveAndSync(current);
     this.renderAdminProductsList();
     this.resetProductForm();
   },
@@ -805,7 +789,7 @@ const AdminPortal = {
       showToast("New Service package added! 💍");
     }
 
-    DataService.save(current);
+    this.saveAndSync(current);
     this.renderAdminServicesList();
     this.resetServiceForm();
   },
@@ -817,9 +801,8 @@ const AdminPortal = {
 
     const current = DataService.load();
     current.services = (current.services || []).filter(s => s.id !== id);
-    DataService.save(current);
+    this.saveAndSync(current, "Service package removed");
     this.renderAdminServicesList();
-    showToast("Service package removed");
   },
 
   /* ==========================================================================
@@ -842,7 +825,7 @@ const AdminPortal = {
         </td>
         <td>
           <strong style="font-size: 0.95rem;">${c.title}</strong>
-          <div style="font-size: 0.78rem; color: var(--theme-gold); font-weight: 600;">${c.duration} • ${c.mode}</div>
+          <div style="font-size: 0.78rem; color: var(--theme-gold); font-weight: 600;">${c.mode || "Studio & Online"} ${c.badge ? "• " + c.badge : ""}</div>
         </td>
         <td style="width: 140px; text-align: right;">
           <div style="display: flex; gap: 0.45rem; justify-content: flex-end;">
@@ -948,7 +931,7 @@ const AdminPortal = {
       showToast("New Masterclass added! 🎓");
     }
 
-    DataService.save(current);
+    this.saveAndSync(current);
     this.renderAdminCoursesList();
     this.resetCourseForm();
   },
@@ -960,9 +943,8 @@ const AdminPortal = {
 
     const current = DataService.load();
     current.courses = (current.courses || []).filter(c => c.id !== id);
-    DataService.save(current);
+    this.saveAndSync(current, "Course removed");
     this.renderAdminCoursesList();
-    showToast("Course removed");
   },
 
   /* ==========================================================================
@@ -994,9 +976,8 @@ const AdminPortal = {
     if (!confirm("Delete this client review?")) return;
     const current = DataService.load();
     current.reviews = (current.reviews || []).filter(r => r.id !== id);
-    DataService.save(current);
+    this.saveAndSync(current, "Review deleted");
     this.renderAdminReviewsList();
-    showToast("Review deleted");
   },
 
   /* ==========================================================================
@@ -1024,6 +1005,10 @@ const AdminPortal = {
         const parsed = JSON.parse(event.target.result);
         if (parsed && typeof parsed === 'object') {
           DataService.save(parsed);
+          AppState.data = DataService.load();
+          if (typeof renderAllSections === 'function') {
+            renderAllSections();
+          }
           this.showDashboard();
           showToast("Backup restored successfully! All pages updated live! ✨");
         } else {
@@ -1069,8 +1054,12 @@ const AdminPortal = {
   resetDefaults() {
     if (!confirm("Reset website to default content? All custom edits will be restored to initial state.")) return;
     DataService.reset();
+    AppState.data = DataService.load();
+    if (typeof renderAllSections === 'function') {
+      renderAllSections();
+    }
     this.showDashboard();
-    showToast("Website reset to initial default state!");
+    showToast("Website reset to initial default state! ✨");
   },
 
   // Aliases for template buttons
