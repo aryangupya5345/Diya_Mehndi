@@ -1,6 +1,18 @@
 <!DOCTYPE html>
-<html lang="en" data-theme="dark">
+<html lang="en">
 <head>
+  <!-- Instant Device System Theme Initializer -->
+  <script>
+    (function() {
+      try {
+        var userSet = localStorage.getItem('mehndi_theme_user_set');
+        var saved = userSet ? localStorage.getItem('mehndi_theme') : null;
+        var prefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+        var theme = saved || (prefersDark ? 'dark' : 'light');
+        document.documentElement.setAttribute('data-theme', theme);
+      } catch(e) {}
+    })();
+  </script>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0" />
   
@@ -33,7 +45,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700;800&family=Cormorant+Garamond:ital,wght@0,500;0,600;0,700;1,500;1,600;1,700&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
 
   <!-- Stylesheet -->
-  <link rel="stylesheet" href="assets/css/style.css?v=2.4" />
+  <link rel="stylesheet" href="assets/css/style.css?v=2.5" />
 
   <!-- Schema.org JSON-LD Structured Data for Google Rich Snippets -->
   <script type="application/ld+json">
@@ -50,19 +62,12 @@
         "telephone": "+91 98765 43210",
         "address": {
           "@type": "PostalAddress",
-          "streetAddress": "Atelier 402, Lotus Grandeur, Linking Road, Bandra West",
-          "addressLocality": "Mumbai",
-          "addressRegion": "Maharashtra",
+          "streetAddress": "Baba Path, Hurhuru",
+          "addressLocality": "Hazaribagh",
+          "addressRegion": "Jharkhand",
+          "postalCode": "825301",
           "addressCountry": "IN"
-        },
-        "openingHoursSpecification": [
-          {
-            "@type": "OpeningHoursSpecification",
-            "dayOfWeek": ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"],
-            "opens": "09:00",
-            "closes": "20:30"
-          }
-        ]
+        }
       },
       {
         "@type": "Course",
@@ -350,27 +355,10 @@
          ========================================================================== -->
     <section class="academy-section" id="academy">
       <div class="container">
-        <!-- Prominent Academy Glass Banner -->
-        <div class="academy-banner">
-          <div class="academy-banner-content">
-            <span class="badge badge-gold" id="academy-promo-badge" style="margin-bottom: 0.75rem;">Sakshi Mehndi Academy</span>
-            <h3 id="academy-promo-title">Master The Art of Mehndi &amp; <span>Build Your Creative Passion</span></h3>
-            <p id="academy-promo-lead">
-              Whether you are picking up a cone for the very first time or an artist looking to master intricate bridal motifs and symmetry, our hands-on masterclasses provide step-by-step guidance, personalized feedback, and full practice kits.
-            </p>
-            <div class="academy-perks" id="academy-promo-perks">
-              <!-- Rendered dynamically -->
-            </div>
-          </div>
-          <div class="academy-banner-img">
-            <img src="assets/images/teach_mehndi.jpg" alt="Student practicing mehndi on acrylic practice board" id="academy-promo-img" />
-          </div>
-        </div>
-
         <header class="section-header">
-          <span class="section-tag" id="academy-tag">Learn &amp; Grow</span>
-          <h2 class="section-title" id="academy-title">Upcoming Masterclass Programs</h2>
-          <p class="section-subtitle" id="academy-subtitle">Choose the program that matches your creative ambition. Limited seats per batch for individualized attention.</p>
+          <span class="section-tag" id="academy-tag">Academy &amp; Masterclass</span>
+          <h2 class="section-title" id="academy-title">Professional Mehndi Masterclass</h2>
+          <p class="section-subtitle" id="academy-subtitle">Personalized hands-on mentoring by Diya Sakshi in Hazaribagh. Open to all passionate learners.</p>
         </header>
 
         <div class="courses-grid" id="courses-grid">
@@ -443,7 +431,7 @@
               <div class="contact-icon">📍</div>
               <div class="contact-details">
                 <h4>Studio Address</h4>
-                <p class="brand-dynamic-address">Atelier 402, Lotus Grandeur, Bandra West, Mumbai, India</p>
+                <p class="brand-dynamic-address">Baba Path, Hurhuru, Hazaribagh, Jharkhand 825301</p>
               </div>
             </div>
 
@@ -452,14 +440,6 @@
               <div class="contact-details">
                 <h4>Call &amp; Direct Phone</h4>
                 <a href="tel:+919876543210" class="brand-dynamic-phone">+91 98765 43210</a>
-              </div>
-            </div>
-
-            <div class="contact-item">
-              <div class="contact-icon">⏰</div>
-              <div class="contact-details">
-                <h4>Atelier Working Hours</h4>
-                <p class="brand-dynamic-hours">Mon - Sun: 9:00 AM - 8:30 PM (By Appointment)</p>
               </div>
             </div>
 
@@ -574,10 +554,7 @@
       <div class="footer-col">
         <h4>Atelier Studio</h4>
         <p style="font-size: 0.88rem; color: rgba(247, 237, 225, 0.8); line-height: 1.6;" class="brand-dynamic-address">
-          Atelier 402, Lotus Grandeur, Bandra West, Mumbai, India
-        </p>
-        <p style="font-size: 0.88rem; color: var(--theme-gold-light); margin-top: 0.5rem;" class="brand-dynamic-hours">
-          Mon - Sun: 9:00 AM - 8:30 PM
+          Baba Path, Hurhuru, Hazaribagh, Jharkhand 825301
         </p>
       </div>
     </div>
@@ -1432,9 +1409,9 @@
   </div>
 
   <!-- Scripts -->
-  <script src="assets/js/data.js?v=2.4"></script>
-  <script src="assets/js/app.js?v=2.4"></script>
-  <script src="assets/js/admin.js?v=2.4"></script>
+  <script src="assets/js/data.js?v=2.5"></script>
+  <script src="assets/js/app.js?v=2.5"></script>
+  <script src="assets/js/admin.js?v=2.5"></script>
   <script>
     document.getElementById('current-year').textContent = new Date().getFullYear();
   </script>

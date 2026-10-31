@@ -39,9 +39,23 @@ document.addEventListener('DOMContentLoaded', () => {
 /* ==========================================================================
    THEME SWITCHER (LIGHT & DARK MODES)
    ========================================================================== */
+function getSystemTheme() {
+  return window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+}
+
 function initTheme() {
-  const saved = localStorage.getItem('mehndi_theme') || 'dark';
-  setTheme(saved);
+  const userSet = localStorage.getItem('mehndi_theme_user_set');
+  const saved = userSet ? localStorage.getItem('mehndi_theme') : null;
+  const initialTheme = saved || getSystemTheme();
+  setTheme(initialTheme, false);
+
+  if (window.matchMedia) {
+    window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', (e) => {
+      if (!localStorage.getItem('mehndi_theme_user_set')) {
+        setTheme(e.matches ? 'dark' : 'light', false);
+      }
+    });
+  }
 
   document.querySelectorAll('.theme-toggle-btn').forEach(btn => {
     btn.addEventListener('click', toggleTheme);
@@ -50,14 +64,17 @@ function initTheme() {
 
 function toggleTheme() {
   const next = AppState.currentTheme === 'light' ? 'dark' : 'light';
-  setTheme(next);
+  setTheme(next, true);
   showToast(`Switched to ${next === 'dark' ? 'Royal Midnight Dark' : 'Pearl Champagne Light'} theme! 🎨`);
 }
 
-function setTheme(theme) {
+function setTheme(theme, persist = false) {
   AppState.currentTheme = theme;
   document.documentElement.setAttribute('data-theme', theme);
-  localStorage.setItem('mehndi_theme', theme);
+  if (persist) {
+    localStorage.setItem('mehndi_theme_user_set', 'true');
+    localStorage.setItem('mehndi_theme', theme);
+  }
 
   document.querySelectorAll('.theme-toggle-btn').forEach(btn => {
     btn.innerHTML = theme === 'dark' ? '☀️' : '🌙';
@@ -101,7 +118,6 @@ function renderProfileData() {
   document.querySelectorAll('.brand-dynamic-tagline').forEach(el => el.textContent = p.tagline);
   document.querySelectorAll('.brand-dynamic-city').forEach(el => el.textContent = p.city);
   document.querySelectorAll('.brand-dynamic-address').forEach(el => el.textContent = p.address);
-  document.querySelectorAll('.brand-dynamic-hours').forEach(el => el.textContent = p.workingHours);
   document.querySelectorAll('.brand-dynamic-phone').forEach(el => {
     el.textContent = p.phone;
     if (el.tagName === 'A') el.href = `tel:${p.phone.replace(/[^0-9+]/g, '')}`;
@@ -283,9 +299,6 @@ function renderGallery() {
         <div class="art-body">
           <h3 class="art-title">${item.title}</h3>
           <p class="art-desc">${item.description || ''}</p>
-          <div class="art-tags">
-            ${(item.tags || []).map(t => `<span class="art-tag-chip">#${t}</span>`).join('')}
-          </div>
           <div class="art-actions">
             <button class="btn btn-primary btn-sm" style="flex: 1;" onclick="bookArtViaWhatsApp('${item.title}', '${item.id}')">
               <span>💬 Book on WhatsApp</span>
@@ -337,9 +350,6 @@ function renderGallery() {
         <div class="art-body">
           <h3 class="art-title">${item.title}</h3>
           <p class="art-desc">${item.description || ''}</p>
-          <div class="art-tags">
-            ${(item.tags || []).map(t => `<span class="art-tag-chip">#${t}</span>`).join('')}
-          </div>
           <div class="art-actions">
             <button class="btn btn-primary btn-sm" style="flex: 1;" onclick="bookArtViaWhatsApp('${item.title}', '${item.id}')">
               <span>💬 Book on WhatsApp</span>
@@ -424,17 +434,13 @@ function renderServices() {
       <div class="service-icon-box">✨</div>
       <h3 class="service-title">${srv.title}</h3>
       <p class="service-subtitle-text">${srv.subtitle || ''}</p>
-      <div class="service-badge-duration">⏱️ ${srv.duration || 'Custom Duration'}</div>
       <p class="service-desc">${srv.description}</p>
       <ul class="service-features">
         ${(srv.features || []).map(f => `<li><span>✓</span> ${f}</li>`).join('')}
       </ul>
-      <div style="margin-top: auto; display: flex; flex-direction: column; gap: 0.6rem; width: 100%;">
+      <div style="margin-top: auto; padding-top: 0.85rem; width: 100%;">
         <button class="btn btn-primary enquiry-btn" onclick="enquireServiceWhatsApp('${srv.title}')" style="width: 100%;">
           <span>💬 Book on WhatsApp</span>
-        </button>
-        <button class="btn btn-outline btn-sm" onclick="openConsultationModal('${srv.title}')" style="width: 100%;">
-          <span>📝 Fill Booking Form</span>
         </button>
       </div>
     </div>
@@ -469,11 +475,8 @@ function renderProducts() {
         </div>
         <h3 class="product-name">${prod.name}</h3>
         <p class="product-desc">${prod.description}</p>
-        <div class="product-spec-row">
-          <span>📦 ${prod.weight || 'Fresh Batch'}</span>
-          <span>⏳ ${prod.shelfLife || 'Natural'}</span>
-        </div>
-        <div style="margin-top: auto; padding-top: 1rem;">
+        ${prod.weight ? `<div style="font-size: 0.78rem; color: var(--theme-text-muted); margin-bottom: 0.65rem;"><span>📦 ${prod.weight}</span></div>` : ''}
+        <div style="margin-top: auto; padding-top: 0.85rem;">
           <button class="btn btn-primary btn-sm" style="width: 100%;" onclick="enquireProductWhatsApp('${prod.id}')">
             <span>🛍️ Order on WhatsApp</span>
           </button>
@@ -500,32 +503,35 @@ function renderCourses() {
   if (!container) return;
 
   const courses = AppState.data.courses || [];
-  container.innerHTML = courses.map(course => `
-    <article class="course-card glass-card">
+  if (courses.length === 0) return;
+
+  const course = courses[0];
+  container.innerHTML = `
+    <article class="course-card glass-card masterclass-unified">
       <div class="course-thumb">
-        <img src="${course.image}" alt="${course.title}" loading="lazy" />
-        <span class="course-badge">${course.badge || 'Hands-on'}</span>
+        <img src="${course.image || 'assets/images/teach_mehndi.jpg'}" alt="${course.title}" loading="lazy" />
+        <span class="course-badge">${course.badge || 'Hands-on Masterclass'}</span>
       </div>
       <div class="course-body">
         <div class="course-meta">
-          <span>⏱️ ${course.duration}</span>
-          <span>📍 ${course.mode}</span>
+          <span>📍 ${course.mode || 'Hazaribagh Studio Workshop'}</span>
+          <span>🎓 All Skill Levels Welcome</span>
         </div>
         <h3 class="course-title">${course.title}</h3>
         <p class="course-desc">${course.description}</p>
         
-        <h5 style="font-size: 0.82rem; font-weight: 700; color: var(--theme-gold); text-transform: uppercase; margin-bottom: 0.45rem;">Curriculum Highlights:</h5>
+        <h5 style="font-size: 0.82rem; font-weight: 700; color: var(--theme-gold); text-transform: uppercase; margin-bottom: 0.5rem; letter-spacing: 0.05em;">Curriculum Overview:</h5>
         <ul class="curriculum-list">
-          ${(course.curriculum || []).slice(0, 4).map(c => `<li><span>✦</span> ${c}</li>`).join('')}
+          ${(course.curriculum || []).map(c => `<li><span>✦</span> ${c}</li>`).join('')}
         </ul>
 
-        <div style="background: var(--theme-bg-subtle); padding: 0.65rem 0.85rem; border-radius: var(--radius-sm); margin-bottom: 1rem; font-size: 0.8rem; color: var(--theme-text-muted); border: 1px solid var(--theme-border-subtle);">
-          <strong>🎁 Kit Included:</strong> Practice Hand, Cones, Worksheets &amp; Completion Certificate.
+        <div style="background: var(--theme-bg-subtle); padding: 0.85rem 1rem; border-radius: var(--radius-sm); margin-bottom: 1.25rem; font-size: 0.82rem; color: var(--theme-text-muted); border: 1px solid var(--theme-border-subtle);">
+          <strong>🎁 Free Starter Kit:</strong> ${course.kitText || 'Acrylic practice board, organic cones, worksheets & Certificate.'}
         </div>
 
-        <div class="course-footer">
+        <div class="course-footer" style="margin-top: auto;">
           <div>
-            <span class="enquiry-label" style="font-size:0.85rem; color: var(--theme-gold); font-weight: 700;">Hazaribagh Batches Open</span>
+            <span style="font-size: 0.85rem; color: var(--theme-gold); font-weight: 700;">Hazaribagh Batches Open</span>
           </div>
           <button class="btn btn-gold btn-sm" onclick="enrollInCourse('${course.title}')">
             <span>Book Seat on WhatsApp 🎓</span>
@@ -533,7 +539,7 @@ function renderCourses() {
         </div>
       </div>
     </article>
-  `).join('');
+  `;
 }
 
 function enrollInCourse(courseTitle) {
@@ -751,4 +757,41 @@ function showToast(message) {
     toast.style.transform = 'translateY(-10px)';
     setTimeout(() => toast.remove(), 300);
   }, 3500);
+}
+
+
+/* --------------------------------------------------------------------------
+   HORIZONTAL WHEEL SCROLL & SCROLL REVEAL ANIMATIONS
+   -------------------------------------------------------------------------- */
+function initHorizontalWheelScroll() {
+  const tracks = document.querySelectorAll('#gallery-preview-grid, .services-grid, .shop-grid, .reviews-grid');
+  tracks.forEach(track => {
+    track.addEventListener('wheel', (e) => {
+      if (Math.abs(e.deltaY) > Math.abs(e.deltaX) && track.scrollWidth > track.clientWidth) {
+        const canScrollLeft = track.scrollLeft > 0;
+        const canScrollRight = track.scrollLeft < (track.scrollWidth - track.clientWidth - 1);
+        if ((e.deltaY > 0 && canScrollRight) || (e.deltaY < 0 && canScrollLeft)) {
+          e.preventDefault();
+          track.scrollBy({ left: e.deltaY, behavior: 'smooth' });
+        }
+      }
+    }, { passive: false });
+  });
+}
+
+function initScrollRevealAnimations() {
+  if (!('IntersectionObserver' in window)) return;
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('revealed');
+        observer.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.1 });
+
+  document.querySelectorAll('.glass-card, .section-header, .trust-pillar-card, .aftercare-step').forEach(el => {
+    el.classList.add('reveal-on-scroll');
+    observer.observe(el);
+  });
 }

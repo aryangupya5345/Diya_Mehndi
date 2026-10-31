@@ -15,7 +15,6 @@ const DEFAULT_MEHNDI_DATA = {
     email: "Diya@gmail.com",
     city: "Hazaribagh",
     address: "Baba Path, Hurhuru, Hazaribagh, Jharkhand 825301",
-    workingHours: "Mon - Sun: 9:00 AM - 8:30 PM (By Prior Appointment)",
     instagram: "https://instagram.com/sakshimehndi.art",
     instagramHandle: "@sakshimehndi.art",
     googleMapsUrl: "https://maps.google.com/?q=Bridal+Mehndi+Artist",
@@ -149,57 +148,49 @@ const DEFAULT_MEHNDI_DATA = {
     {
       id: "srv-1",
       title: "Haute Couture Bridal Mehndi",
-      subtitle: "Personalized Wedding Storytelling",
-      description: "Elaborate coverage for both hands (elbow-length) and feet (mid-calf). Includes customized groom & bride portrait motifs, wedding date, vows, and sacred wedding symbols.",
-      duration: "4 - 6 Hours",
+      subtitle: "Custom Wedding Storytelling",
+      description: "Elaborate bridal jaal, portrait silhouettes, wedding dates, and vows for hands and feet.",
       features: [
-        "Custom Portrait & Motifs",
-        "Both Hands up to Elbows",
-        "Feet up to Mid-calf",
-        "100% Organic Dark-Stain Cones Included",
-        "Complimentary Aftercare Kit & Sealant"
+        "Hands up to elbows & feet up to calves",
+        "Custom portrait motifs & wedding date",
+        "100% organic dark-stain henna cones",
+        "Complimentary aftercare sealant"
       ],
       category: "Bridal"
     },
     {
       id: "srv-2",
       title: "Sangeet & Engagement Mehndi",
-      subtitle: "Elegance & Modern Charm",
-      description: "Exquisite front and back wrist-to-palm coverage designed to highlight your engagement ring and celebratory outfit. Fast-staining and delightfully fragrant.",
-      duration: "2 - 3 Hours",
+      subtitle: "Modern Festive Elegance",
+      description: "Wrist-to-palm coverage designed to highlight your engagement ring and celebratory outfit.",
       features: [
-        "Front & Back Both Hands",
-        "Wrist to Mid-forearm coverage",
-        "Floral & Delicate Mandala Patterns",
-        "Jewelry Style Ring Bel & Cuffs"
+        "Front & back both hands",
+        "Wrist to forearm coverage",
+        "Delicate lotus mandalas & vines"
       ],
       category: "Celebration"
     },
     {
       id: "srv-3",
-      title: "Guest & Bridesmaid Party Henna",
-      subtitle: "Fast, Flawless Designs for Family & Friends",
-      description: "Stunning one-side palms or delicate wrist bracelets for wedding guests, cousins, and bridesmaids. Keeps the celebration vibrant and joyful.",
-      duration: "15 mins per hand",
+      title: "Guest & Bridesmaid Henna",
+      subtitle: "Family & Celebration Henna",
+      description: "Delicate palm patterns and wrist bracelets for wedding guests, cousins, and bridesmaids.",
       features: [
-        "Quick 10-15 min application per guest",
-        "Arabic, Indo-Western & Mandala styles",
-        "Dedicated assistant artist options for big parties",
-        "Ideal for Mehendi & Haldi celebrations"
+        "Quick, clean application per guest",
+        "Arabic, Indo-Western & mandalas",
+        "Assistant artist available for big groups"
       ],
       category: "Party"
     },
     {
       id: "srv-4",
       title: "Festive & Occasion Specials",
-      subtitle: "Karwa Chauth, Teej, Eid & Diwali",
-      description: "Auspicious festive designs featuring moon motifs, traditional blooming flowers, and protective charms. Special festival appointment slots available.",
-      duration: "45 - 90 mins",
+      subtitle: "Teej, Karwa Chauth & Festivals",
+      description: "Auspicious traditional designs, blooming florals, and sacred protective charms.",
       features: [
-        "Festive Mandalas & Fine Jaali",
-        "Dark Mahogany 24-hr Stain",
-        "Express Studio Appointments",
-        "Natural Herbal Henna Formula"
+        "Festive mandalas & fine jaali",
+        "Guaranteed dark mahogany stain",
+        "Studio & doorstep visits in Hazaribagh"
       ],
       category: "Festive"
     }
@@ -213,8 +204,7 @@ const DEFAULT_MEHNDI_DATA = {
       category: "bridal",
       categoryLabel: "Bridal Couture",
       image: "assets/images/bridal_hero.jpg",
-      description: "Intricate bridal artwork combining delicate jaali grids, royal peacocks, and floral cuffs extending up the forearms. Stained with organic Sojat paste.",
-      tags: ["Bridal", "Full Hand", "Traditional", "Royal Jaal"]
+      description: "Intricate bridal jaali with royal peacocks and floral cuffs."
     },
     {
       id: "art-2",
@@ -222,8 +212,7 @@ const DEFAULT_MEHNDI_DATA = {
       category: "arabic",
       categoryLabel: "Arabic & Gulf Flow",
       image: "assets/images/arabic_art.jpg",
-      description: "Contemporary Arabic henna with deep gradient shading, bold borders, and graceful vine trails over the back of the hand.",
-      tags: ["Arabic", "Back Hand", "Floral Shading", "Modern Flow"]
+      description: "Contemporary Gulf Arabic with deep gradient shading and vines."
     },
     {
       id: "art-3",
@@ -231,8 +220,7 @@ const DEFAULT_MEHNDI_DATA = {
       category: "minimal",
       categoryLabel: "Lotus Mandala & Minimal",
       image: "assets/images/mandala_art.jpg",
-      description: "Centered sacred lotus mandala with symmetrical lace rings, delicate finger lace bands, and airy negative space.",
-      tags: ["Mandala", "Lotus", "Minimalist", "Front Hand"]
+      description: "Symmetrical lotus mandala with delicate finger lace bands."
     },
     {
       id: "art-4",
@@ -240,8 +228,7 @@ const DEFAULT_MEHNDI_DATA = {
       category: "feet",
       categoryLabel: "Bridal Feet & Payal",
       image: "assets/images/feet_art.jpg",
-      description: "Architectural bridal feet henna replicating an ornate silver payal anklet with delicate jaal and sculpted toe leaf accents.",
-      tags: ["Bridal Feet", "Payal Anklet", "Intricate", "Bridal"]
+      description: "Architectural bridal feet henna replicating an ornate silver payal."
     },
     {
       id: "art-5",
@@ -249,8 +236,7 @@ const DEFAULT_MEHNDI_DATA = {
       category: "bridal",
       categoryLabel: "Bridal Couture",
       image: "assets/images/bridal_hero.jpg",
-      description: "High-density bridal mehndi designed for the main wedding day, highlighting wedding rings and bridal jewelry.",
-      tags: ["Bridal", "Wedding Day", "Full Arms", "Story Motif"]
+      description: "Full forearm bridal mehndi with custom wedding motifs."
     },
     {
       id: "art-6",
@@ -258,8 +244,7 @@ const DEFAULT_MEHNDI_DATA = {
       category: "festive",
       categoryLabel: "Festive & Sangeet",
       image: "assets/images/teach_mehndi.jpg",
-      description: "Geometrically balanced multi-tiered festive mandala designed for Karwa Chauth, Teej, and Sangeet celebrations.",
-      tags: ["Festive", "Mandala", "Handcrafted", "Sangeet"]
+      description: "Geometrically balanced multi-tiered festive mandala."
     },
     {
       id: "art-7",
@@ -267,8 +252,7 @@ const DEFAULT_MEHNDI_DATA = {
       category: "jewelry",
       categoryLabel: "Jewelry & Finger Art",
       image: "assets/images/arabic_art.jpg",
-      description: "Glove-style jewelry mehndi recreating delicate stone chains, ring cuffs, and trailing finger vines for modern bridesmaids.",
-      tags: ["Jewelry", "Finger Bel", "Ring Cuffs", "Modern"]
+      description: "Glove-style jewelry henna with ring cuffs and trailing finger vines."
     },
     {
       id: "art-8",
@@ -276,8 +260,7 @@ const DEFAULT_MEHNDI_DATA = {
       category: "minimal",
       categoryLabel: "Lotus Mandala & Minimal",
       image: "assets/images/mandala_art.jpg",
-      description: "Soft crescent-shaped floral arch with subtle dot chains and pearl clusters, perfect for minimalist lovers.",
-      tags: ["Minimalist", "Crescent", "Dainty", "Back Hand"]
+      description: "Soft crescent-shaped floral arch with subtle dot chains."
     }
   ],
 
@@ -292,9 +275,8 @@ const DEFAULT_MEHNDI_DATA = {
       badge: "Bestseller",
       inStock: true,
       image: "assets/images/henna_cones.jpg",
-      description: "Hand-rolled micro-tip 0.38mm cones filled with 100% pure Rajasthani Sojat henna, therapeutic eucalyptus, cajeput & tea tree oils. Delivers rich, dark mahogany stains within 24-48 hours. No chemical preservatives, no PPD.",
-      weight: "30g each cone",
-      shelfLife: "Keep frozen up to 6 months"
+      description: "Hand-rolled 0.38mm micro-tip cones with pure Sojat henna and essential oils for rich dark stain.",
+      weight: "5 x 30g cones"
     },
     {
       id: "prod-2",
@@ -305,9 +287,8 @@ const DEFAULT_MEHNDI_DATA = {
       badge: "Best Value",
       inStock: true,
       image: "assets/images/henna_cones.jpg",
-      description: "Complete bridal party pack. 12 fresh organic henna cones formulated specifically for deep bridal color and smooth, unbroken linework. Packed fresh for dispatch.",
-      weight: "12 x 30g cones",
-      shelfLife: "Keep frozen up to 6 months"
+      description: "Bridal party pack of 12 fresh organic cones formulated for smooth, unbroken bridal linework.",
+      weight: "12 x 30g cones"
     },
     {
       id: "prod-3",
@@ -318,9 +299,8 @@ const DEFAULT_MEHNDI_DATA = {
       badge: "100% Pure",
       inStock: true,
       image: "assets/images/henna_powder.jpg",
-      description: "Triple cloth-filtered, ultra-fine body art quality (BAQ) raw henna powder harvested directly from Sojat, Rajasthan. Smooth creamy paste with exceptional dye release.",
-      weight: "250 Grams",
-      shelfLife: "2 Years in cool dry place"
+      description: "Triple cloth-filtered, body art quality (BAQ) raw henna powder with high natural dye release.",
+      weight: "250 Grams"
     },
     {
       id: "prod-4",
@@ -331,9 +311,8 @@ const DEFAULT_MEHNDI_DATA = {
       badge: "Natural Booster",
       inStock: true,
       image: "assets/images/henna_powder.jpg",
-      description: "100% pure steam-distilled eucalyptus and cajeput essential oil blend. High monoterpene content drastically darkens henna stains and provides a relaxing aroma.",
-      weight: "30 ml glass dropper bottle",
-      shelfLife: "3 Years"
+      description: "Pure steam-distilled essential oil blend to naturally deepen and darken henna stains.",
+      weight: "30 ml dropper"
     },
     {
       id: "prod-5",
@@ -344,9 +323,8 @@ const DEFAULT_MEHNDI_DATA = {
       badge: "Workshop Favorite",
       inStock: true,
       image: "assets/images/practice_board.jpg",
-      description: "Durable clear acrylic hand mannequin for endless mehndi practice. Wipe clean with a damp cloth or oil. Includes laminated practice grid sheets for lines, checks, and vines.",
-      weight: "Life-size hand + sheets",
-      shelfLife: "Reusable Lifetime"
+      description: "Durable clear acrylic hand mannequin with laminated grid sheets for endless practice. Wipe clean.",
+      weight: "Life-size board"
     },
     {
       id: "prod-6",
@@ -357,86 +335,27 @@ const DEFAULT_MEHNDI_DATA = {
       badge: "Complete Set",
       inStock: true,
       image: "assets/images/teach_mehndi.jpg",
-      description: "Everything a student or enthusiast needs: Acrylic Practice Hand, Fresh Organic Cones, Sojat Henna Powder, Essential Oil, Empty Cello Sheets, and Practice Guidebook.",
-      weight: "Complete Kit Box",
-      shelfLife: "Complete Set"
+      description: "Complete practice set: Acrylic hand, organic cones, Sojat henna powder, oil, and design sheets.",
+      weight: "Complete Kit Box"
     }
   ],
 
   // TEACH / ACADEMY COURSES (NO FEES - ALL ON ENQUIRY)
   courses: [
     {
-      id: "course-1",
-      title: "Foundations to Professional Bridal Artist",
-      level: "Beginner to Advanced",
-      duration: "4 Weeks (16 Live Sessions)",
-      badge: "Most Popular",
-      mode: "Studio Workshop & Live Online",
-      nextBatch: "Starts 15th of Next Month",
-      seats: "Limited to 6 students per batch",
+      id: "masterclass-pro",
+      title: "Professional Mehndi Artistry Masterclass",
+      badge: "Hands-on Masterclass",
+      mode: "Hazaribagh Studio Workshop",
       image: "assets/images/teach_mehndi.jpg",
-      description: "Our comprehensive mentorship program taking you from holding a cone to independently designing intricate bridal patterns and figures.",
+      description: "Comprehensive hands-on training taking you from cone holding and pressure control to intricate bridal jaal, Gulf Arabic flow, and figure compositions. Open to beginners and passionate learners.",
       curriculum: [
-        "Cone holding ergonomics & pressure control secrets",
-        "Mastering geometric jaali, paisleys & sacred florals",
-        "Bridal figure sketching (Doli, Groom, Bride, Shehnai)",
-        "Organic henna paste making, filtration & cone rolling",
-        "Client consultation, bridal layout & styling secrets"
+        "Cone grip ergonomics, pressure control & line precision",
+        "Traditional bridal jaali, peacocks & sacred florals",
+        "Modern Gulf Arabic shading & negative space flow",
+        "100% natural organic henna paste preparation & cone rolling"
       ],
-      includes: [
-        "Complete Practice Kit delivered to your address",
-        "Acrylic practice hand & laminated workbook sheets",
-        "Certificate of Completion",
-        "Lifetime WhatsApp Alumni Mentorship Community",
-        "Real bridal client shadowing opportunities"
-      ]
-    },
-    {
-      id: "course-2",
-      title: "Gulf Arabic & Modern Shading Masterclass",
-      level: "Intermediate",
-      duration: "2 Weeks (8 Sessions)",
-      badge: "High Demand",
-      mode: "Live Interactive Hybrid",
-      nextBatch: "Upcoming Weekend Batch",
-      seats: "Small interactive group",
-      image: "assets/images/arabic_art.jpg",
-      description: "Master modern Gulf Arabic designs, deep shading techniques, negative space composition, and intricate jewel finger cuffs.",
-      curriculum: [
-        "Architectural flow & negative space aesthetics",
-        "Gradient leaf and rose shading techniques",
-        "Trending Dubai & Moroccan fusion patterns",
-        "Fast-speed party mehndi execution tips"
-      ],
-      includes: [
-        "Arabic Design Workbook (50+ Motifs)",
-        "Fresh Micro-Tip Practice Cones",
-        "Individual 1-on-1 critique on all assignments",
-        "Certificate of Achievement"
-      ]
-    },
-    {
-      id: "course-3",
-      title: "Bridal Figure & Dulha-Dulhan Intensive",
-      level: "Specialized Masterclass",
-      duration: "2-Day Weekend Bootcamp (8 Hours)",
-      badge: "Specialized",
-      mode: "Studio Workshop & Zoom HD",
-      nextBatch: "This Saturday & Sunday",
-      seats: "Only 4 seats per batch",
-      image: "assets/images/bridal_hero.jpg",
-      description: "Master human figure sketching without fear. Learn step-by-step anatomical grid formulas for lifelike bride and groom portraits.",
-      curriculum: [
-        "Proportions of bridal side-profile & front-profile",
-        "Realistic eyes, jewelry detailing & bridal veil jaal",
-        "Groom turban, sherwani folds & garland symmetry",
-        "Fixing mistakes on bridal skin seamlessly"
-      ],
-      includes: [
-        "Step-by-Step Face Grid Templates",
-        "Personalized live correction during workshop",
-        "Certificate of Completion"
-      ]
+      kitText: "Complete Practice Kit Included: Acrylic practice board, fresh organic cones, worksheets & Certificate."
     }
   ],
 
@@ -444,30 +363,39 @@ const DEFAULT_MEHNDI_DATA = {
   reviews: [
     {
       id: "rev-1",
-      name: "Pooja Sharma",
+      name: "Pooja Verma",
       role: "Bride",
-      city: "Hazaribagh",
+      city: "Matwari, Hazaribagh",
       rating: 5,
-      date: "Last Week",
-      comment: "Sakshi Mehndi made my wedding dreams come true! The color was the deepest, richest mahogany I have ever seen, and the organic henna smelled pure and soothing. She customized our love story into the jaal with such finesse. Truly the most talented artist!"
+      date: "Wedding Client",
+      comment: "Sakshi did my bridal mehndi for my wedding at Canary Inn. The dulha-dulhan portrait and fine jaal were so neat, sabhi rishtedaar tareef kar rahe the. The dark brown color came out so rich and lasted over two weeks with zero chemical smell!"
     },
     {
       id: "rev-2",
-      name: "Ananya Iyer",
-      role: "Bridal Client",
-      city: "Ranchi",
+      name: "Neha Gupta",
+      role: "Bride",
+      city: "Babugaon, Hazaribagh",
       rating: 5,
-      date: "2 Weeks Ago",
-      comment: "Booked Sakshi for my wedding and my sisters' sangeet. The speed and precision of her lines are unbelievable. Two days later, my hands were a deep dark maroon. All my guests were showering compliments!"
+      date: "Bridal Client",
+      comment: "Booked Diya Sakshi for my wedding at our home in Babugaon. She is so polite, calm, and patient. The peacock artwork was stunning, and her clove steam aftercare tip gave the darkest maroon stain. Best mehndi artist in Hazaribagh!"
     },
     {
       id: "rev-3",
-      name: "Rhea Khurana",
+      name: "Priyanka Singh",
       role: "Sangeet Host",
-      city: "Jamshedpur",
+      city: "Korrah, Hazaribagh",
       rating: 5,
-      date: "1 Month Ago",
-      comment: "Ordered fresh cones for my sister's Sangeet night and booked Sakshi. The cones flowed like butter with zero clogging, and the stain turned so dark and gorgeous. Highly recommend her services to every bride!"
+      date: "Family Event",
+      comment: "Diya and her assistant applied mehndi for all our cousins and family during my sister's Sangeet. Unka speed aur neatness dono kamaal ka tha. Hazaribagh me aisi professional artist milna sach me bahut badi baat hai."
+    },
+    {
+      id: "rev-4",
+      name: "Shreya Sinha",
+      role: "Bride",
+      city: "Hurhuru, Hazaribagh",
+      rating: 5,
+      date: "Wedding Client",
+      comment: "I visited her studio in Hurhuru for bridal consultation and she customized the design exactly as I wanted. Her cones are 100% natural, no itching or skin reaction at all, and the stain color was pure dark mahogany on my wedding day!"
     }
   ],
 
@@ -494,12 +422,12 @@ const DEFAULT_MEHNDI_DATA = {
 
 // Data service helper with LocalStorage sync
 const DataService = {
-  STORAGE_KEY: "mehndi_atelier_data_v3",
+  STORAGE_KEY: "mehndi_atelier_data_v4",
 
   load() {
     try {
       // Clean up legacy keys that may have old sample data
-      ['mehndi_atelier_data', 'mehndi_atelier_data_v2'].forEach(key => {
+      ['mehndi_atelier_data', 'mehndi_atelier_data_v2', 'mehndi_atelier_data_v3'].forEach(key => {
         const val = localStorage.getItem(key);
         if (val && (val.includes("Aura") || val.includes("aura") || val.includes("Sacred Artistry"))) {
           localStorage.removeItem(key);
@@ -543,6 +471,7 @@ const DataService = {
   reset() {
     try {
       localStorage.removeItem(this.STORAGE_KEY);
+      localStorage.removeItem("mehndi_atelier_data_v3");
       localStorage.removeItem("mehndi_atelier_data_v2");
       localStorage.removeItem("mehndi_atelier_data");
       window.dispatchEvent(new CustomEvent("mehndi_data_updated", { detail: DEFAULT_MEHNDI_DATA }));

@@ -3005,12 +3005,11 @@ body, .glass-card, .site-header, .mobile-drawer-content, .btn, .filter-btn {
 
 /* ==========================================================================
    HORIZONTAL SNAP SCROLL SHOWROOM TRACKS
-   (MEHNDI ART, SERVICES, SHOP, COURSES, REVIEWS)
+   (MEHNDI ART, SERVICES, SHOP, REVIEWS)
    ========================================================================== */
 #gallery-preview-grid,
 .services-grid,
 .shop-grid,
-.courses-grid,
 .reviews-grid {
   display: flex !important;
   overflow-x: auto !important;
@@ -3026,7 +3025,6 @@ body, .glass-card, .site-header, .mobile-drawer-content, .btn, .filter-btn {
 #gallery-preview-grid::-webkit-scrollbar,
 .services-grid::-webkit-scrollbar,
 .shop-grid::-webkit-scrollbar,
-.courses-grid::-webkit-scrollbar,
 .reviews-grid::-webkit-scrollbar {
   height: 6px;
 }
@@ -3034,7 +3032,6 @@ body, .glass-card, .site-header, .mobile-drawer-content, .btn, .filter-btn {
 #gallery-preview-grid::-webkit-scrollbar-track,
 .services-grid::-webkit-scrollbar-track,
 .shop-grid::-webkit-scrollbar-track,
-.courses-grid::-webkit-scrollbar-track,
 .reviews-grid::-webkit-scrollbar-track {
   background: rgba(255, 255, 255, 0.04);
   border-radius: 4px;
@@ -3043,7 +3040,6 @@ body, .glass-card, .site-header, .mobile-drawer-content, .btn, .filter-btn {
 #gallery-preview-grid::-webkit-scrollbar-thumb,
 .services-grid::-webkit-scrollbar-thumb,
 .shop-grid::-webkit-scrollbar-thumb,
-.courses-grid::-webkit-scrollbar-thumb,
 .reviews-grid::-webkit-scrollbar-thumb {
   background: var(--theme-gold);
   border-radius: 4px;
@@ -3053,13 +3049,60 @@ body, .glass-card, .site-header, .mobile-drawer-content, .btn, .filter-btn {
 #gallery-preview-grid > .art-card,
 .services-grid > .service-card,
 .shop-grid > .product-card,
-.courses-grid > .course-card,
 .reviews-grid > .review-card {
   flex: 0 0 clamp(285px, 80vw, 340px) !important;
   scroll-snap-align: start;
   min-width: 0;
   display: flex !important;
   flex-direction: column !important;
+}
+
+/* Unified Masterclass Presentation */
+.courses-grid {
+  display: block !important;
+  max-width: 980px !important;
+  margin: 0 auto !important;
+  padding: 0 !important;
+  overflow: visible !important;
+}
+
+.masterclass-unified {
+  display: grid !important;
+  grid-template-columns: 1fr !important;
+  overflow: hidden !important;
+  border-radius: var(--radius-lg) !important;
+  border: 1px solid var(--theme-border-glass) !important;
+  background: var(--theme-bg-surface) !important;
+  box-shadow: var(--theme-glass-shadow), var(--theme-glass-inner-glow) !important;
+}
+
+@media (min-width: 860px) {
+  .masterclass-unified {
+    grid-template-columns: 0.95fr 1.05fr !important;
+  }
+}
+
+.masterclass-unified .course-thumb {
+  position: relative;
+  min-height: 280px;
+  height: 100%;
+}
+
+.masterclass-unified .course-thumb img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.masterclass-unified:hover .course-thumb img {
+  transform: scale(1.04);
+}
+
+.masterclass-unified .course-body {
+  padding: 2.25rem 2rem;
+  display: flex;
+  flex-direction: column;
 }
 
 /* Ensure dedicated gallery page on gallery.html retains multi-column grid */
