@@ -46,7 +46,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;0,700;1,500;1,600;1,700&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet" />
 
   <!-- Stylesheet -->
-  <link rel="stylesheet" href="assets/css/style.css?v=3.2" />
+  <link rel="stylesheet" href="assets/css/style.css?v=3.4" />
 
   <!-- Schema.org JSON-LD Structured Data for Google Rich Snippets -->
   <script type="application/ld+json">
@@ -673,84 +673,83 @@
        WEBSITE OWNER CUSTOMIZATION PORTAL (ADMIN DASHBOARD MODAL)
        ========================================================================== -->
   <div class="admin-modal-overlay" id="admin-modal-overlay">
-    <!-- PIN Verification Dialog -->
+        <!-- PIN Verification Dialog -->
     <div class="pin-dialog" id="admin-pin-view" style="display: none;">
-      <div style="font-size: 2.8rem; margin-bottom: 0.5rem;">👑</div>
-      <h3 style="font-family: var(--font-serif); font-size: 1.6rem; color: var(--theme-primary); margin-bottom: 0.25rem;">Owner Atelier Portal</h3>
-      <p style="font-size: 0.88rem; color: var(--theme-text-muted); margin-bottom: 1.25rem;">
-        Enter your passcode to customize contacts, artworks, products, texts, and courses.
-
+      <div class="pin-dialog-emblem">👑</div>
+      <h3 class="pin-dialog-title">Owner Atelier Portal</h3>
+      <p class="pin-dialog-desc">
+        Enter your owner passcode to manage live artworks, contacts, bridal bookings, and academy courses.
       </p>
-      <div style="display: flex; gap: 0.5rem; justify-content: center; margin-bottom: 1rem;">
-        <input type="password" id="admin-pin-input" class="form-input" style="width: 150px; text-align: center; font-size: 1.3rem; letter-spacing: 0.3em;" maxlength="8" placeholder="••••••" onkeydown="if(event.key==='Enter') AdminPortal.verifyPin()" />
-        <button class="btn btn-primary" onclick="AdminPortal.verifyPin()">Login</button>
+      <div class="pin-input-group">
+        <input type="password" id="admin-pin-input" class="form-input pin-input" maxlength="8" placeholder="••••••" onkeydown="if(event.key==='Enter') AdminPortal.verifyPin()" />
+        <button id="admin-pin-submit-btn" class="btn btn-primary pin-submit-btn" onclick="AdminPortal.verifyPin()">Login</button>
       </div>
-      <button class="btn btn-outline btn-sm" onclick="AdminPortal.close()">Cancel</button>
+      <div id="admin-pin-status" style="min-height: 1.3rem; font-size: 0.82rem; margin-bottom: 0.85rem; font-weight: 500;"></div>
+      <button class="btn btn-outline btn-sm pin-cancel-btn" onclick="AdminPortal.close()">Cancel</button>
     </div>
 
     <!-- Main Full Customization Dashboard -->
     <div class="admin-modal" id="admin-dashboard-view" style="display: none;">
-      <!-- Header -->
+      <!-- Luxury Unified Header -->
       <div class="admin-header">
-        <div class="admin-header-title">
-          <span style="font-size: 1.6rem;">👑</span>
-          <div>
-            <h3>Owner Atelier Dashboard</h3>
-            <span style="font-size: 0.78rem; color: rgba(255,255,255,0.85);">Full Control: Live Website Texts, Images, Items &amp; Contacts</span>
+        <div class="admin-brand-lockup">
+          <div class="admin-emblem-badge">
+            <span class="admin-emblem-icon">👑</span>
+          </div>
+          <div class="admin-title-group">
+            <div class="admin-title-row">
+              <h3 class="admin-main-title">Sakshi Mehndi Atelier</h3>
+              <span class="admin-live-badge">
+                <span class="admin-pulse-dot"></span> Live Cloud Sync
+              </span>
+            </div>
+            <p class="admin-sub-title">Master Atelier Suite • Real-time Worldwide Publishing</p>
           </div>
         </div>
-        <button id="admin-modal-close" style="font-size: 1.5rem; color: #ffffff;" aria-label="Close Admin Modal">✕</button>
-      </div>
 
-            <!-- Quick Section Jump Bar: Instant dropdown switch & fast-action chips -->
-      <div class="admin-quick-bar">
-        <div class="admin-quick-select-wrap">
-          <span class="admin-quick-icon">⚡</span>
-          <label for="admin-quick-select" class="admin-quick-label">Jump to Section:</label>
-          <select id="admin-quick-select" class="admin-quick-dropdown" onchange="AdminPortal.switchTab(this.value)">
-            <option value="profile">🏢 Brand &amp; Contact Details</option>
-            <option value="gallery">🎨 Mehndi Arts (Upload &amp; Remove Images)</option>
-            <option value="products">🛍️ Shop Items (Add, Edit &amp; Delete Products)</option>
-            <option value="services">💍 Services &amp; Packages (Add, Edit &amp; Delete)</option>
-            <option value="hero">✍️ Hero &amp; Page Texts</option>
-            <option value="courses">🎓 Teach &amp; Masterclasses</option>
-            <option value="reviews">⭐ Customer Reviews</option>
-            <option value="google">🌐 Google SEO &amp; Backup</option>
-          </select>
-        </div>
-        <div class="admin-quick-pills">
-          <button type="button" class="admin-quick-pill" onclick="AdminPortal.switchTab('gallery')">🎨 Arts Upload</button>
-          <button type="button" class="admin-quick-pill" onclick="AdminPortal.switchTab('products')">🛍️ Shop Items</button>
-          <button type="button" class="admin-quick-pill" onclick="AdminPortal.switchTab('services')">💍 Services</button>
-          <button type="button" class="admin-quick-pill active" onclick="AdminPortal.switchTab('profile')">🏢 Brand Profile</button>
+        <div class="admin-header-actions">
+          <div class="admin-quick-jump-box">
+            <span class="admin-quick-jump-icon">⚡</span>
+            <select id="admin-quick-select" class="admin-modern-select" onchange="AdminPortal.switchTab(this.value)">
+              <option value="profile">🏢 Brand &amp; Contacts</option>
+              <option value="gallery">🎨 Mehndi Artworks (Upload/Delete)</option>
+              <option value="products">🛍️ Shop &amp; Organic Cones</option>
+              <option value="services">💍 Bridal &amp; Festive Services</option>
+              <option value="hero">✍️ Hero &amp; Website Texts</option>
+              <option value="courses">🎓 Academy &amp; Masterclasses</option>
+              <option value="reviews">⭐ Customer Reviews</option>
+              <option value="google">🌐 Google SEO &amp; Security</option>
+            </select>
+          </div>
+          <button id="admin-modal-close" class="admin-close-btn" aria-label="Close Admin Modal">✕</button>
         </div>
       </div>
 
-      <!-- Navigation Tabs (Prominent Pill Buttons) -->
+      <!-- Navigation Tabs (Sleek Single-Tier Navigation Bar) -->
       <nav class="admin-tabs" aria-label="Admin Tabs">
         <button class="admin-tab-btn active" data-tab="profile">
-          <span>🏢 Brand &amp; Contacts</span>
+          <span>🏢 Contacts &amp; Brand</span>
         </button>
         <button class="admin-tab-btn" data-tab="gallery">
-          <span>🎨 Mehndi Arts (Upload/Delete)</span>
+          <span>🎨 Mehndi Artworks</span>
         </button>
         <button class="admin-tab-btn" data-tab="products">
-          <span>🛍️ Shop Items</span>
+          <span>🛍️ Henna Shop</span>
         </button>
         <button class="admin-tab-btn" data-tab="services">
-          <span>💍 Services</span>
+          <span>💍 Bridal Services</span>
         </button>
         <button class="admin-tab-btn" data-tab="hero">
-          <span>✍️ Hero &amp; Page Texts</span>
+          <span>✍️ Hero &amp; Texts</span>
         </button>
         <button class="admin-tab-btn" data-tab="courses">
-          <span>🎓 Teach / Academy</span>
+          <span>🎓 Academy &amp; Courses</span>
         </button>
         <button class="admin-tab-btn" data-tab="reviews">
-          <span>⭐ Customer Reviews</span>
+          <span>⭐ Reviews</span>
         </button>
         <button class="admin-tab-btn" data-tab="google">
-          <span>🌐 Google SEO &amp; Backup</span>
+          <span>🌐 SEO &amp; Backup</span>
         </button>
       </nav>
 
@@ -880,7 +879,7 @@
 
           <div style="background: var(--theme-bg-surface); padding: 1.15rem; border-radius: var(--radius-sm); border: 1px dashed var(--theme-gold); margin-top: 1.5rem;">
             <h5 style="color: var(--theme-primary); font-size: 0.98rem; font-weight: 700; margin-bottom: 0.35rem;">🔐 Owner Security: Change Dashboard Passcode (PIN)</h5>
-            <p style="font-size: 0.8rem; color: var(--theme-text-muted); margin-bottom: 0.75rem;">Set a custom secret PIN to access this Owner Atelier Dashboard (Default is 230626).</p>
+            <p style="font-size: 0.8rem; color: var(--theme-text-muted); margin-bottom: 0.75rem;">Set a custom secret PIN to access this Owner Atelier Dashboard safely.</p>
             <div style="display: flex; gap: 0.75rem; align-items: center;">
               <input type="password" id="admin-new-pin" class="form-input" style="max-width: 160px; text-align: center; font-size: 1.1rem; letter-spacing: 0.25em;" placeholder="New PIN" maxlength="8" />
               <button type="button" class="btn btn-gold btn-sm" onclick="AdminPortal.changePin()">Update Passcode</button>
@@ -1430,10 +1429,10 @@
   </aside>
 
   <!-- Scripts -->
-  <script src="assets/js/data.js?v=3.2"></script>
-  <script src="assets/js/app.js?v=3.2"></script>
-  <script src="assets/js/admin.js?v=3.2"></script>
-  <script>
+  <script src="assets/js/data.js?v=3.4"></script>
+  <script src="assets/js/app.js?v=3.4"></script>
+  <script type="module" src="assets/js/firebase-init.js?v=3.4"></script>
+    <script>
     document.getElementById('current-year').textContent = new Date().getFullYear();
   </script>
 </body>

@@ -476,6 +476,13 @@ const DataService = {
     try {
       localStorage.setItem(this.STORAGE_KEY, JSON.stringify(data));
       window.dispatchEvent(new CustomEvent("mehndi_data_updated", { detail: data }));
+
+      // Worldwide Cloud Sync via Firestore
+      if (typeof window.saveFirestoreData === 'function') {
+        window.saveFirestoreData(data);
+      } else {
+        window._pendingFirestoreSync = data;
+      }
       return true;
     } catch (e) {
       console.error("Failed to save to localStorage:", e);

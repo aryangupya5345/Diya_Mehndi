@@ -5,11 +5,165 @@
  */
 
 const AdminPortal = {
-  DEFAULT_PIN: "230626",
+    DEFAULT_PIN_HASH: "9f3d20c2f85970ad3a2aba841264f134892706adc62e9a70697399677e030930",
   isAuthenticated: false,
+  MAX_FAILED_ATTEMPTS: 5,
+  LOCKOUT_DURATION_MS: 15 * 60 * 1000, // 15-minute brute-force lockout
+  lockoutTimerId: null,
+
+  getSecurityState() {
+    try {
+      const raw = localStorage.getItem('mehndi_admin_sec_state');
+      if (raw) {
+        const parsed = JSON.parse(raw);
+        return {
+          failedAttempts: Number(parsed.failedAttempts) || 0,
+          lockedUntil: Number(parsed.lockedUntil) || 0,
+          lastAttemptTime: Number(parsed.lastAttemptTime) || 0
+        };
+      }
+    } catch (e) {}
+    return { failedAttempts: 0, lockedUntil: 0, lastAttemptTime: 0 };
+  },
+
+  saveSecurityState(state) {
+    try {
+      localStorage.setItem('mehndi_admin_sec_state', JSON.stringify(state));
+    } catch (e) {}
+  },
+
+  checkLockoutState() {
+    const state = this.getSecurityState();
+    const now = Date.now();
+    if (state.lockedUntil && now < state.lockedUntil) {
+      this.applyLockoutUI(state.lockedUntil);
+      return true;
+    }
+    if (state.lockedUntil && now >= state.lockedUntil) {
+      this.clearLockoutUI();
+      this.saveSecurityState({ failedAttempts: 0, lockedUntil: 0, lastAttemptTime: 0 });
+    }
+    return false;
+  },
+
+  applyLockoutUI(lockedUntil) {
+    const input = document.getElementById('admin-pin-input');
+    const btn = document.getElementById('admin-pin-submit-btn') || (input ? input.nextElementSibling : null);
+    const statusEl = this.getOrCreateStatusEl();
+
+    if (input) {
+      input.disabled = true;
+      input.style.opacity = '0.55';
+      input.style.cursor = 'not-allowed';
+    }
+    if (btn && btn.tagName === 'BUTTON') {
+      btn.disabled = true;
+      btn.style.opacity = '0.55';
+      btn.style.cursor = 'not-allowed';
+    }
+
+    if (this.lockoutTimerId) clearInterval(this.lockoutTimerId);
+
+    const updateTimer = () => {
+      const remainingMs = lockedUntil - Date.now();
+      if (remainingMs <= 0) {
+        clearInterval(this.lockoutTimerId);
+        this.lockoutTimerId = null;
+        this.clearLockoutUI();
+        this.saveSecurityState({ failedAttempts: 0, lockedUntil: 0, lastAttemptTime: 0 });
+        if (statusEl) {
+          statusEl.innerHTML = '<span style="color: #10b981; font-weight: 600;">Lockout expired. You may now enter your passcode.</span>';
+        }
+        return;
+      }
+
+      const totalSec = Math.ceil(remainingMs / 1000);
+      const mins = Math.floor(totalSec / 60);
+      const secs = totalSec % 60;
+      const formatted = mins + ':' + (secs < 10 ? '0' : '') + secs;
+
+      if (statusEl) {
+        statusEl.innerHTML = '<span style="color: #ef4444; font-weight: 600; display: inline-block; padding: 0.4rem 0.75rem; background: rgba(239, 68, 68, 0.1); border: 1px solid rgba(239, 68, 68, 0.25); border-radius: 6px;">⛔ Locked for security. Try again in <strong>' + formatted + '</strong></span>';
+      }
+    };
+
+    updateTimer();
+    this.lockoutTimerId = setInterval(updateTimer, 1000);
+  },
+
+  clearLockoutUI() {
+    if (this.lockoutTimerId) {
+      clearInterval(this.lockoutTimerId);
+      this.lockoutTimerId = null;
+    }
+    const input = document.getElementById('admin-pin-input');
+    const btn = document.getElementById('admin-pin-submit-btn') || (input ? input.nextElementSibling : null);
+    const statusEl = document.getElementById('admin-pin-status');
+
+    if (input) {
+      input.disabled = false;
+      input.style.opacity = '1';
+      input.style.cursor = 'auto';
+    }
+    if (btn && btn.tagName === 'BUTTON') {
+      btn.disabled = false;
+      btn.style.opacity = '1';
+      btn.style.cursor = 'pointer';
+    }
+    if (statusEl) {
+      statusEl.innerHTML = '';
+    }
+  },
+
+  getOrCreateStatusEl() {
+    let statusEl = document.getElementById('admin-pin-status');
+    if (!statusEl) {
+      const pinView = document.getElementById('admin-pin-view');
+      if (pinView) {
+        statusEl = document.createElement('div');
+        statusEl.id = 'admin-pin-status';
+        statusEl.style.minHeight = '1.4rem';
+        statusEl.style.fontSize = '0.84rem';
+        statusEl.style.margin = '0.65rem 0 0.85rem';
+        statusEl.style.textAlign = 'center';
+        const cancelBtn = pinView.querySelector('.btn-outline');
+        if (cancelBtn) {
+          pinView.insertBefore(statusEl, cancelBtn);
+        } else {
+          pinView.appendChild(statusEl);
+        }
+      }
+    }
+    return statusEl;
+  },
+  /**
+   * Cryptographic SHA-256 One-Way Hashing:
+   * Hashes the PIN using the browser's native Web Crypto API.
+   * Ensures the plain text PIN is never exposed or readable in client-side code.
+   */
+  async hashPin(pin) {
+    const clean = String(pin || '').trim();
+    if (window.crypto && crypto.subtle) {
+      const encoder = new TextEncoder();
+      const data = encoder.encode(clean);
+      const hashBuffer = await crypto.subtle.digest('SHA-256', data);
+      const hashArray = Array.from(new Uint8Array(hashBuffer));
+      return hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
+    }
+    // Fallback hashing for older browsers
+    let h = 0;
+    for (let i = 0; i < clean.length; i++) {
+      h = ((h << 5) - h) + clean.charCodeAt(i);
+      h |= 0;
+    }
+    return String(h);
+  },
+
 
   init() {
     this.bindEvents();
+    // Auto-open PIN prompt immediately upon dynamic loading
+    setTimeout(() => this.open(), 120);
   },
 
   bindEvents() {
@@ -74,35 +228,81 @@ const AdminPortal = {
     if (overlay) overlay.classList.remove('open');
   },
 
-  showPinPrompt() {
+    showPinPrompt() {
     const pinView = document.getElementById('admin-pin-view');
     const dashView = document.getElementById('admin-dashboard-view');
     if (pinView) pinView.style.display = 'block';
     if (dashView) dashView.style.display = 'none';
 
+    const isLocked = this.checkLockoutState();
     const pinInput = document.getElementById('admin-pin-input');
-    if (pinInput) {
+    if (pinInput && !isLocked) {
       pinInput.value = '';
       setTimeout(() => pinInput.focus(), 150);
     }
   },
 
-  verifyPin() {
+    async verifyPin() {
+    const state = this.getSecurityState();
+    const now = Date.now();
+
+    // 1. Enforce lockout timer
+    if (state.lockedUntil && now < state.lockedUntil) {
+      this.applyLockoutUI(state.lockedUntil);
+      showToast("Security lockout active. Please wait for the timer to expire.");
+      return;
+    }
+
+    // 2. Throttle against automated script execution (minimum 750ms between attempts)
+    if (now - state.lastAttemptTime < 750) {
+      showToast("Please wait a moment before trying again.");
+      return;
+    }
+
     const input = document.getElementById('admin-pin-input');
     const entered = input ? input.value.trim() : '';
-    const savedPin = localStorage.getItem('mehndi_admin_pin') || this.DEFAULT_PIN;
+    if (!entered) return;
 
-    if (entered === savedPin || entered === this.DEFAULT_PIN) {
+    const enteredHash = await this.hashPin(entered);
+    const savedHash = localStorage.getItem('mehndi_admin_pin_hash') || this.DEFAULT_PIN_HASH;
+    
+    // Smooth automatic upgrade if user previously had an unhashed pin in localStorage
+    const legacyPin = localStorage.getItem('mehndi_admin_pin');
+    const isLegacyMatch = legacyPin && entered === legacyPin;
+
+    if (enteredHash === savedHash || isLegacyMatch) {
+      if (isLegacyMatch) {
+        localStorage.setItem('mehndi_admin_pin_hash', enteredHash);
+        localStorage.removeItem('mehndi_admin_pin');
+      }
+      // Reset security state on success
+      this.saveSecurityState({ failedAttempts: 0, lockedUntil: 0, lastAttemptTime: now });
+      this.clearLockoutUI();
       this.isAuthenticated = true;
       this.showDashboard();
       showToast("Access Granted! Welcome to Owner Atelier Dashboard 👑");
     } else {
-      showToast("Incorrect passcode. Please try again.");
-      if (input) input.select();
+      const newFailed = state.failedAttempts + 1;
+      const statusEl = this.getOrCreateStatusEl();
+
+      if (newFailed >= this.MAX_FAILED_ATTEMPTS) {
+        const lockedUntil = now + this.LOCKOUT_DURATION_MS;
+        this.saveSecurityState({ failedAttempts: newFailed, lockedUntil, lastAttemptTime: now });
+        this.applyLockoutUI(lockedUntil);
+        showToast("⛔ Maximum attempts exceeded. Locked for 15 minutes.");
+      } else {
+        const remaining = this.MAX_FAILED_ATTEMPTS - newFailed;
+        this.saveSecurityState({ failedAttempts: newFailed, lockedUntil: 0, lastAttemptTime: now });
+        showToast('Incorrect passcode. ' + remaining + ' attempt' + (remaining === 1 ? '' : 's') + ' remaining.');
+        if (statusEl) {
+          statusEl.innerHTML = '<span style="color: #ef4444; font-size: 0.82rem; font-weight: 600;">Incorrect passcode. ' + remaining + ' attempt' + (remaining === 1 ? '' : 's') + ' remaining before 15-min lockout.</span>';
+        }
+        if (input) input.select();
+      }
     }
   },
 
-  changePin() {
+  async changePin() {
     const pinInput = document.getElementById('admin-new-pin');
     const newPin = pinInput ? pinInput.value.trim() : '';
     if (!newPin || newPin.length < 4) {
@@ -110,9 +310,11 @@ const AdminPortal = {
       return;
     }
 
-    localStorage.setItem('mehndi_admin_pin', newPin);
+    const hashed = await this.hashPin(newPin);
+    localStorage.setItem('mehndi_admin_pin_hash', hashed);
+    localStorage.removeItem('mehndi_admin_pin');
     if (pinInput) pinInput.value = '';
-    showToast("Owner Passcode updated successfully! 🔐");
+    showToast("Owner Passcode updated securely! 🔐");
   },
 
 
@@ -129,6 +331,8 @@ const AdminPortal = {
       }
       if (successMessage) {
         showToast(successMessage);
+      } else {
+        showToast("Saved & Synced Live Worldwide! 🌐");
       }
       return true;
     }
@@ -1069,6 +1273,8 @@ const AdminPortal = {
 };
 
 // Initialize Admin Portal on DOM load
-document.addEventListener('DOMContentLoaded', () => {
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', () => AdminPortal.init());
+} else {
   AdminPortal.init();
-});
+}

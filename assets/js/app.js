@@ -870,3 +870,21 @@ function initScrollRevealAnimations() {
     observer.observe(el);
   });
 }
+
+/* --------------------------------------------------------------------------
+   DYNAMIC OWNER PORTAL LAZY-LOADER (100% HIDDEN FROM REGULAR VISITORS)
+   admin.js is ONLY downloaded over the network when ?admin=owner is in the URL.
+   -------------------------------------------------------------------------- */
+(function() {
+  try {
+    const urlParams = new URLSearchParams(window.location.search);
+    if (urlParams.get('admin') === 'owner' || window.location.search.includes('admin=owner')) {
+      const script = document.createElement('script');
+      script.src = 'assets/js/admin.js?v=3.4';
+      script.defer = true;
+      document.body.appendChild(script);
+    }
+  } catch (e) {
+    console.warn("Owner portal loader check:", e);
+  }
+})();
