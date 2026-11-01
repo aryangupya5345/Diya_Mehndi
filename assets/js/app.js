@@ -841,34 +841,51 @@ function showToast(message) {
 function initHorizontalWheelScroll() {
   const tracks = document.querySelectorAll('#gallery-preview-grid, .services-grid, .shop-grid, .reviews-grid, .courses-grid');
   tracks.forEach(track => {
-    track.addEventListener('wheel', (e) => {
-      // Only process when vertical wheel delta dominates (standard mouse wheel turning)
-      if (Math.abs(e.deltaY) <= Math.abs(e.deltaX)) return;
+    // 1. Mouse Drag-to-Scroll (intuitive grab & swipe on PC)
+    let isDown = false;
+    let startX = 0;
+    let scrollLeft = 0;
+    let hasMoved = false;
 
-      const maxScroll = track.scrollWidth - track.clientWidth;
-      if (maxScroll <= 4) return; // Content fits without horizontal overflow
+    track.style.cursor = 'grab';
 
-      // Boundary thresholds to absorb subpixel rendering & scroll snap offsets
-      const atLeftEnd = track.scrollLeft <= 5;
-      const atRightEnd = track.scrollLeft >= maxScroll - 5;
+    track.addEventListener('mousedown', (e) => {
+      if (e.target.closest('button, a, input, select')) return;
+      isDown = true;
+      hasMoved = false;
+      track.style.cursor = 'grabbing';
+      track.style.userSelect = 'none';
+      startX = e.pageX - track.offsetLeft;
+      scrollLeft = track.scrollLeft;
+    });
 
-      // Scrolling UP when already at/near start (left edge):
-      // DO NOT prevent default -> let the window immediately scroll UP with zero sticking!
-      if (e.deltaY < 0 && atLeftEnd) {
-        track.scrollLeft = 0;
-        return;
+    const stopDrag = () => {
+      if (!isDown) return;
+      isDown = false;
+      track.style.cursor = 'grab';
+      track.style.userSelect = '';
+    };
+
+    track.addEventListener('mouseleave', stopDrag);
+    track.addEventListener('mouseup', stopDrag);
+
+    track.addEventListener('mousemove', (e) => {
+      if (!isDown) return;
+      const x = e.pageX - track.offsetLeft;
+      const walk = (x - startX) * 1.4;
+      if (Math.abs(walk) > 4) {
+        hasMoved = true;
       }
+      track.scrollLeft = scrollLeft - walk;
+    });
 
-      // Scrolling DOWN when already at/near end (right edge):
-      // DO NOT prevent default -> let the window immediately scroll DOWN!
-      if (e.deltaY > 0 && atRightEnd) {
-        return;
+    // Prevent accidental clicks on child buttons if user was dragging
+    track.addEventListener('click', (e) => {
+      if (hasMoved) {
+        e.preventDefault();
+        e.stopPropagation();
       }
-
-      // Within horizontal bounds: direct 60fps wheel scroll without animation lag
-      e.preventDefault();
-      track.scrollLeft += e.deltaY;
-    }, { passive: false });
+    }, true);
   });
 }
 
@@ -898,7 +915,7 @@ function initScrollRevealAnimations() {
     const urlParams = new URLSearchParams(window.location.search);
     if (urlParams.get('admin') === 'owner' || window.location.search.includes('admin=owner')) {
       const script = document.createElement('script');
-      script.src = 'assets/js/admin.js?v=3.5';
+      script.src = 'assets/js/admin.js?v=3.6';
       script.defer = true;
       document.body.appendChild(script);
     }
