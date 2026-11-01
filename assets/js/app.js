@@ -841,7 +841,7 @@ function showToast(message) {
 function initHorizontalWheelScroll() {
   const tracks = document.querySelectorAll('#gallery-preview-grid, .services-grid, .shop-grid, .reviews-grid, .courses-grid');
   tracks.forEach(track => {
-    // 1. Mouse Drag-to-Scroll (intuitive grab & swipe on PC)
+    // 1. Mouse Drag-to-Scroll (Smooth grab & swipe on desktop)
     let isDown = false;
     let startX = 0;
     let scrollLeft = 0;
@@ -872,20 +872,66 @@ function initHorizontalWheelScroll() {
     track.addEventListener('mousemove', (e) => {
       if (!isDown) return;
       const x = e.pageX - track.offsetLeft;
-      const walk = (x - startX) * 1.4;
-      if (Math.abs(walk) > 4) {
-        hasMoved = true;
-      }
+      const walk = (x - startX) * 1.5;
+      if (Math.abs(walk) > 4) hasMoved = true;
       track.scrollLeft = scrollLeft - walk;
     });
 
-    // Prevent accidental clicks on child buttons if user was dragging
     track.addEventListener('click', (e) => {
       if (hasMoved) {
         e.preventDefault();
         e.stopPropagation();
       }
     }, true);
+
+    // 2. Seamless Mouse Wheel Horizontal-to-Vertical Handoff
+    track.addEventListener('wheel', (e) => {
+      // If user is swiping horizontally on a touchpad (deltaX dominates), let browser handle it natively
+      if (Math.abs(e.deltaX) >= Math.abs(e.deltaY)) return;
+
+      const maxScroll = Math.max(0, track.scrollWidth - track.clientWidth);
+
+      // If track has no horizontal overflow (all cards fit), scroll page vertically
+      if (maxScroll <= 2) {
+        window.scrollBy({ top: e.deltaY, behavior: 'auto' });
+        return;
+      }
+
+      e.preventDefault();
+
+      if (e.deltaY < 0) {
+        // Scrolling UP
+        if (track.scrollLeft <= 0) {
+          // Already at start: immediately scroll window UP!
+          window.scrollBy({ top: e.deltaY, behavior: 'auto' });
+        } else {
+          const target = track.scrollLeft + e.deltaY;
+          if (target < 0) {
+            track.scrollLeft = 0;
+            // Leftover delta immediately scrolls window UP without any pause!
+            window.scrollBy({ top: target, behavior: 'auto' });
+          } else {
+            track.scrollLeft = target;
+          }
+        }
+      } else {
+        // Scrolling DOWN
+        if (track.scrollLeft >= maxScroll - 1) {
+          // Already at end: immediately scroll window DOWN!
+          window.scrollBy({ top: e.deltaY, behavior: 'auto' });
+        } else {
+          const target = track.scrollLeft + e.deltaY;
+          if (target > maxScroll) {
+            const remainder = target - maxScroll;
+            track.scrollLeft = maxScroll;
+            // Leftover delta immediately scrolls window DOWN without any pause!
+            window.scrollBy({ top: remainder, behavior: 'auto' });
+          } else {
+            track.scrollLeft = target;
+          }
+        }
+      }
+    }, { passive: false });
   });
 }
 
@@ -915,7 +961,7 @@ function initScrollRevealAnimations() {
     const urlParams = new URLSearchParams(window.location.search);
     if (urlParams.get('admin') === 'owner' || window.location.search.includes('admin=owner')) {
       const script = document.createElement('script');
-      script.src = 'assets/js/admin.js?v=3.6';
+      script.src = 'assets/js/admin.js?v=3.7';
       script.defer = true;
       document.body.appendChild(script);
     }

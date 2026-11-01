@@ -3326,7 +3326,7 @@ body, .glass-card, .site-header, .mobile-drawer-content, .btn, .filter-btn {
   overflow-y: hidden !important;
   gap: 1.5rem !important;
   padding: 0.75rem 0.5rem 1.85rem 0.5rem !important;
-  scroll-snap-type: x mandatory;
+  scroll-snap-type: x proximity;
   -webkit-overflow-scrolling: touch;
   scrollbar-width: thin;
   scrollbar-color: var(--theme-gold) rgba(255, 255, 255, 0.08);
@@ -3604,5 +3604,15 @@ body, .glass-card, .site-header, .mobile-drawer-content, .btn, .filter-btn {
   .hero-stats-dock {
     max-width: 100% !important;
     box-sizing: border-box !important;
+  }
+}
+
+@media (max-width: 768px) {
+  #gallery-preview-grid,
+  .services-grid,
+  .shop-grid,
+  .reviews-grid,
+  .courses-grid {
+    scroll-snap-type: x mandatory !important;
   }
 }
