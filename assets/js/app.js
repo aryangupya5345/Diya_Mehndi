@@ -841,7 +841,7 @@ function showToast(message) {
 function initHorizontalWheelScroll() {
   const tracks = document.querySelectorAll('#gallery-preview-grid, .services-grid, .shop-grid, .reviews-grid, .courses-grid');
   tracks.forEach(track => {
-    // 1. Mouse Drag-to-Scroll (Smooth grab & swipe on desktop)
+    // 1. Mouse Drag-to-Scroll (Grab & swipe on desktop)
     let isDown = false;
     let startX = 0;
     let scrollLeft = 0;
@@ -884,51 +884,25 @@ function initHorizontalWheelScroll() {
       }
     }, true);
 
-    // 2. Seamless Mouse Wheel Horizontal-to-Vertical Handoff
+    // 2. Smooth Horizontal Wheel Scroll with Instant Natural Vertical Release
     track.addEventListener('wheel', (e) => {
-      // If user is swiping horizontally on a touchpad (deltaX dominates), let browser handle it natively
+      // Let native horizontal trackpad gestures pass through
       if (Math.abs(e.deltaX) >= Math.abs(e.deltaY)) return;
 
-      const maxScroll = Math.max(0, track.scrollWidth - track.clientWidth);
+      const maxScroll = track.scrollWidth - track.clientWidth;
+      if (maxScroll <= 8) return; // If content fits within view, do not intercept wheel at all
 
-      // If track has no horizontal overflow (all cards fit), scroll page vertically
-      if (maxScroll <= 2) {
-        window.scrollBy({ top: e.deltaY, behavior: 'auto' });
-        return;
-      }
+      const canScrollLeft = track.scrollLeft > 12;
+      const canScrollRight = track.scrollLeft < (maxScroll - 12);
 
-      e.preventDefault();
-
-      if (e.deltaY < 0) {
-        // Scrolling UP
-        if (track.scrollLeft <= 0) {
-          // Already at start: immediately scroll window UP!
-          window.scrollBy({ top: e.deltaY, behavior: 'auto' });
-        } else {
-          const target = track.scrollLeft + e.deltaY;
-          if (target < 0) {
-            track.scrollLeft = 0;
-            // Leftover delta immediately scrolls window UP without any pause!
-            window.scrollBy({ top: target, behavior: 'auto' });
-          } else {
-            track.scrollLeft = target;
-          }
-        }
+      // Only intercept when horizontal track can actually scroll in that direction
+      if ((e.deltaY > 0 && canScrollRight) || (e.deltaY < 0 && canScrollLeft)) {
+        e.preventDefault();
+        track.scrollBy({ left: e.deltaY * 0.9, behavior: 'smooth' });
       } else {
-        // Scrolling DOWN
-        if (track.scrollLeft >= maxScroll - 1) {
-          // Already at end: immediately scroll window DOWN!
-          window.scrollBy({ top: e.deltaY, behavior: 'auto' });
-        } else {
-          const target = track.scrollLeft + e.deltaY;
-          if (target > maxScroll) {
-            const remainder = target - maxScroll;
-            track.scrollLeft = maxScroll;
-            // Leftover delta immediately scrolls window DOWN without any pause!
-            window.scrollBy({ top: remainder, behavior: 'auto' });
-          } else {
-            track.scrollLeft = target;
-          }
+        // At boundaries: ensure clean zero alignment and let the browser natively scroll the page smoothly
+        if (e.deltaY < 0 && track.scrollLeft > 0) {
+          track.scrollLeft = 0;
         }
       }
     }, { passive: false });
@@ -961,7 +935,7 @@ function initScrollRevealAnimations() {
     const urlParams = new URLSearchParams(window.location.search);
     if (urlParams.get('admin') === 'owner' || window.location.search.includes('admin=owner')) {
       const script = document.createElement('script');
-      script.src = 'assets/js/admin.js?v=3.7';
+      script.src = 'assets/js/admin.js?v=3.8';
       script.defer = true;
       document.body.appendChild(script);
     }
