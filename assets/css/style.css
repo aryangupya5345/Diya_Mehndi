@@ -3319,7 +3319,8 @@ body, .glass-card, .site-header, .mobile-drawer-content, .btn, .filter-btn {
 #gallery-preview-grid,
 .services-grid,
 .shop-grid,
-.reviews-grid {
+.reviews-grid,
+.courses-grid {
   display: flex !important;
   overflow-x: auto !important;
   overflow-y: hidden !important;
@@ -3334,14 +3335,16 @@ body, .glass-card, .site-header, .mobile-drawer-content, .btn, .filter-btn {
 #gallery-preview-grid::-webkit-scrollbar,
 .services-grid::-webkit-scrollbar,
 .shop-grid::-webkit-scrollbar,
-.reviews-grid::-webkit-scrollbar {
+.reviews-grid::-webkit-scrollbar,
+.courses-grid::-webkit-scrollbar {
   height: 6px;
 }
 
 #gallery-preview-grid::-webkit-scrollbar-track,
 .services-grid::-webkit-scrollbar-track,
 .shop-grid::-webkit-scrollbar-track,
-.reviews-grid::-webkit-scrollbar-track {
+.reviews-grid::-webkit-scrollbar-track,
+.courses-grid::-webkit-scrollbar-track {
   background: rgba(255, 255, 255, 0.04);
   border-radius: 4px;
 }
@@ -3349,7 +3352,8 @@ body, .glass-card, .site-header, .mobile-drawer-content, .btn, .filter-btn {
 #gallery-preview-grid::-webkit-scrollbar-thumb,
 .services-grid::-webkit-scrollbar-thumb,
 .shop-grid::-webkit-scrollbar-thumb,
-.reviews-grid::-webkit-scrollbar-thumb {
+.reviews-grid::-webkit-scrollbar-thumb,
+.courses-grid::-webkit-scrollbar-thumb {
   background: var(--theme-gold);
   border-radius: 4px;
 }
@@ -3374,15 +3378,18 @@ body, .glass-card, .site-header, .mobile-drawer-content, .btn, .filter-btn {
   flex-direction: column !important;
 }
 
-/* Online & Offline Masterclass Presentation */
+/* Online & Offline Masterclass Horizontal Presentation */
 .courses-grid {
-  display: grid !important;
-  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)) !important;
-  gap: 2rem !important;
   max-width: 1040px !important;
   margin: 0 auto !important;
-  padding: 0 !important;
-  overflow: visible !important;
+}
+
+.courses-grid > .course-card {
+  flex: 0 0 clamp(300px, 46vw, 470px) !important;
+  scroll-snap-align: start;
+  min-width: 0;
+  display: flex !important;
+  flex-direction: column !important;
 }
 
 .masterclass-card-item {
@@ -3582,11 +3589,8 @@ body, .glass-card, .site-header, .mobile-drawer-content, .btn, .filter-btn {
     max-width: 100% !important;
     box-sizing: border-box !important;
   }
-  .courses-grid {
-    grid-template-columns: 1fr !important;
-    gap: 1.5rem !important;
-    width: 100% !important;
-    max-width: 100% !important;
+  .courses-grid > .course-card {
+    flex: 0 0 clamp(285px, 84vw, 340px) !important;
   }
   .gallery-page-body .gallery-grid {
     grid-template-columns: 1fr !important;

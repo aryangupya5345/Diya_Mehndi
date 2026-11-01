@@ -839,17 +839,35 @@ function showToast(message) {
    HORIZONTAL WHEEL SCROLL & SCROLL REVEAL ANIMATIONS
    -------------------------------------------------------------------------- */
 function initHorizontalWheelScroll() {
-  const tracks = document.querySelectorAll('#gallery-preview-grid, .services-grid, .shop-grid, .reviews-grid');
+  const tracks = document.querySelectorAll('#gallery-preview-grid, .services-grid, .shop-grid, .reviews-grid, .courses-grid');
   tracks.forEach(track => {
     track.addEventListener('wheel', (e) => {
-      if (Math.abs(e.deltaY) > Math.abs(e.deltaX) && track.scrollWidth > track.clientWidth) {
-        const canScrollLeft = track.scrollLeft > 0;
-        const canScrollRight = track.scrollLeft < (track.scrollWidth - track.clientWidth - 1);
-        if ((e.deltaY > 0 && canScrollRight) || (e.deltaY < 0 && canScrollLeft)) {
-          e.preventDefault();
-          track.scrollBy({ left: e.deltaY, behavior: 'smooth' });
-        }
+      // Only process when vertical wheel delta dominates (standard mouse wheel turning)
+      if (Math.abs(e.deltaY) <= Math.abs(e.deltaX)) return;
+
+      const maxScroll = track.scrollWidth - track.clientWidth;
+      if (maxScroll <= 4) return; // Content fits without horizontal overflow
+
+      // Boundary thresholds to absorb subpixel rendering & scroll snap offsets
+      const atLeftEnd = track.scrollLeft <= 5;
+      const atRightEnd = track.scrollLeft >= maxScroll - 5;
+
+      // Scrolling UP when already at/near start (left edge):
+      // DO NOT prevent default -> let the window immediately scroll UP with zero sticking!
+      if (e.deltaY < 0 && atLeftEnd) {
+        track.scrollLeft = 0;
+        return;
       }
+
+      // Scrolling DOWN when already at/near end (right edge):
+      // DO NOT prevent default -> let the window immediately scroll DOWN!
+      if (e.deltaY > 0 && atRightEnd) {
+        return;
+      }
+
+      // Within horizontal bounds: direct 60fps wheel scroll without animation lag
+      e.preventDefault();
+      track.scrollLeft += e.deltaY;
     }, { passive: false });
   });
 }
@@ -880,7 +898,7 @@ function initScrollRevealAnimations() {
     const urlParams = new URLSearchParams(window.location.search);
     if (urlParams.get('admin') === 'owner' || window.location.search.includes('admin=owner')) {
       const script = document.createElement('script');
-      script.src = 'assets/js/admin.js?v=3.4';
+      script.src = 'assets/js/admin.js?v=3.5';
       script.defer = true;
       document.body.appendChild(script);
     }
