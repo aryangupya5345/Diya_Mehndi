@@ -759,6 +759,24 @@ function openConsultationModal(serviceName) {
    -------------------------------------------------------------------------- */
 function initNavigation() {
   const header = document.querySelector('.site-header');
+
+  // Smooth scroll for in-page anchors with offset
+  document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+    anchor.addEventListener('click', (e) => {
+      const targetId = anchor.getAttribute('href');
+      if (targetId && targetId.length > 1) {
+        const targetEl = document.querySelector(targetId);
+        if (targetEl) {
+          e.preventDefault();
+          targetEl.scrollIntoView({ behavior: 'smooth' });
+          const mDrawer = document.getElementById('mobile-drawer');
+          if (mDrawer && mDrawer.classList.contains('open')) {
+            mDrawer.classList.remove('open');
+          }
+        }
+      }
+    });
+  });
   const navLinks = document.querySelectorAll('.main-nav .nav-link');
   const sections = document.querySelectorAll('section[id]');
 
@@ -884,26 +902,52 @@ function initHorizontalWheelScroll() {
       }
     }, true);
 
-    // 2. Smooth Horizontal Wheel Scroll with Instant Natural Vertical Release
+    // 2. High-Performance Non-Sticky Smooth Wheel Scroll with Instant Seamless Vertical Pass-Through
+    let targetScroll = null;
+    let animId = null;
+
+    const smoothStep = () => {
+      if (targetScroll === null) return;
+      const current = track.scrollLeft;
+      const diff = targetScroll - current;
+      if (Math.abs(diff) > 0.5) {
+        track.scrollLeft = current + diff * 0.28;
+        animId = requestAnimationFrame(smoothStep);
+      } else {
+        track.scrollLeft = targetScroll;
+        targetScroll = null;
+        animId = null;
+      }
+    };
+
     track.addEventListener('wheel', (e) => {
-      // Let native horizontal trackpad gestures pass through
+      // Let native horizontal trackpad gestures pass through untouched
       if (Math.abs(e.deltaX) >= Math.abs(e.deltaY)) return;
 
       const maxScroll = track.scrollWidth - track.clientWidth;
-      if (maxScroll <= 8) return; // If content fits within view, do not intercept wheel at all
+      // If content fits within view or has negligible overflow (e.g. courses grid on desktop), never intercept
+      if (maxScroll <= 40) return;
 
-      const canScrollLeft = track.scrollLeft > 12;
-      const canScrollRight = track.scrollLeft < (maxScroll - 12);
+      const current = targetScroll !== null ? targetScroll : track.scrollLeft;
 
-      // Only intercept when horizontal track can actually scroll in that direction
-      if ((e.deltaY > 0 && canScrollRight) || (e.deltaY < 0 && canScrollLeft)) {
-        e.preventDefault();
-        track.scrollBy({ left: e.deltaY * 0.9, behavior: 'smooth' });
-      } else {
-        // At boundaries: ensure clean zero alignment and let the browser natively scroll the page smoothly
-        if (e.deltaY < 0 && track.scrollLeft > 0) {
-          track.scrollLeft = 0;
-        }
+      // Tight 4px boundary detection: when at boundary, release immediately without e.preventDefault()
+      const atLeft = current <= 4;
+      const atRight = current >= maxScroll - 4;
+
+      if ((e.deltaY > 0 && atRight) || (e.deltaY < 0 && atLeft)) {
+        // At the edge: let native vertical page scroll proceed effortlessly
+        return;
+      }
+
+      // Inside scrollable horizontal range: intercept and glide smoothly
+      e.preventDefault();
+      if (targetScroll === null) {
+        targetScroll = track.scrollLeft;
+      }
+      targetScroll = Math.max(0, Math.min(maxScroll, targetScroll + e.deltaY * 0.95));
+
+      if (!animId) {
+        animId = requestAnimationFrame(smoothStep);
       }
     }, { passive: false });
   });
@@ -935,7 +979,7 @@ function initScrollRevealAnimations() {
     const urlParams = new URLSearchParams(window.location.search);
     if (urlParams.get('admin') === 'owner' || window.location.search.includes('admin=owner')) {
       const script = document.createElement('script');
-      script.src = 'assets/js/admin.js?v=3.8';
+      script.src = 'assets/js/admin.js?v=3.9';
       script.defer = true;
       document.body.appendChild(script);
     }

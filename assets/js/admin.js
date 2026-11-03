@@ -478,7 +478,6 @@ const AdminPortal = {
     setVal('admin-tagline', p.tagline);
     setVal('admin-phone', p.phone);
     setVal('admin-whatsapp', p.whatsapp);
-    setVal('admin-email', p.email);
     setVal('admin-city', p.city);
     setVal('admin-address', p.address);
     setVal('admin-hours', p.workingHours);
@@ -505,7 +504,6 @@ const AdminPortal = {
       tagline: getVal('admin-tagline') || current.profile.tagline,
       phone: getVal('admin-phone') || current.profile.phone,
       whatsapp: getVal('admin-whatsapp') || current.profile.whatsapp,
-      email: getVal('admin-email') || current.profile.email,
       city: getVal('admin-city') || current.profile.city,
       address: getVal('admin-address') || current.profile.address,
       workingHours: getVal('admin-hours') || current.profile.workingHours,

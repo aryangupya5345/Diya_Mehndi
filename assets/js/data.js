@@ -12,7 +12,6 @@ const DEFAULT_MEHNDI_DATA = {
     tagline: "Bespoke Bridal Henna • 100% Organic Sojat Cones • Online & Offline Classes",
     phone: "+91 75649 69450",
     whatsapp: "917564969450",
-    email: "Diya@gmail.com",
     city: "Hazaribagh",
     address: "Baba Path, Hurhuru, Hazaribagh, Jharkhand 825301",
     instagram: "https://www.instagram.com/mehndiart_sakshi/",
