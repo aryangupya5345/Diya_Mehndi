@@ -6,7 +6,7 @@
 
 import { initializeApp, getApps } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
 import { getAnalytics, logEvent, isSupported } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-analytics.js";
-import { getFirestore, doc, getDoc, setDoc, onSnapshot } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+import { getFirestore, doc, getDoc, setDoc, deleteDoc, collection, onSnapshot } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
 
 // Protected configuration payload (encoded to safeguard from raw inspection)
 const _0xfbEnc = "eyJhcGlLZXkiOiJBSXphU3lDQW9QQzZkRllqY1FQemtqYVFKNmY1N3BmSFZXNGdOcFUiLCJhdXRoRG9tYWluIjoibWVobmRpLWJ5LXNha3NoaS5maXJlYmFzZWFwcC5jb20iLCJwcm9qZWN0SWQiOiJtZWhuZGktYnktc2Frc2hpIiwic3RvcmFnZUJ1Y2tldCI6Im1laG5kaS1ieS1zYWtzaGkuZmlyZWJhc2VzdG9yYWdlLmFwcCIsIm1lc3NhZ2luZ1NlbmRlcklkIjoiODA5MzU5Njk2OTUiLCJhcHBJZCI6IjE6ODA5MzU5Njk2OTU6d2ViOmU2OTMxOTlhMjY1MDZlZDk5NDEzYWEiLCJtZWFzdXJlbWVudElkIjoiRy0yS0s4RjFCSlBKIn0=";
@@ -62,18 +62,24 @@ const _0xfbEnc = "eyJhcGlLZXkiOiJBSXphU3lDQW9QQzZkRllqY1FQemtqYVFKNmY1N3BmSFZXNG
         const cloudData = docSnap.data();
         if (cloudData && typeof cloudData === 'object') {
           const base = (typeof DEFAULT_MEHNDI_DATA !== 'undefined') ? DEFAULT_MEHNDI_DATA : {};
+          const { gallery: ignoredOldGallery, ...cloudSettings } = cloudData;
           const mergedData = {
             ...base,
-            ...cloudData,
-            profile: { ...(base.profile || {}), ...(cloudData.profile || {}) },
-            hero: { ...(base.hero || {}), ...(cloudData.hero || {}) },
-            sectionHeaders: { ...(base.sectionHeaders || {}), ...(cloudData.sectionHeaders || {}) },
-            academyBanner: { ...(base.academyBanner || {}), ...(cloudData.academyBanner || {}) }
+            ...cloudSettings,
+            profile: { ...(base.profile || {}), ...(cloudSettings.profile || {}) },
+            hero: { ...(base.hero || {}), ...(cloudSettings.hero || {}) },
+            sectionHeaders: { ...(base.sectionHeaders || {}), ...(cloudSettings.sectionHeaders || {}) },
+            academyBanner: { ...(base.academyBanner || {}), ...(cloudSettings.academyBanner || {}) },
+            // Preserve active gallery so old sample images never overwrite user photos
+            gallery: (typeof AppState !== 'undefined' && AppState.data && AppState.data.gallery && AppState.data.gallery.length)
+              ? AppState.data.gallery
+              : (base.gallery || [])
           };
 
           const storageKey = (typeof DataService !== 'undefined' && DataService.STORAGE_KEY) || "mehndi_atelier_data_v6";
           try {
-            localStorage.setItem(storageKey, JSON.stringify(mergedData));
+            const { gallery: g, ...settingsOnly } = mergedData;
+            localStorage.setItem(storageKey, JSON.stringify(settingsOnly));
           } catch (e) {}
 
           if (typeof AppState !== 'undefined') {
@@ -83,7 +89,6 @@ const _0xfbEnc = "eyJhcGlLZXkiOiJBSXphU3lDQW9QQzZkRllqY1FQemtqYVFKNmY1N3BmSFZXNG
             renderAllSections();
           }
 
-          // If Admin Dashboard is currently open, refresh its forms too
           if (typeof AdminPortal !== 'undefined' && AdminPortal.isAuthenticated) {
             if (typeof AdminPortal.loadProfileForm === 'function') AdminPortal.loadProfileForm();
             if (typeof AdminPortal.loadHeroAndTextForm === 'function') AdminPortal.loadHeroAndTextForm();

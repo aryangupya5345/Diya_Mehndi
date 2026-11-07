@@ -18,6 +18,16 @@ document.addEventListener('DOMContentLoaded', () => {
   initTheme();
   AppState.data = DataService.load();
 
+  // Hydrate gallery from high-capacity LocalDB if present
+  if (typeof LocalDB !== 'undefined') {
+    LocalDB.get('mehndi_gallery_artworks').then(cachedArts => {
+      if (cachedArts && Array.isArray(cachedArts) && cachedArts.length > 0) {
+        AppState.data.gallery = cachedArts;
+        renderGallery();
+      }
+    });
+  }
+
   // Render all dynamic components
   renderAllSections();
 
@@ -984,7 +994,7 @@ function initScrollRevealAnimations() {
     const urlParams = new URLSearchParams(window.location.search);
     if (urlParams.get('admin') === 'owner' || window.location.search.includes('admin=owner')) {
       const script = document.createElement('script');
-      script.src = 'assets/js/admin.js?v=4.1';
+      script.src = 'assets/js/admin.js?v=4.2';
       script.defer = true;
       document.body.appendChild(script);
     }

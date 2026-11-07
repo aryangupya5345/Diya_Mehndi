@@ -432,6 +432,55 @@ const DEFAULT_MEHNDI_DATA = {
 };
 
 // Data service helper with LocalStorage sync
+// Lightweight High-Capacity IndexedDB Layer (Solves 5MB LocalStorage Quota Limit)
+const LocalDB = {
+  dbPromise: null,
+  getDB() {
+    if (!this.dbPromise) {
+      this.dbPromise = new Promise((resolve) => {
+        try {
+          const req = indexedDB.open('SakshiMehndiDB', 1);
+          req.onupgradeneeded = () => req.result.createObjectStore('store');
+          req.onsuccess = () => resolve(req.result);
+          req.onerror = () => resolve(null);
+        } catch (e) {
+          resolve(null);
+        }
+      });
+    }
+    return this.dbPromise;
+  },
+  async get(key) {
+    try {
+      const db = await this.getDB();
+      if (!db) return null;
+      return new Promise((resolve) => {
+        const tx = db.transaction('store', 'readonly');
+        const req = tx.objectStore('store').get(key);
+        req.onsuccess = () => resolve(req.result || null);
+        req.onerror = () => resolve(null);
+      });
+    } catch (e) {
+      return null;
+    }
+  },
+  async set(key, val) {
+    try {
+      const db = await this.getDB();
+      if (!db) return false;
+      return new Promise((resolve) => {
+        const tx = db.transaction('store', 'readwrite');
+        tx.objectStore('store').put(val, key);
+        tx.oncomplete = () => resolve(true);
+        tx.onerror = () => resolve(false);
+      });
+    } catch (e) {
+      return false;
+    }
+  }
+};
+
+// Data service helper with LocalStorage & High-Capacity IndexedDB sync
 const DataService = {
   STORAGE_KEY: "mehndi_atelier_data_v6",
 

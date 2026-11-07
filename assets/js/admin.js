@@ -714,7 +714,7 @@ const AdminPortal = {
         const img = new Image();
         img.onload = () => {
           const canvas = document.createElement('canvas');
-          const maxDim = 1000;
+          const maxDim = 720; // Crisp Retina quality while keeping photos to ~35KB
           let width = img.width;
           let height = img.height;
 
@@ -732,7 +732,7 @@ const AdminPortal = {
           canvas.height = height;
           const ctx = canvas.getContext('2d');
           ctx.drawImage(img, 0, 0, width, height);
-          resolve(canvas.toDataURL('image/jpeg', 0.82));
+          resolve(canvas.toDataURL('image/jpeg', 0.70));
         };
         img.src = event.target.result;
       };
@@ -823,6 +823,9 @@ const AdminPortal = {
           description: desc, // Optional
           tags: tags.length ? tags : (current.gallery[index].tags || ["Mehndi"])
         };
+        if (typeof window.saveFirestoreArtwork === 'function') {
+          window.saveFirestoreArtwork(current.gallery[index]);
+        }
         showToast("Artwork updated successfully! 🎨");
       }
     } else {
@@ -848,9 +851,15 @@ const AdminPortal = {
           categoryLabel: catLabel,
           image: imgUrl,
           description: desc, // Completely optional
-          tags: tags.length ? tags : ["Handcrafted", "Mehndi", catLabel]
+          tags: tags.length ? tags : ["Handcrafted", "Mehndi", catLabel],
+          createdAt: new Date().toISOString()
         };
         current.gallery.unshift(newArt);
+
+        // Sync individual artwork to Firestore collection
+        if (typeof window.saveFirestoreArtwork === 'function') {
+          window.saveFirestoreArtwork(newArt);
+        }
       });
 
       if (totalCount > 1) {
@@ -874,6 +883,9 @@ const AdminPortal = {
     const current = DataService.load();
     current.gallery = (current.gallery || []).filter(a => a.id !== id);
     DataService.save(current);
+    if (typeof window.deleteFirestoreArtwork === 'function') {
+      window.deleteFirestoreArtwork(id);
+    }
     this.renderAdminGalleryList();
     showToast("Artwork removed from portfolio");
   },
