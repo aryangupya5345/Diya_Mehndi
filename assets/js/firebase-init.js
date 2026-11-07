@@ -35,7 +35,9 @@ const _0xfbEnc = "eyJhcGlLZXkiOiJBSXphU3lDQW9QQzZkRllqY1FQemtqYVFKNmY1N3BmSFZXNG
     window.saveFirestoreData = async function(data) {
       try {
         isSavingFromThisClient = true;
-        await setDoc(liveDataDocRef, data);
+        // Strip undefined properties before sending to Firestore to prevent SDK rejection
+        const cleanData = JSON.parse(JSON.stringify(data));
+        await setDoc(liveDataDocRef, cleanData);
         setTimeout(() => { isSavingFromThisClient = false; }, 1200);
         return { success: true };
       } catch (err) {

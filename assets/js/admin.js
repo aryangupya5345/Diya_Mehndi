@@ -205,7 +205,7 @@ const AdminPortal = {
 
     // 5. Smart Image Upload Handlers with Automatic Compression
     this.setupCompressedImagePicker('hero-image-file', 'admin-hero-image-url', 'admin-hero-img-preview');
-    this.setupCompressedImagePicker('art-image-file', 'art-image-url', 'art-img-preview');
+    this.setupArtImagePicker();
     this.setupCompressedImagePicker('prod-image-file', 'prod-image-url', 'prod-img-preview');
     this.setupCompressedImagePicker('course-image-file', 'course-image-url', 'course-img-preview');
   },
@@ -509,7 +509,20 @@ const AdminPortal = {
       workingHours: getVal('admin-hours') || current.profile.workingHours,
       instagram: getVal('admin-instagram') || current.profile.instagram,
       instagramHandle: getVal('admin-ig-handle') || current.profile.instagramHandle,
-      googleMapsUrl: getVal('admin-maps-url') || current.profile.googleMapsUrl,
+      googleMapsUrl: (() => {
+        let raw = getVal('admin-maps-url');
+        if (!raw) return current.profile.googleMapsUrl;
+        // Extract src if iframe was pasted
+        const iframeMatch = raw.match(/src=["'](.*?)["']/);
+        if (iframeMatch) return iframeMatch[1];
+        // Extract URL if full Google Maps share message was pasted
+        const urlMatch = raw.match(/(https?:\/\/[^\s]+)/);
+        if (urlMatch) return urlMatch[1];
+        if (!raw.startsWith('http://') && !raw.startsWith('https://')) {
+          return 'https://' + raw;
+        }
+        return raw;
+      })(),
       announcement: getVal('admin-announcement') || current.profile.announcement,
       aboutBio: getVal('admin-about-bio') || current.profile.aboutBio,
       yearsExperience: getVal('admin-stat-years') || current.profile.yearsExperience,
@@ -619,19 +632,134 @@ const AdminPortal = {
     `).join('');
   },
 
+  pendingArtImages: [],
+
+  setupArtImagePicker() {
+    const fileInput = document.getElementById('art-image-file');
+    const urlInput = document.getElementById('art-image-url');
+    const preview = document.getElementById('art-img-preview');
+    const multiPreview = document.getElementById('art-multi-preview');
+    const btnText = document.getElementById('art-form-btn-text');
+
+    if (!fileInput) return;
+
+    fileInput.addEventListener('change', async (e) => {
+      const files = Array.from(e.target.files || []);
+      if (!files.length) return;
+
+      this.pendingArtImages = [];
+
+      if (files.length === 1) {
+        showToast("Processing photo...");
+        const dataUrl = await this.compressSingleImage(files[0]);
+        this.pendingArtImages = [dataUrl];
+        if (urlInput) urlInput.value = dataUrl;
+        if (preview) {
+          preview.src = dataUrl;
+          preview.style.display = 'block';
+        }
+        if (multiPreview) multiPreview.style.display = 'none';
+        if (btnText) btnText.textContent = 'Add Artwork';
+        showToast("Photo ready! ✨");
+      } else {
+        showToast(`Processing & optimizing ${files.length} photos...`);
+        if (preview) preview.style.display = 'none';
+        if (urlInput) urlInput.value = '';
+
+        const compressedList = await Promise.all(
+          files.map(file => this.compressSingleImage(file))
+        );
+        this.pendingArtImages = compressedList;
+
+        if (multiPreview) {
+          multiPreview.innerHTML = `
+            <div style="font-weight: 700; color: var(--theme-gold); margin-bottom: 0.5rem; font-size: 0.88rem;">
+              📸 ${compressedList.length} Photos Selected for Bulk Upload:
+            </div>
+            <div style="display: flex; gap: 0.5rem; overflow-x: auto; padding-bottom: 0.5rem;">
+              ${compressedList.map((url, i) => `
+                <img src="${url}" alt="Selected ${i + 1}" style="width: 54px; height: 54px; border-radius: 6px; object-fit: cover; border: 1.5px solid var(--theme-gold); flex-shrink: 0;" />
+              `).join('')}
+            </div>
+          `;
+          multiPreview.style.display = 'block';
+        }
+
+        if (btnText) {
+          btnText.textContent = `+ Upload All ${compressedList.length} Artworks`;
+        }
+        showToast(`All ${files.length} photos ready for upload! 🎨`);
+      }
+    });
+
+    if (urlInput && preview) {
+      urlInput.addEventListener('input', () => {
+        if (urlInput.value) {
+          this.pendingArtImages = [urlInput.value];
+          preview.src = urlInput.value;
+          preview.style.display = 'block';
+          if (multiPreview) multiPreview.style.display = 'none';
+        } else {
+          this.pendingArtImages = [];
+          preview.style.display = 'none';
+        }
+      });
+    }
+  },
+
+  compressSingleImage(file) {
+    return new Promise((resolve) => {
+      const reader = new FileReader();
+      reader.onload = (event) => {
+        const img = new Image();
+        img.onload = () => {
+          const canvas = document.createElement('canvas');
+          const maxDim = 1000;
+          let width = img.width;
+          let height = img.height;
+
+          if (width > maxDim || height > maxDim) {
+            if (width > height) {
+              height = Math.round((height * maxDim) / width);
+              width = maxDim;
+            } else {
+              width = Math.round((width * maxDim) / height);
+              height = maxDim;
+            }
+          }
+
+          canvas.width = width;
+          canvas.height = height;
+          const ctx = canvas.getContext('2d');
+          ctx.drawImage(img, 0, 0, width, height);
+          resolve(canvas.toDataURL('image/jpeg', 0.82));
+        };
+        img.src = event.target.result;
+      };
+      reader.readAsDataURL(file);
+    });
+  },
+
   resetArtForm() {
+    this.pendingArtImages = [];
     document.getElementById('art-edit-id').value = '';
     document.getElementById('art-title-input').value = '';
     document.getElementById('art-category-input').value = 'bridal';
     document.getElementById('art-catlabel-input').value = 'Bridal Couture';
     document.getElementById('art-image-url').value = '';
-    document.getElementById('art-image-file').value = '';
+    const fileEl = document.getElementById('art-image-file');
+    if (fileEl) fileEl.value = '';
     document.getElementById('art-desc-input').value = '';
     document.getElementById('art-tags-input').value = 'Bridal, Traditional, Royal Jaal';
     const preview = document.getElementById('art-img-preview');
     if (preview) {
       preview.src = '';
       preview.style.display = 'none';
+    }
+    const multiPreview = document.getElementById('art-multi-preview');
+    if (multiPreview) {
+      multiPreview.innerHTML = '';
+      multiPreview.style.display = 'none';
     }
     const btnText = document.getElementById('art-form-btn-text');
     if (btnText) btnText.textContent = 'Add Artwork';
@@ -643,11 +771,12 @@ const AdminPortal = {
     const art = (AppState.data.gallery || []).find(a => a.id === id);
     if (!art) return;
 
+    this.pendingArtImages = [];
     document.getElementById('art-edit-id').value = art.id;
-    document.getElementById('art-title-input').value = art.title;
+    document.getElementById('art-title-input').value = art.title || '';
     document.getElementById('art-category-input').value = art.category || 'bridal';
     document.getElementById('art-catlabel-input').value = art.categoryLabel || '';
-    document.getElementById('art-image-url').value = art.image;
+    document.getElementById('art-image-url').value = art.image || '';
     document.getElementById('art-desc-input').value = art.description || '';
     document.getElementById('art-tags-input').value = (art.tags || []).join(', ');
 
@@ -656,11 +785,13 @@ const AdminPortal = {
       preview.src = art.image;
       preview.style.display = 'block';
     }
+    const multiPreview = document.getElementById('art-multi-preview');
+    if (multiPreview) multiPreview.style.display = 'none';
 
     const btnText = document.getElementById('art-form-btn-text');
     if (btnText) btnText.textContent = 'Update Artwork';
     const formTitle = document.getElementById('art-form-title');
-    if (formTitle) formTitle.textContent = 'Edit Artwork: ' + art.title;
+    if (formTitle) formTitle.textContent = 'Edit Artwork: ' + (art.title || art.categoryLabel || 'Design');
 
     document.getElementById('art-form-container').scrollIntoView({ behavior: 'smooth' });
   },
@@ -671,41 +802,65 @@ const AdminPortal = {
     const title = document.getElementById('art-title-input').value.trim();
     const category = document.getElementById('art-category-input').value;
     const catLabel = document.getElementById('art-catlabel-input').value.trim() || this.getCategoryLabel(category);
-    const image = document.getElementById('art-image-url').value.trim() || 'assets/images/bridal_hero.jpg';
+    const manualUrl = document.getElementById('art-image-url').value.trim();
     const desc = document.getElementById('art-desc-input').value.trim();
     const tags = document.getElementById('art-tags-input').value.split(',').map(t => t.trim()).filter(Boolean);
-
-    if (!title) {
-      showToast("Please provide an Artwork Title");
-      return;
-    }
 
     const current = DataService.load();
     current.gallery = current.gallery || [];
 
     if (editId) {
+      // Update single existing artwork
       const index = current.gallery.findIndex(a => a.id === editId);
       if (index !== -1) {
+        const image = (this.pendingArtImages && this.pendingArtImages[0]) || manualUrl || current.gallery[index].image;
         current.gallery[index] = {
           ...current.gallery[index],
-          title, category, categoryLabel: catLabel, image, description: desc, tags
+          title: title || current.gallery[index].title || `${catLabel} Design`,
+          category,
+          categoryLabel: catLabel,
+          image,
+          description: desc, // Optional
+          tags: tags.length ? tags : (current.gallery[index].tags || ["Mehndi"])
         };
         showToast("Artwork updated successfully! 🎨");
       }
     } else {
-      const newArt = {
-        id: `art-${Date.now()}`,
-        title,
-        category,
-        categoryLabel: catLabel,
-        image,
-        description: desc,
-        tags: tags.length ? tags : ["Handcrafted", "Mehndi"]
-      };
-      current.gallery.unshift(newArt);
-      showToast("New Artwork added to Art Gallery! 🎨");
+      // Add new artwork(s) - Supports bulk multiple images
+      const imagesToAdd = (this.pendingArtImages && this.pendingArtImages.length > 0)
+        ? this.pendingArtImages
+        : [manualUrl || 'assets/images/bridal_hero.jpg'];
+
+      const totalCount = imagesToAdd.length;
+
+      imagesToAdd.forEach((imgUrl, idx) => {
+        let artTitle = '';
+        if (title) {
+          artTitle = totalCount > 1 ? `${title} (${idx + 1})` : title;
+        } else {
+          artTitle = totalCount > 1 ? `${catLabel} Design #${idx + 1}` : `${catLabel} Design`;
+        }
+
+        const newArt = {
+          id: `art-${Date.now()}-${idx}`,
+          title: artTitle,
+          category,
+          categoryLabel: catLabel,
+          image: imgUrl,
+          description: desc, // Completely optional
+          tags: tags.length ? tags : ["Handcrafted", "Mehndi", catLabel]
+        };
+        current.gallery.unshift(newArt);
+      });
+
+      if (totalCount > 1) {
+        showToast(`Successfully added ${totalCount} artworks to Gallery! 🎨`);
+      } else {
+        showToast("New Artwork added to Art Gallery! 🎨");
+      }
     }
 
+    this.pendingArtImages = [];
     this.saveAndSync(current);
     this.renderAdminGalleryList();
     this.resetArtForm();
@@ -730,6 +885,7 @@ const AdminPortal = {
       minimal: "Lotus Mandala & Minimal",
       feet: "Bridal Feet & Payal",
       festive: "Festive & Sangeet",
+      customer: "Customer's Gallery",
       jewelry: "Finger & Jewelry Art"
     };
     return map[cat] || cat;

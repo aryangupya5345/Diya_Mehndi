@@ -29,7 +29,7 @@ const DEFAULT_MEHNDI_DATA = {
   hero: {
     tag1: "Best Bridal Mehndi Artist in Hazaribagh",
     tag2: "Online & Offline Mehndi Classes • 100% Organic Sojat Cones",
-    headlineMain: "Best Bridal Mehndi Artist in Your City,",
+    headlineMain: "Best Bridal Mehndi Artist in",
     headlineHighlight: "Hazaribagh",
     headlineEnd: "",
     lead: "Khushiyon Ka Gehra Rang, Hazaribagh Ki Har Dulhan Ke Sang! Bespoke bridal motifs, intricate traditional jaal, and pure organic dark-stain henna crafted to make you look and feel unforgettable. Available for studio bookings and appointments in Hurhuru, Hazaribagh.",

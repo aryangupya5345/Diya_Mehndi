@@ -152,7 +152,12 @@ function renderProfileData() {
     if (txt) txt.textContent = p.instagramHandle;
   });
 
-  document.querySelectorAll('.dynamic-map-link').forEach(link => link.href = p.googleMapsUrl);
+  const validMapUrl = (p.googleMapsUrl && p.googleMapsUrl.trim()) 
+    ? p.googleMapsUrl.trim() 
+    : `https://maps.google.com/?q=${encodeURIComponent((p.brandName || 'Sakshi Mehndi') + ' ' + (p.address || 'Hurhuru Hazaribagh'))}`;
+  document.querySelectorAll('.dynamic-map-link').forEach(link => {
+    link.href = validMapUrl;
+  });
 
   updateWhatsAppLinks();
 }
@@ -332,10 +337,10 @@ function renderGallery() {
           </button>
         </div>
         <div class="art-body">
-          <h3 class="art-title">${item.title}</h3>
-          <p class="art-desc">${item.description || ''}</p>
+          ${item.title ? `<h3 class="art-title">${item.title}</h3>` : `<h3 class="art-title" style="font-size: 1rem; color: var(--theme-gold);">${item.categoryLabel || 'Bespoke Design'}</h3>`}
+          ${item.description ? `<p class="art-desc">${item.description}</p>` : ''}
           <div class="art-actions">
-            <button class="btn btn-primary btn-sm" style="flex: 1;" onclick="bookArtViaWhatsApp('${item.title}', '${item.id}')">
+            <button class="btn btn-primary btn-sm" style="flex: 1;" onclick="bookArtViaWhatsApp('${(item.title || item.categoryLabel || 'Mehndi Design').replace(/'/g, "\\'")}', '${item.id}')">
               <span>💬 Book on WhatsApp</span>
             </button>
             <button class="btn btn-outline btn-sm" onclick="openLightbox('${item.id}')" title="Zoom Preview">
@@ -383,10 +388,10 @@ function renderGallery() {
           </button>
         </div>
         <div class="art-body">
-          <h3 class="art-title">${item.title}</h3>
-          <p class="art-desc">${item.description || ''}</p>
+          ${item.title ? `<h3 class="art-title">${item.title}</h3>` : `<h3 class="art-title" style="font-size: 1rem; color: var(--theme-gold);">${item.categoryLabel || 'Bespoke Design'}</h3>`}
+          ${item.description ? `<p class="art-desc">${item.description}</p>` : ''}
           <div class="art-actions">
-            <button class="btn btn-primary btn-sm" style="flex: 1;" onclick="bookArtViaWhatsApp('${item.title}', '${item.id}')">
+            <button class="btn btn-primary btn-sm" style="flex: 1;" onclick="bookArtViaWhatsApp('${(item.title || item.categoryLabel || 'Mehndi Design').replace(/'/g, "\\'")}', '${item.id}')">
               <span>💬 Book on WhatsApp</span>
             </button>
             <button class="btn btn-outline btn-sm" onclick="openLightbox('${item.id}')" title="Zoom Preview">
@@ -439,8 +444,8 @@ function openLightbox(artId) {
   const desc = document.getElementById('lightbox-desc');
 
   if (img) img.src = art.image;
-  if (title) title.textContent = art.title;
-  if (desc) desc.textContent = art.description;
+  if (title) title.textContent = art.title || art.categoryLabel || 'Bespoke Mehndi Art';
+  if (desc) desc.textContent = art.description || '';
 
   modal.classList.add('open');
 }
@@ -452,7 +457,7 @@ function closeLightbox() {
 
 function bookCurrentLightboxArt() {
   if (AppState.selectedArt) {
-    bookArtViaWhatsApp(AppState.selectedArt.title, AppState.selectedArt.id);
+    bookArtViaWhatsApp(AppState.selectedArt.title || AppState.selectedArt.categoryLabel || 'Mehndi Design', AppState.selectedArt.id);
   }
 }
 
@@ -979,7 +984,7 @@ function initScrollRevealAnimations() {
     const urlParams = new URLSearchParams(window.location.search);
     if (urlParams.get('admin') === 'owner' || window.location.search.includes('admin=owner')) {
       const script = document.createElement('script');
-      script.src = 'assets/js/admin.js?v=3.9';
+      script.src = 'assets/js/admin.js?v=4.0';
       script.defer = true;
       document.body.appendChild(script);
     }
