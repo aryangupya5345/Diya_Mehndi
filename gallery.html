@@ -38,7 +38,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;0,700;1,500;1,600;1,700&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet" />
 
   <!-- Stylesheet -->
-  <link rel="stylesheet" href="assets/css/style.css?v=4.0" />
+  <link rel="stylesheet" href="assets/css/style.css?v=4.1" />
 </head>
 <body class="gallery-page-body">
 
@@ -602,18 +602,19 @@
             <h5 style="font-weight: 700; color: var(--theme-primary); margin-bottom: 0.75rem;" id="art-form-title">
               Add or Edit Mehndi Artwork
             </h5>
-            <form onsubmit="AdminPortal.saveArtwork(event)">
+                        <form onsubmit="AdminPortal.saveArtwork(event)">
               <input type="hidden" id="art-edit-id" />
               
               <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
                 <div class="form-group">
-                  <label class="form-label">Artwork Title *</label>
-                  <input type="text" id="art-title-input" class="form-input" placeholder="e.g. Royal Rajasthani Bridal Jaal" required />
+                  <label class="form-label">Artwork Title <span style="font-weight: normal; color: var(--theme-text-muted);">(Optional)</span></label>
+                  <input type="text" id="art-title-input" class="form-input" placeholder="Optional — e.g. Royal Bridal Jaal (or leave blank)" />
                 </div>
                 <div class="form-group">
                   <label class="form-label">Category</label>
                   <select id="art-category-input" class="form-select">
                     <option value="bridal">👰 Bridal Couture</option>
+                    <option value="customer">📸 Customer's Gallery (Real Brides)</option>
                     <option value="arabic">🌿 Arabic &amp; Gulf Flow</option>
                     <option value="minimal">🌸 Lotus Mandala &amp; Minimal</option>
                     <option value="feet">🦶 Bridal Feet &amp; Payal</option>
@@ -634,11 +635,11 @@
                 </div>
               </div>
 
-              <!-- Image Input Options -->
+              <!-- Image Input Options (Bulk Multi-Select Enabled) -->
               <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; align-items: flex-end;">
                 <div class="form-group">
-                  <label class="form-label">Upload Photo from Device (Instant Base64)</label>
-                  <input type="file" id="art-image-file" class="form-input" accept="image/*" />
+                  <label class="form-label">Upload Photo(s) from Device <span style="font-weight: 700; color: var(--theme-gold);">(Select Multiple Photos!)</span></label>
+                  <input type="file" id="art-image-file" class="form-input" accept="image/*" multiple />
                 </div>
                 <div class="form-group">
                   <label class="form-label">Or Image URL</label>
@@ -646,13 +647,15 @@
                 </div>
               </div>
 
+              <div id="art-multi-preview" style="display: none; margin: 0.6rem 0; padding: 0.75rem; background: var(--theme-bg-subtle); border-radius: 8px; border: 1.5px dashed var(--theme-gold);"></div>
+
               <div style="margin: 0.5rem 0;">
                 <img id="art-img-preview" src="" alt="Preview" style="display: none; max-height: 120px; border-radius: 6px; border: 1px solid var(--theme-border);" />
               </div>
 
               <div class="form-group">
-                <label class="form-label">Design Description</label>
-                <textarea id="art-desc-input" class="form-textarea" rows="2" placeholder="Describe the motifs, stain, and occasion..."></textarea>
+                <label class="form-label">Design Description <span style="font-weight: normal; color: var(--theme-text-muted);">(Optional)</span></label>
+                <textarea id="art-desc-input" class="form-textarea" rows="2" placeholder="Optional description — or leave completely blank..."></textarea>
               </div>
 
               <div style="display: flex; gap: 0.75rem;">
@@ -1029,9 +1032,9 @@
   </aside>
 
   <!-- Scripts -->
-  <script src="assets/js/data.js?v=4.0"></script>
-  <script src="assets/js/app.js?v=4.0"></script>
-  <script type="module" src="assets/js/firebase-init.js?v=4.0"></script>
+  <script src="assets/js/data.js?v=4.1"></script>
+  <script src="assets/js/app.js?v=4.1"></script>
+  <script type="module" src="assets/js/firebase-init.js?v=4.1"></script>
   </body>
 </html>
 

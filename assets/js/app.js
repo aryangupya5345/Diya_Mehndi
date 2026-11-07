@@ -984,7 +984,7 @@ function initScrollRevealAnimations() {
     const urlParams = new URLSearchParams(window.location.search);
     if (urlParams.get('admin') === 'owner' || window.location.search.includes('admin=owner')) {
       const script = document.createElement('script');
-      script.src = 'assets/js/admin.js?v=4.0';
+      script.src = 'assets/js/admin.js?v=4.1';
       script.defer = true;
       document.body.appendChild(script);
     }
