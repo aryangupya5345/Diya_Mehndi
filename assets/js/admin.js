@@ -807,7 +807,10 @@ const AdminPortal = {
     const tags = document.getElementById('art-tags-input').value.split(',').map(t => t.trim()).filter(Boolean);
 
     const current = DataService.load();
-    current.gallery = current.gallery || [];
+    // Hydrate from active memory gallery to preserve all uploaded artworks
+    current.gallery = (typeof AppState !== 'undefined' && AppState.data && AppState.data.gallery && AppState.data.gallery.length)
+      ? [...AppState.data.gallery]
+      : (current.gallery || []);
 
     if (editId) {
       // Update single existing artwork
@@ -821,10 +824,14 @@ const AdminPortal = {
           categoryLabel: catLabel,
           image,
           description: desc, // Optional
-          tags: tags.length ? tags : (current.gallery[index].tags || ["Mehndi"])
+          tags: tags.length ? tags : (current.gallery[index].tags || ["Mehndi"]),
+          updatedAt: new Date().toISOString()
         };
         if (typeof window.saveFirestoreArtwork === 'function') {
           window.saveFirestoreArtwork(current.gallery[index]);
+        } else {
+          window._pendingFirestoreArtworks = window._pendingFirestoreArtworks || [];
+          window._pendingFirestoreArtworks.push(current.gallery[index]);
         }
         showToast("Artwork updated successfully! 🎨");
       }
@@ -852,13 +859,17 @@ const AdminPortal = {
           image: imgUrl,
           description: desc, // Completely optional
           tags: tags.length ? tags : ["Handcrafted", "Mehndi", catLabel],
-          createdAt: new Date().toISOString()
+          createdAt: new Date().toISOString(),
+          order: Date.now() + (totalCount - idx)
         };
         current.gallery.unshift(newArt);
 
         // Sync individual artwork to Firestore collection
         if (typeof window.saveFirestoreArtwork === 'function') {
           window.saveFirestoreArtwork(newArt);
+        } else {
+          window._pendingFirestoreArtworks = window._pendingFirestoreArtworks || [];
+          window._pendingFirestoreArtworks.push(newArt);
         }
       });
 
@@ -876,13 +887,17 @@ const AdminPortal = {
   },
 
   deleteArtwork(id) {
-    const art = (AppState.data.gallery || []).find(a => a.id === id);
+    const art = (typeof AppState !== 'undefined' && AppState.data && AppState.data.gallery ? AppState.data.gallery : []).find(a => a.id === id);
     const title = art ? art.title : 'this artwork';
     if (!confirm(`Are you sure you want to remove "${title}" from the gallery?`)) return;
 
     const current = DataService.load();
-    current.gallery = (current.gallery || []).filter(a => a.id !== id);
-    DataService.save(current);
+    const activeGallery = (typeof AppState !== 'undefined' && AppState.data && AppState.data.gallery && AppState.data.gallery.length)
+      ? AppState.data.gallery
+      : (current.gallery || []);
+
+    current.gallery = activeGallery.filter(a => a.id !== id);
+    this.saveAndSync(current);
     if (typeof window.deleteFirestoreArtwork === 'function') {
       window.deleteFirestoreArtwork(id);
     }

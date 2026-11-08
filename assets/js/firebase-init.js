@@ -35,14 +35,42 @@ const _0xfbEnc = "eyJhcGlLZXkiOiJBSXphU3lDQW9QQzZkRllqY1FQemtqYVFKNmY1N3BmSFZXNG
     window.saveFirestoreData = async function(data) {
       try {
         isSavingFromThisClient = true;
-        // Strip undefined properties before sending to Firestore to prevent SDK rejection
-        const cleanData = JSON.parse(JSON.stringify(data));
+        // Strip gallery so live_data never exceeds the 1MB Firestore limit
+        const { gallery: ignoredGallery, ...settingsData } = data;
+        const cleanData = JSON.parse(JSON.stringify(settingsData));
         await setDoc(liveDataDocRef, cleanData);
         setTimeout(() => { isSavingFromThisClient = false; }, 1200);
         return { success: true };
       } catch (err) {
         isSavingFromThisClient = false;
         console.error("Firestore sync error:", err);
+        return { success: false, error: err };
+      }
+    };
+
+    // Save individual artwork to high-capacity Firestore collection
+    window.saveFirestoreArtwork = async function(art) {
+      if (!art || !art.id) return { success: false, error: 'Missing artwork id' };
+      try {
+        const cleanArt = JSON.parse(JSON.stringify(art));
+        const artDocRef = doc(db, "gallery_artworks", String(art.id));
+        await setDoc(artDocRef, cleanArt);
+        return { success: true };
+      } catch (err) {
+        console.error("Firestore artwork sync error:", err);
+        return { success: false, error: err };
+      }
+    };
+
+    // Delete artwork from Firestore collection
+    window.deleteFirestoreArtwork = async function(artId) {
+      if (!artId) return { success: false };
+      try {
+        const artDocRef = doc(db, "gallery_artworks", String(artId));
+        await deleteDoc(artDocRef);
+        return { success: true };
+      } catch (err) {
+        console.error("Firestore artwork delete error:", err);
         return { success: false, error: err };
       }
     };
@@ -54,7 +82,62 @@ const _0xfbEnc = "eyJhcGlLZXkiOiJBSXphU3lDQW9QQzZkRllqY1FQemtqYVFKNmY1N3BmSFZXNG
       window.saveFirestoreData(pendingData);
     }
 
-    // Real-time synchronization listener (syncs across all devices worldwide)
+    // Flush any pending artworks queued before Firestore initialized
+    if (window._pendingFirestoreArtworks && Array.isArray(window._pendingFirestoreArtworks)) {
+      const pendingArts = [...window._pendingFirestoreArtworks];
+      window._pendingFirestoreArtworks = [];
+      pendingArts.forEach(art => window.saveFirestoreArtwork(art));
+    }
+
+    // --------------------------------------------------------------------------
+    // A. Real-time collection listener for Artworks (Instant cross-device gallery sync)
+    // --------------------------------------------------------------------------
+    const galleryColRef = collection(db, "gallery_artworks");
+    onSnapshot(galleryColRef, (colSnap) => {
+      if (isSavingFromThisClient) return;
+
+      if (!colSnap.empty) {
+        const cloudArtworks = [];
+        colSnap.forEach((docSnap) => {
+          const item = docSnap.data();
+          if (item && item.id) {
+            cloudArtworks.push(item);
+          }
+        });
+
+        // Sort chronologically (newest first)
+        cloudArtworks.sort((a, b) => {
+          const timeA = new Date(a.createdAt || 0).getTime();
+          const timeB = new Date(b.createdAt || 0).getTime();
+          if (timeB !== timeA) return timeB - timeA;
+          return (Number(b.order) || 0) - (Number(a.order) || 0);
+        });
+
+        if (typeof AppState !== 'undefined') {
+          AppState.data.gallery = cloudArtworks;
+        }
+        if (typeof LocalDB !== 'undefined') {
+          LocalDB.set('mehndi_gallery_artworks', cloudArtworks);
+        }
+        localStorage.setItem('mehndi_has_custom_gallery', 'true');
+        try {
+          localStorage.setItem('mehndi_gallery_cache', JSON.stringify(cloudArtworks));
+        } catch (e) {}
+
+        if (typeof renderGallery === 'function') {
+          renderGallery();
+        }
+        if (typeof AdminPortal !== 'undefined' && AdminPortal.isAuthenticated && typeof AdminPortal.renderAdminGalleryList === 'function') {
+          AdminPortal.renderAdminGalleryList();
+        }
+      }
+    }, (error) => {
+      console.warn("Firestore gallery collection sync notice:", error);
+    });
+
+    // --------------------------------------------------------------------------
+    // B. Real-time settings listener (profile, text, hero, services, courses, reviews)
+    // --------------------------------------------------------------------------
     onSnapshot(liveDataDocRef, (docSnap) => {
       if (isSavingFromThisClient) return;
 
@@ -63,17 +146,20 @@ const _0xfbEnc = "eyJhcGlLZXkiOiJBSXphU3lDQW9QQzZkRllqY1FQemtqYVFKNmY1N3BmSFZXNG
         if (cloudData && typeof cloudData === 'object') {
           const base = (typeof DEFAULT_MEHNDI_DATA !== 'undefined') ? DEFAULT_MEHNDI_DATA : {};
           const { gallery: ignoredOldGallery, ...cloudSettings } = cloudData;
+
+          // Preserve currently active gallery (never overwrite user uploads with sample defaults)
+          const activeGallery = (typeof AppState !== 'undefined' && AppState.data && AppState.data.gallery && AppState.data.gallery.length > 0)
+            ? AppState.data.gallery
+            : ((typeof DEFAULT_MEHNDI_DATA !== 'undefined' && localStorage.getItem('mehndi_has_custom_gallery') !== 'true') ? DEFAULT_MEHNDI_DATA.gallery : []);
+
           const mergedData = {
             ...base,
             ...cloudSettings,
+            gallery: activeGallery,
             profile: { ...(base.profile || {}), ...(cloudSettings.profile || {}) },
             hero: { ...(base.hero || {}), ...(cloudSettings.hero || {}) },
             sectionHeaders: { ...(base.sectionHeaders || {}), ...(cloudSettings.sectionHeaders || {}) },
-            academyBanner: { ...(base.academyBanner || {}), ...(cloudSettings.academyBanner || {}) },
-            // Preserve active gallery so old sample images never overwrite user photos
-            gallery: (typeof AppState !== 'undefined' && AppState.data && AppState.data.gallery && AppState.data.gallery.length)
-              ? AppState.data.gallery
-              : (base.gallery || [])
+            academyBanner: { ...(base.academyBanner || {}), ...(cloudSettings.academyBanner || {}) }
           };
 
           const storageKey = (typeof DataService !== 'undefined' && DataService.STORAGE_KEY) || "mehndi_atelier_data_v6";
@@ -98,12 +184,13 @@ const _0xfbEnc = "eyJhcGlLZXkiOiJBSXphU3lDQW9QQzZkRllqY1FQemtqYVFKNmY1N3BmSFZXNG
           }
         }
       } else {
-        // Initial setup: Seed Firestore with default data if empty
+        // Initial setup: Seed Firestore with default settings if empty
         const initialData = (typeof AppState !== 'undefined' && AppState.data) || 
                             (typeof DEFAULT_MEHNDI_DATA !== 'undefined' ? DEFAULT_MEHNDI_DATA : null);
         if (initialData) {
-          setDoc(liveDataDocRef, initialData).then(() => {
-            console.log("Cloud Firestore seeded with initial atelier data.");
+          const { gallery: g, ...settingsOnly } = initialData;
+          setDoc(liveDataDocRef, settingsOnly).then(() => {
+            console.log("Cloud Firestore seeded with initial atelier settings.");
           }).catch(err => {
             console.warn("Could not seed Firestore initial data:", err);
           });

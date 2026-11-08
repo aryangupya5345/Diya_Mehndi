@@ -485,6 +485,7 @@ const DataService = {
   STORAGE_KEY: "mehndi_atelier_data_v6",
 
   load() {
+    let settings = {};
     try {
       // Clean up legacy keys that may have old sample data
       ['mehndi_atelier_data', 'mehndi_atelier_data_v2', 'mehndi_atelier_data_v3', 'mehndi_atelier_data_v4', 'mehndi_atelier_data_v5'].forEach(key => {
@@ -502,38 +503,95 @@ const DataService = {
           localStorage.removeItem(this.STORAGE_KEY);
           localStorage.removeItem("mehndi_atelier_data_v5");
           localStorage.removeItem("mehndi_atelier_data_v4");
-          return DEFAULT_MEHNDI_DATA;
+        } else {
+          settings = JSON.parse(stored);
         }
-        const parsed = JSON.parse(stored);
-        return {
-          ...DEFAULT_MEHNDI_DATA,
-          ...parsed,
-          profile: { ...DEFAULT_MEHNDI_DATA.profile, ...(parsed.profile || {}) },
-          hero: { ...DEFAULT_MEHNDI_DATA.hero, ...(parsed.hero || {}) },
-          sectionHeaders: { ...DEFAULT_MEHNDI_DATA.sectionHeaders, ...(parsed.sectionHeaders || {}) },
-          academyBanner: { ...DEFAULT_MEHNDI_DATA.academyBanner, ...(parsed.academyBanner || {}) }
-        };
       }
     } catch (e) {
       console.warn("Failed to read from localStorage:", e);
     }
-    return DEFAULT_MEHNDI_DATA;
+
+    // Fast-path: Check synchronous gallery cache
+    let gallery = null;
+    try {
+      const cached = localStorage.getItem('mehndi_gallery_cache');
+      if (cached) {
+        const parsed = JSON.parse(cached);
+        if (Array.isArray(parsed) && parsed.length > 0) {
+          gallery = parsed;
+        }
+      }
+    } catch (e) {}
+
+    // Check if custom gallery flag is set
+    const hasCustom = localStorage.getItem('mehndi_has_custom_gallery') === 'true';
+    if (!gallery) {
+      if (hasCustom) {
+        // Suppress old defaults while IndexedDB/Firestore hydrates
+        gallery = (typeof AppState !== 'undefined' && AppState.data && AppState.data.gallery && AppState.data.gallery.length)
+          ? AppState.data.gallery
+          : [];
+      } else {
+        gallery = DEFAULT_MEHNDI_DATA.gallery;
+      }
+    }
+
+    return {
+      ...DEFAULT_MEHNDI_DATA,
+      ...settings,
+      gallery,
+      profile: { ...DEFAULT_MEHNDI_DATA.profile, ...(settings.profile || {}) },
+      hero: { ...DEFAULT_MEHNDI_DATA.hero, ...(settings.hero || {}) },
+      sectionHeaders: { ...DEFAULT_MEHNDI_DATA.sectionHeaders, ...(settings.sectionHeaders || {}) },
+      academyBanner: { ...DEFAULT_MEHNDI_DATA.academyBanner, ...(settings.academyBanner || {}) }
+    };
   },
 
   save(data) {
     try {
-      localStorage.setItem(this.STORAGE_KEY, JSON.stringify(data));
+      // 1. Separate heavy gallery to prevent exceeding 5MB LocalStorage quota
+      const { gallery, ...settingsOnly } = data;
+
+      // 2. Save settings to localStorage (tiny, ~20KB, always succeeds)
+      localStorage.setItem(this.STORAGE_KEY, JSON.stringify(settingsOnly));
+
+      // 3. Save heavy gallery artworks to High-Capacity IndexedDB (>500MB capacity)
+      if (gallery && Array.isArray(gallery)) {
+        if (typeof LocalDB !== 'undefined') {
+          LocalDB.set('mehndi_gallery_artworks', gallery);
+        }
+        localStorage.setItem('mehndi_has_custom_gallery', 'true');
+
+        // Also try caching in localStorage for instant synchronous first-paint
+        try {
+          localStorage.setItem('mehndi_gallery_cache', JSON.stringify(gallery));
+        } catch (quotaErr) {
+          // If total gallery base64 exceeds localStorage 5MB, drop cache gracefully
+          // IndexedDB and Firestore hold the full artworks reliably
+          console.info("Artwork gallery exceeds localStorage 5MB limit; saved safely in IndexedDB and Cloud Firestore.");
+          localStorage.removeItem('mehndi_gallery_cache');
+        }
+      }
+
+      // 4. Update in-memory AppState
+      if (typeof AppState !== 'undefined') {
+        AppState.data = {
+          ...data,
+          gallery: gallery || (AppState.data && AppState.data.gallery) || []
+        };
+      }
+
       window.dispatchEvent(new CustomEvent("mehndi_data_updated", { detail: data }));
 
-      // Worldwide Cloud Sync via Firestore
+      // 5. Worldwide Cloud Sync via Firestore
       if (typeof window.saveFirestoreData === 'function') {
-        window.saveFirestoreData(data);
+        window.saveFirestoreData(settingsOnly);
       } else {
-        window._pendingFirestoreSync = data;
+        window._pendingFirestoreSync = settingsOnly;
       }
       return true;
     } catch (e) {
-      console.error("Failed to save to localStorage:", e);
+      console.error("Failed to save data:", e);
       return false;
     }
   },

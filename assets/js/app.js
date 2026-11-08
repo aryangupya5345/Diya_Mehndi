@@ -24,6 +24,9 @@ document.addEventListener('DOMContentLoaded', () => {
       if (cachedArts && Array.isArray(cachedArts) && cachedArts.length > 0) {
         AppState.data.gallery = cachedArts;
         renderGallery();
+        if (typeof AdminPortal !== 'undefined' && AdminPortal.isAuthenticated && typeof AdminPortal.renderAdminGalleryList === 'function') {
+          AdminPortal.renderAdminGalleryList();
+        }
       }
     });
   }
@@ -336,7 +339,7 @@ function renderGallery() {
 
   // Render curated preview on index.html
   if (previewContainer) {
-    const previewItems = items.slice(0, 6);
+    const previewItems = items.slice(0, 4);
     previewContainer.innerHTML = previewItems.map(item => `
       <article class="art-card glass-card" data-category="${item.category}">
         <div class="art-thumb-wrap" onclick="openLightbox('${item.id}')" role="button" tabindex="0" title="Click photo to preview" onkeydown="if(event.key==='Enter'||event.key===' '){openLightbox('${item.id}');event.preventDefault();}">
@@ -994,7 +997,7 @@ function initScrollRevealAnimations() {
     const urlParams = new URLSearchParams(window.location.search);
     if (urlParams.get('admin') === 'owner' || window.location.search.includes('admin=owner')) {
       const script = document.createElement('script');
-      script.src = 'assets/js/admin.js?v=4.2';
+      script.src = 'assets/js/admin.js?v=4.3';
       script.defer = true;
       document.body.appendChild(script);
     }
