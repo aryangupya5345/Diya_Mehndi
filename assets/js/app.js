@@ -337,10 +337,31 @@ function renderGallery() {
   const fullContainer = document.getElementById('gallery-grid');
   const previewContainer = document.getElementById('gallery-preview-grid');
 
-  // Render curated preview on index.html
+  // Render curated preview on index.html with interactive "View All" card
   if (previewContainer) {
+    const totalCount = items.length;
+    // Show 4 clear spotlight artworks
     const previewItems = items.slice(0, 4);
-    previewContainer.innerHTML = previewItems.map(item => `
+
+    // Pick 4 images to form the 2x2 blur mosaic inside the "View All" box
+    let mosaicImages = [];
+    if (items.length > 4) {
+      mosaicImages = items.slice(4, 8).map(it => it.image);
+    }
+    if (mosaicImages.length < 4) {
+      const allImages = items.map(it => it.image);
+      while (mosaicImages.length < 4 && allImages.length > 0) {
+        mosaicImages.push(allImages[mosaicImages.length % allImages.length]);
+      }
+    }
+    const defaultPlaceholder = 'assets/images/bridal_hero.jpg';
+    while (mosaicImages.length < 4) {
+      mosaicImages.push(defaultPlaceholder);
+    }
+
+    const remainingCount = Math.max(1, totalCount - 4);
+
+    const normalCardsHtml = previewItems.map(item => `
       <article class="art-card glass-card" data-category="${item.category}">
         <div class="art-thumb-wrap" onclick="openLightbox('${item.id}')" role="button" tabindex="0" title="Click photo to preview" onkeydown="if(event.key==='Enter'||event.key===' '){openLightbox('${item.id}');event.preventDefault();}">
           <img src="${item.image}" alt="${item.title}" loading="lazy" decoding="async" />
@@ -363,6 +384,39 @@ function renderGallery() {
         </div>
       </article>
     `).join('');
+
+    // Dedicated "View All" box right next to the last image, featuring a 2x2 blurred photo collage
+    const viewAllCardHtml = `
+      <article class="art-card glass-card view-all-card" onclick="window.location.href='gallery.html'" role="button" tabindex="0" title="Click to view all ${totalCount} designs in full gallery" onkeydown="if(event.key==='Enter'||event.key===' '){window.location.href='gallery.html';event.preventDefault();}">
+        <div class="art-thumb-wrap view-all-thumb-wrap">
+          <div class="view-all-mosaic" aria-hidden="true">
+            <div class="mosaic-item"><img src="${mosaicImages[0]}" alt="Gallery Preview" loading="lazy" decoding="async" /></div>
+            <div class="mosaic-item"><img src="${mosaicImages[1]}" alt="Gallery Preview" loading="lazy" decoding="async" /></div>
+            <div class="mosaic-item"><img src="${mosaicImages[2]}" alt="Gallery Preview" loading="lazy" decoding="async" /></div>
+            <div class="mosaic-item"><img src="${mosaicImages[3]}" alt="Gallery Preview" loading="lazy" decoding="async" /></div>
+          </div>
+          <div class="view-all-backdrop-glass" aria-hidden="true"></div>
+          <div class="view-all-center-badge">
+            <span class="view-all-icon">⚜</span>
+            <span class="view-all-counter">+${remainingCount} More</span>
+            <span class="view-all-sublabel">Artworks</span>
+          </div>
+        </div>
+        <div class="art-body view-all-body">
+          <div class="view-all-header">
+            <h3 class="art-title" style="color: var(--theme-gold); font-size: 1.25rem;">Complete Art Gallery</h3>
+            <p class="art-desc">Explore full bridal sets, Arabic motifs, mandalas, and our real customer gallery.</p>
+          </div>
+          <div class="art-actions">
+            <a href="gallery.html" class="btn btn-primary btn-sm view-all-action-btn" style="flex: 1; text-decoration: none;">
+              <span>View All (${totalCount}) Designs &rarr;</span>
+            </a>
+          </div>
+        </div>
+      </article>
+    `;
+
+    previewContainer.innerHTML = normalCardsHtml + viewAllCardHtml;
   }
 
   // Render complete gallery with search & categories on gallery.html
@@ -997,7 +1051,7 @@ function initScrollRevealAnimations() {
     const urlParams = new URLSearchParams(window.location.search);
     if (urlParams.get('admin') === 'owner' || window.location.search.includes('admin=owner')) {
       const script = document.createElement('script');
-      script.src = 'assets/js/admin.js?v=4.3';
+      script.src = 'assets/js/admin.js?v=4.4';
       script.defer = true;
       document.body.appendChild(script);
     }

@@ -1518,6 +1518,161 @@ button {
   margin-top: auto;
 }
 
+/* ==========================================================================
+   PREMIUM "VIEW ALL" GALLERY PREVIEW CARD (BLURRED MOSAIC PREVIEW)
+   ========================================================================== */
+#gallery-preview-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 1.8rem;
+}
+
+@media (min-width: 1200px) {
+  #gallery-preview-grid {
+    grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+    gap: 1.4rem;
+  }
+}
+
+.view-all-card {
+  cursor: pointer;
+  position: relative;
+  border: 1.5px solid rgba(212, 160, 23, 0.3) !important;
+  transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.4s ease, border-color 0.4s ease;
+  background: var(--surface-card);
+}
+
+.view-all-card:hover {
+  transform: translateY(-5px);
+  border-color: var(--theme-gold) !important;
+  box-shadow: 0 12px 35px rgba(212, 160, 23, 0.28) !important;
+}
+
+.view-all-thumb-wrap {
+  position: relative;
+  aspect-ratio: 4/3;
+  overflow: hidden;
+  border-radius: 12px;
+  background: #140c12;
+}
+
+/* 2x2 Mini-Mosaic Grid */
+.view-all-mosaic {
+  position: absolute;
+  inset: -8px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: 1fr 1fr;
+  gap: 3px;
+  filter: blur(4.5px) brightness(0.62) saturate(1.15);
+  transform: scale(1.05);
+  transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1), filter 0.5s ease;
+}
+
+.view-all-card:hover .view-all-mosaic {
+  transform: scale(1.12);
+  filter: blur(3.5px) brightness(0.72) saturate(1.25);
+}
+
+.mosaic-item {
+  overflow: hidden;
+  position: relative;
+  width: 100%;
+  height: 100%;
+}
+
+.mosaic-item img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+/* Frosted Glass Radial Gradient Overlay */
+.view-all-backdrop-glass {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle at center, rgba(20, 10, 16, 0.38) 0%, rgba(15, 8, 12, 0.75) 100%);
+  backdrop-filter: blur(2px);
+  -webkit-backdrop-filter: blur(2px);
+  pointer-events: none;
+}
+
+/* Center Floating Glass Badge */
+.view-all-center-badge {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 0.85rem 1.25rem;
+  background: rgba(22, 13, 20, 0.86);
+  border: 1.5px solid rgba(229, 193, 88, 0.55);
+  border-radius: 14px;
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.5), inset 0 1px 1px rgba(255, 255, 255, 0.2);
+  transition: all 0.35s ease;
+  pointer-events: none;
+  width: 78%;
+  max-width: 195px;
+}
+
+.view-all-card:hover .view-all-center-badge {
+  transform: translate(-50%, -50%) scale(1.06);
+  border-color: var(--theme-gold);
+  box-shadow: 0 10px 35px rgba(212, 160, 23, 0.45);
+  background: rgba(28, 15, 24, 0.92);
+}
+
+.view-all-icon {
+  font-size: 1.4rem;
+  line-height: 1;
+  color: var(--theme-gold);
+  margin-bottom: 0.25rem;
+  filter: drop-shadow(0 2px 6px rgba(212, 160, 23, 0.45));
+}
+
+.view-all-counter {
+  font-family: var(--font-serif, "Cormorant Garamond", Georgia, serif);
+  font-size: 1.35rem;
+  font-weight: 700;
+  color: #ffffff;
+  line-height: 1.15;
+  letter-spacing: 0.02em;
+}
+
+.view-all-sublabel {
+  font-size: 0.7rem;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: var(--theme-gold);
+  font-weight: 700;
+  margin-top: 0.2rem;
+}
+
+.view-all-body {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  flex-grow: 1;
+}
+
+.view-all-action-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.4rem;
+  width: 100%;
+  font-weight: 600;
+  border-radius: var(--radius-sm, 8px);
+  padding: 0.65rem 1rem;
+}
+
 /* --------------------------------------------------------------------------
    SERVICES SECTION
    -------------------------------------------------------------------------- */
